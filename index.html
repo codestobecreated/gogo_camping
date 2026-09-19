@@ -1,0 +1,1904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>4 Person Camping Tent - GOGOCamping | India's First Astronomy Camping Site</title>
+  <meta name="description" content="Spacious, durable and easy to set up 4 Person Camping Tent - perfect for family trips, weekend getaways and outdoor adventures. Book now on GOGOCamping.">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              200: '#bbf7d0',
+              300: '#86efac',
+              400: '#4ade80',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#0D7A57',
+              800: '#09593f',
+              900: '#06422f',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-[#f8fafc] text-gray-800 antialiased min-h-screen flex flex-col justify-between selection:bg-brand-100 selection:text-brand-800">
+
+  <!-- ================= TOP NAV ACCENT BAR ================= -->
+  <div class="h-1.5 w-full bg-[#27384a]"></div>
+
+  <!-- ================= GOGOCAMPING NAVBAR ================= -->
+  <header class="bg-[#f7f3e8] border-b border-[#eae4d3] sticky top-0 z-40 shadow-xs">
+    <div class="max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-6">
+      
+      <!-- Brand Logo -->
+      <a href="https://gogocamping.in/" class="flex items-center group">
+        <span class="text-2xl sm:text-3xl font-black tracking-tight text-[#164e3f] group-hover:opacity-90 transition">
+          GOGOCamping
+        </span>
+      </a>
+
+      <!-- Desktop Navigation Menu -->
+      <nav class="hidden md:flex items-center gap-7 lg:gap-9 text-[15px]">
+        <a href="https://gogocamping.in/" class="text-[#a0907e] font-medium hover:text-[#164e3f] transition">
+          Home
+        </a>
+        <a href="https://gogocamping.in/#activities" class="text-[#164e3f] font-semibold hover:text-[#a0907e] transition">
+          Activities
+        </a>
+        <a href="#" class="text-[#164e3f] font-semibold hover:text-[#a0907e] transition">
+          Rental
+        </a>
+        <a href="https://gogocamping.in/#about" class="text-[#164e3f] font-semibold hover:text-[#a0907e] transition">
+          About Us
+        </a>
+        <a href="https://gogocamping.in/#gallery" class="text-[#164e3f] font-semibold hover:text-[#a0907e] transition">
+          Gallery
+        </a>
+        <a href="cms/index.html" class="bg-emerald-100/80 hover:bg-[#164e3f] text-[#164e3f] hover:text-white px-3 py-1.5 rounded-full font-extrabold text-xs flex items-center gap-1 transition shadow-2xs">
+          <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i>
+          <span>CMS Admin</span>
+        </a>
+        
+        <!-- Contact Us Pill Button -->
+        <a 
+          href="https://gogocamping.in/#contact" 
+          class="border-1.5 border-[#164e3f] text-[#164e3f] hover:bg-[#164e3f] hover:text-[#f7f3e8] px-5 py-2 rounded-full font-bold text-sm tracking-wide transition duration-200"
+        >
+          Contact Us
+        </a>
+
+        <!-- Cart Icon Button -->
+        <button 
+          id="cartBtn" 
+          title="Shopping Cart" 
+          class="relative flex items-center justify-center w-10 h-10 rounded-full bg-emerald-50 text-[#164e3f] border border-[#164e3f]/20 hover:bg-[#164e3f] hover:text-white transition duration-200 shadow-2xs active:scale-95 ml-2"
+        >
+          <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+          <span id="cartBadge" class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-amber-500 text-white text-[10px] font-black flex items-center justify-center shadow-xs">1</span>
+        </button>
+
+        <!-- Desktop Login / Profile Button Container -->
+        <div class="relative inline-block" id="userProfileContainer">
+          <button 
+            id="loginBtn" 
+            title="Login to GOGOCamping" 
+            class="flex items-center gap-2 bg-[#164e3f] hover:bg-[#0f382d] text-[#f7f3e8] px-5 py-2 rounded-full font-bold text-sm tracking-wide transition duration-200 shadow-2xs active:scale-95 ml-1"
+          >
+            <i data-lucide="user" class="w-4 h-4"></i>
+            <span>Login</span>
+          </button>
+
+          <!-- Logged In User Dropdown Menu -->
+          <div id="userProfileDropdown" class="hidden absolute right-0 mt-3 w-64 bg-white rounded-2xl shadow-2xl border border-gray-100 py-3 px-4 z-50 profile-dropdown-animate">
+            <div class="flex items-center gap-3 pb-3 border-b border-gray-100 mb-2">
+              <div id="dropdownAvatar" class="w-10 h-10 rounded-full bg-[#164e3f] text-white flex items-center justify-center font-extrabold text-lg shadow-sm border-2 border-emerald-200">
+                V
+              </div>
+              <div class="overflow-hidden">
+                <p id="dropdownUserName" class="text-sm font-extrabold text-gray-900 truncate">Vijay Kumar</p>
+                <p id="dropdownUserPhone" class="text-xs text-gray-500 font-medium truncate">+91 9876543210</p>
+              </div>
+            </div>
+            
+            <div class="py-1 space-y-1">
+              <div class="flex items-center gap-2 px-3 py-1.5 text-[11px] text-emerald-800 font-bold bg-emerald-50 rounded-xl mb-1">
+                <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
+                <span>GOGOCamping VIP Member</span>
+              </div>
+              
+              <button id="logoutBtn" class="w-full flex items-center gap-2 text-left px-3 py-2 text-xs font-bold text-red-600 hover:bg-red-50 rounded-xl transition">
+                <i data-lucide="log-out" class="w-4 h-4"></i>
+                <span>Log Out</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Mobile Right Actions -->
+      <div class="flex items-center gap-2 md:hidden">
+        <button id="cartBtnMobile" title="Shopping Cart" class="relative w-9.5 h-9.5 rounded-full bg-emerald-50 text-[#164e3f] border border-[#164e3f]/20 flex items-center justify-center shadow-xs">
+          <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+          <span id="cartBadgeMobile" class="absolute -top-1 -right-1 w-4.5 h-4.5 rounded-full bg-amber-500 text-white text-[9px] font-black flex items-center justify-center shadow-xs">1</span>
+        </button>
+        <button id="loginBtnMobile" title="Login" class="w-9.5 h-9.5 rounded-full bg-[#164e3f] text-[#f7f3e8] flex items-center justify-center shadow-xs">
+          <i data-lucide="user" class="w-4 h-4"></i>
+        </button>
+        <button id="mobileMenuBtn" class="w-10 h-10 rounded-full border border-[#164e3f]/30 flex items-center justify-center text-[#164e3f] hover:bg-[#164e3f]/10 transition">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Drawer Menu -->
+    <div id="mobileMenu" class="hidden md:hidden border-t border-[#eae4d3] bg-[#f7f3e8] px-6 py-5 space-y-3 shadow-inner">
+      <a href="https://gogocamping.in/" class="block py-2 text-base text-[#a0907e] font-medium">Home</a>
+      <a href="https://gogocamping.in/#activities" class="block py-2 text-base text-[#164e3f] font-semibold">Activities</a>
+      <a href="#" class="block py-2 text-base text-[#164e3f] font-semibold">Rental</a>
+      <a href="https://gogocamping.in/#about" class="block py-2 text-base text-[#164e3f] font-semibold">About Us</a>
+      <a href="https://gogocamping.in/#gallery" class="block py-2 text-base text-[#164e3f] font-semibold">Gallery</a>
+      
+      <!-- Mobile Profile Card (shown when logged in) -->
+      <div id="mobileUserProfileCard" class="hidden pt-3 border-t border-[#eae4d3]">
+        <div class="flex items-center gap-3 p-3 bg-white rounded-2xl border border-gray-200 shadow-xs mb-3">
+          <div id="mobileMenuAvatar" class="w-10 h-10 rounded-full bg-[#164e3f] text-white flex items-center justify-center font-extrabold text-base border-2 border-emerald-200">
+            V
+          </div>
+          <div>
+            <p id="mobileMenuUserName" class="text-sm font-bold text-gray-900">Vijay Kumar</p>
+            <p id="mobileMenuUserPhone" class="text-xs text-gray-500">+91 9876543210</p>
+          </div>
+        </div>
+        <button id="logoutBtnMobile" class="w-full bg-red-50 hover:bg-red-100 text-red-600 font-bold py-2.5 px-4 rounded-full text-xs flex items-center justify-center gap-2 border border-red-200 transition">
+          <i data-lucide="log-out" class="w-4 h-4"></i>
+          <span>Log Out</span>
+        </button>
+      </div>
+
+      <div id="mobileLoginBtnContainer" class="pt-2 space-y-2">
+        <a href="https://gogocamping.in/#contact" class="inline-block text-center w-full border-1.5 border-[#164e3f] text-[#164e3f] py-2 rounded-full font-bold text-sm">
+          Contact Us
+        </a>
+        <button id="loginBtnDrawer" class="inline-block text-center w-full bg-[#164e3f] text-white py-2 rounded-full font-bold text-sm">
+          Login / Register
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= MAIN CONTAINER ================= -->
+  <main class="max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-grow">
+
+    <!-- Breadcrumbs -->
+    <nav class="flex items-center gap-2 text-xs sm:text-sm text-gray-500 mb-6" aria-label="Breadcrumb">
+      <a href="https://gogocamping.in/" class="hover:text-[#164e3f] transition flex items-center gap-1">
+        <i data-lucide="home" class="w-4 h-4"></i>
+      </a>
+      <span class="text-gray-300">
+        <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+      </span>
+      <a href="#" class="hover:text-[#164e3f] transition">Rental</a>
+      <span class="text-gray-300">
+        <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+      </span>
+      <span class="font-medium text-gray-700">Camping Tent</span>
+    </nav>
+
+    <!-- Product Showcase Grid (Left: Image Gallery, Right: Details & Purchase) -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start mb-12">
+
+      <!-- ================= LEFT COLUMN: IMAGE GALLERY ================= -->
+      <div class="lg:col-span-6 flex flex-col gap-4">
+        <!-- Main Large Image Container -->
+        <div class="relative w-full aspect-[4/3] sm:aspect-[16/11] rounded-2xl overflow-hidden bg-gray-100 shadow-sm border border-gray-100 group">
+          <img 
+            id="mainGalleryImg" 
+            src="tent_1.jpg" 
+            alt="4 Person Camping Tent Lakeside Sunset" 
+            class="w-full h-full object-cover object-center transition-all duration-300 select-none"
+          >
+
+          <!-- GOGOCamping Tent Branding Watermark Overlay -->
+          <div class="absolute bottom-5 right-6 bg-white/25 backdrop-blur-xs px-2.5 py-1 rounded-md text-white flex items-center gap-1.5 opacity-90 pointer-events-none shadow-xs">
+            <svg class="w-4 h-4" viewBox="0 0 32 32" fill="white">
+              <path d="M16 4L4 26H28L16 4Z"/>
+            </svg>
+            <span class="text-xs font-bold tracking-tight">GOGOCamping</span>
+          </div>
+
+          <!-- Carousel Prev Button -->
+          <button 
+            id="prevImageBtn" 
+            class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 hover:bg-black/80 text-white flex items-center justify-center backdrop-blur-xs transition active:scale-95"
+            aria-label="Previous image"
+          >
+            <i data-lucide="chevron-left" class="w-6 h-6"></i>
+          </button>
+
+          <!-- Carousel Next Button -->
+          <button 
+            id="nextImageBtn" 
+            class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 hover:bg-black/80 text-white flex items-center justify-center backdrop-blur-xs transition active:scale-95"
+            aria-label="Next image"
+          >
+            <i data-lucide="chevron-right" class="w-6 h-6"></i>
+          </button>
+        </div>
+
+        <!-- 5 Thumbnail Gallery Strip -->
+        <div class="grid grid-cols-5 gap-2.5 sm:gap-3">
+          <!-- Thumb 1 -->
+          <button 
+            class="thumb-item active relative aspect-[4/3] rounded-xl overflow-hidden border-2 transition-all duration-150 focus:outline-none"
+            data-index="0"
+            data-src="tent_1.jpg"
+            title="Lakeside Sunset Tent with Campfire"
+          >
+            <img src="tent_1.jpg" alt="Thumbnail 1" class="w-full h-full object-cover">
+          </button>
+
+          <!-- Thumb 2 -->
+          <button 
+            class="thumb-item relative aspect-[4/3] rounded-xl overflow-hidden border border-gray-200 opacity-80 hover:opacity-100 transition-all duration-150 focus:outline-none"
+            data-index="1"
+            data-src="tent_2.jpg"
+            title="Front Door Open Interior View"
+          >
+            <img src="tent_2.jpg" alt="Thumbnail 2" class="w-full h-full object-cover">
+          </button>
+
+          <!-- Thumb 3 -->
+          <button 
+            class="thumb-item relative aspect-[4/3] rounded-xl overflow-hidden border border-gray-200 opacity-80 hover:opacity-100 transition-all duration-150 focus:outline-none"
+            data-index="2"
+            data-src="tent_3.jpg"
+            title="Packed Duffel Carry Bag"
+          >
+            <img src="tent_3.jpg" alt="Thumbnail 3" class="w-full h-full object-cover">
+          </button>
+
+          <!-- Thumb 4 -->
+          <button 
+            class="thumb-item relative aspect-[4/3] rounded-xl overflow-hidden border border-gray-200 opacity-80 hover:opacity-100 transition-all duration-150 focus:outline-none"
+            data-index="3"
+            data-src="tent_4.jpg"
+            title="Waterproof Seam & Guyline Tensioner Detail"
+          >
+            <img src="tent_4.jpg" alt="Thumbnail 4" class="w-full h-full object-cover">
+          </button>
+
+          <!-- Thumb 5 -->
+          <button 
+            class="thumb-item relative aspect-[4/3] rounded-xl overflow-hidden border border-gray-200 opacity-80 hover:opacity-100 transition-all duration-150 focus:outline-none"
+            data-index="4"
+            data-src="tent_5.jpg"
+            title="Night Illuminated Camping Tent"
+          >
+            <img src="tent_5.jpg" alt="Thumbnail 5" class="w-full h-full object-cover">
+          </button>
+        </div>
+
+        <!-- Video Guide Section (Desktop: Under Thumbnails) -->
+        <div class="hidden lg:block mt-2 bg-white p-4 rounded-2xl border border-gray-200/80 shadow-xs">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-lg bg-red-50 text-red-600 flex items-center justify-center shrink-0">
+                <i data-lucide="play" class="w-4 h-4 fill-red-600"></i>
+              </div>
+              <div>
+                <h3 class="text-sm font-bold text-gray-900 leading-tight">Tent Setup &amp; Tour Video</h3>
+                <p class="text-[11px] text-gray-500">Step-by-step setup &amp; outdoor experience guide</p>
+              </div>
+            </div>
+            <span class="text-[11px] font-semibold text-brand-700 bg-brand-50 border border-brand-100 px-2.5 py-1 rounded-full flex items-center gap-1">
+              <i data-lucide="video" class="w-3.5 h-3.5"></i> Video Guide
+            </span>
+          </div>
+
+          <!-- Responsive YouTube Embed -->
+          <div class="relative w-full aspect-video rounded-xl overflow-hidden bg-black shadow-inner border border-gray-100">
+            <iframe 
+              class="w-full h-full" 
+              src="https://www.youtube.com/embed/ETORWgahumI" 
+              title="OutdoorTrips Tent Setup Video" 
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              referrerpolicy="strict-origin-when-cross-origin" 
+              allowfullscreen
+            ></iframe>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ================= RIGHT COLUMN: PRODUCT INFO & ADD-ONS ================= -->
+      <div class="lg:col-span-6 flex flex-col justify-between">
+        
+        <!-- Header & Pricing Row -->
+        <div>
+          <div class="flex items-center justify-between gap-4 mb-2">
+            <!-- Category Tag -->
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-brand-100 text-brand-800 tracking-wide">
+              Camping
+            </span>
+
+            <!-- Discount Badge -->
+            <span id="discountBadge" class="inline-flex items-center px-3 py-1 rounded-md text-xs font-extrabold bg-[#16a34a] text-white tracking-wide shadow-xs">
+              25% OFF
+            </span>
+          </div>
+
+          <!-- Title & Price Container -->
+          <div class="flex flex-wrap items-baseline justify-between gap-4 mt-1">
+            <h1 id="productTitle" class="text-2xl sm:text-3xl lg:text-[32px] font-extrabold text-gray-900 tracking-tight leading-tight">
+              1 Person Camping Tent
+            </h1>
+            <div class="text-right">
+              <span id="originalPriceDisplay" class="block text-sm sm:text-base font-semibold text-gray-400 line-through">₹3,199</span>
+              <span id="currentPriceDisplay" class="text-3xl sm:text-4xl font-extrabold text-[#164e3f] tracking-tight">₹2,399</span>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <p id="productDesc" class="text-gray-600 text-sm leading-relaxed mt-2.5 max-w-xl">
+            Ultra-compact, lightweight solo tent – ideal for solo campers, trekkers and bikepackers.
+          </p>
+
+          <!-- Rating Stars -->
+          <div class="flex items-center gap-2 mt-3 mb-5">
+            <div class="flex text-amber-400 gap-0.5">
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+            </div>
+            <span class="text-sm font-semibold text-gray-800">4.7</span>
+            <span class="text-sm text-gray-500">(128 reviews)</span>
+          </div>
+
+          <!-- Feature Highlights Spec Row (Mobile Only: Appears directly after Reviews) -->
+          <div class="grid grid-cols-2 gap-2.5 py-3 border-y border-gray-100 mb-5 lg:hidden">
+            <!-- Spec 1: Capacity -->
+            <div class="flex items-center gap-2.5 p-2.5 rounded-xl border border-gray-200/80 bg-white shadow-2xs">
+              <div class="w-8 h-8 rounded-lg bg-gray-50 text-brand-700 flex items-center justify-center shrink-0">
+                <i data-lucide="users" class="w-4 h-4"></i>
+              </div>
+              <div class="leading-tight">
+                <div class="capacity-spec-text text-xs font-bold text-gray-900">1 Person</div>
+                <div class="text-[11px] text-gray-500">Capacity</div>
+              </div>
+            </div>
+
+            <!-- Spec 2: Waterproof -->
+            <div class="flex items-center gap-2.5 p-2.5 rounded-xl border border-gray-200/80 bg-white shadow-2xs">
+              <div class="w-8 h-8 rounded-lg bg-gray-50 text-brand-700 flex items-center justify-center shrink-0">
+                <i data-lucide="shield-check" class="w-4 h-4"></i>
+              </div>
+              <div class="leading-tight">
+                <div class="text-xs font-bold text-gray-900">Waterproof</div>
+                <div class="text-[11px] text-gray-500">&amp; Windproof</div>
+              </div>
+            </div>
+
+            <!-- Spec 3: Easy Setup -->
+            <div class="flex items-center gap-2.5 p-2.5 rounded-xl border border-gray-200/80 bg-white shadow-2xs">
+              <div class="w-8 h-8 rounded-lg bg-gray-50 text-brand-700 flex items-center justify-center shrink-0">
+                <i data-lucide="triangle" class="w-4 h-4"></i>
+              </div>
+              <div class="leading-tight">
+                <div class="text-xs font-bold text-gray-900">Easy Setup</div>
+                <div class="text-[11px] text-gray-500">(10 mins)</div>
+              </div>
+            </div>
+
+            <!-- Spec 4: Lightweight -->
+            <div class="flex items-center gap-2.5 p-2.5 rounded-xl border border-gray-200/80 bg-white shadow-2xs">
+              <div class="w-8 h-8 rounded-lg bg-gray-50 text-brand-700 flex items-center justify-center shrink-0">
+                <i data-lucide="feather" class="w-4 h-4"></i>
+              </div>
+              <div class="leading-tight">
+                <div class="text-xs font-bold text-gray-900">Lightweight</div>
+                <div class="text-[11px] text-gray-500">&amp; Portable</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Person Package Options (1, 2, 3, 4 Person) -->
+          <div class="mb-6 bg-white p-4 rounded-2xl border border-gray-200/90 shadow-2xs">
+            <div class="flex items-center justify-between mb-3">
+              <label class="text-xs font-extrabold uppercase tracking-wider text-gray-800 flex items-center gap-1.5">
+                <i data-lucide="users" class="w-4 h-4 text-[#164e3f]"></i>
+                <span>Select Person Package</span>
+              </label>
+              <span class="text-[11px] font-black text-[#164e3f] bg-[#f7f3e8] border border-[#164e3f]/20 px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                <span>⚡ 25% OFF APPLIED</span>
+              </span>
+            </div>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5" id="packageSelector">
+              <!-- 1 Person (Default Active) -->
+              <button 
+                type="button" 
+                class="pkg-card active p-3 rounded-xl border-2 border-[#164e3f] bg-emerald-50/50 text-left transition duration-150 select-none group focus:outline-none shadow-xs"
+                data-persons="1" 
+                data-name="1 Person Camping Tent" 
+                data-desc="Ultra-compact, lightweight solo tent – ideal for solo campers, trekkers and bikepackers."
+                data-original="3199" 
+                data-price="2399"
+              >
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-[10px] uppercase font-extrabold text-emerald-800">Solo</span>
+                  <span class="w-4 h-4 rounded-full bg-[#164e3f] flex items-center justify-center text-white text-[10px] pkg-radio">✓</span>
+                </div>
+                <div class="text-sm font-black text-gray-900">1 Person</div>
+                <div class="mt-1.5 flex items-baseline gap-1.5">
+                  <span class="text-sm font-extrabold text-[#164e3f]">₹2,399</span>
+                  <span class="text-[11px] text-gray-400 line-through">₹3,199</span>
+                </div>
+              </button>
+
+              <!-- 2 Person -->
+              <button 
+                type="button" 
+                class="pkg-card p-3 rounded-xl border border-gray-200 bg-white text-left hover:border-[#164e3f] hover:shadow-xs transition duration-150 select-none group focus:outline-none"
+                data-persons="2" 
+                data-name="2 Person Camping Tent" 
+                data-desc="Cozy, weather-resistant duo tent – perfect for couples and hiking duos seeking adventure."
+                data-original="6398" 
+                data-price="4798"
+              >
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-[10px] uppercase font-bold text-gray-400 group-hover:text-[#164e3f]">Couple</span>
+                  <span class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center text-white text-[10px] pkg-radio"></span>
+                </div>
+                <div class="text-sm font-black text-gray-900">2 Person</div>
+                <div class="mt-1.5 flex items-baseline gap-1.5">
+                  <span class="text-sm font-extrabold text-[#164e3f]">₹4,798</span>
+                  <span class="text-[11px] text-gray-400 line-through">₹6,398</span>
+                </div>
+              </button>
+
+              <!-- 3 Person -->
+              <button 
+                type="button" 
+                class="pkg-card p-3 rounded-xl border border-gray-200 bg-white text-left hover:border-[#164e3f] hover:shadow-xs transition duration-150 select-none group focus:outline-none"
+                data-persons="3" 
+                data-name="3 Person Camping Tent" 
+                data-desc="Roomy three-person tent with extra vestibule storage – great for friends and small groups."
+                data-original="9597" 
+                data-price="7197"
+              >
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-[10px] uppercase font-bold text-gray-400 group-hover:text-[#164e3f]">Trio</span>
+                  <span class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center text-white text-[10px] pkg-radio"></span>
+                </div>
+                <div class="text-sm font-black text-gray-900">3 Person</div>
+                <div class="mt-1.5 flex items-baseline gap-1.5">
+                  <span class="text-sm font-extrabold text-[#164e3f]">₹7,197</span>
+                  <span class="text-[11px] text-gray-400 line-through">₹9,597</span>
+                </div>
+              </button>
+
+              <!-- 4 Person -->
+              <button 
+                type="button" 
+                class="pkg-card p-3 rounded-xl border border-gray-200 bg-white text-left hover:border-[#164e3f] hover:shadow-xs transition duration-150 select-none group focus:outline-none"
+                data-persons="4" 
+                data-name="4 Person Camping Tent" 
+                data-desc="Spacious, durable and easy to set up – perfect for family trips, weekend getaways and outdoor adventures."
+                data-original="12796" 
+                data-price="9596"
+              >
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-[10px] uppercase font-bold text-gray-400 group-hover:text-[#164e3f]">Popular</span>
+                  <span class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center text-white text-[10px] pkg-radio"></span>
+                </div>
+                <div class="text-sm font-black text-gray-900">4 Person</div>
+                <div class="mt-1.5 flex items-baseline gap-1.5">
+                  <span class="text-sm font-extrabold text-[#164e3f]">₹9,596</span>
+                  <span class="text-[11px] text-gray-400 line-through">₹12,796</span>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Feature Highlights Spec Row (Desktop Only: Placed after package selector) -->
+          <div class="hidden lg:grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 py-4 border-y border-gray-100 mb-6">
+            <!-- Spec 1 -->
+            <div class="flex items-center gap-3 p-2.5 rounded-xl border border-gray-200/80 bg-white hover:border-brand-300 transition">
+              <div class="w-8 h-8 rounded-lg bg-gray-50 text-brand-700 flex items-center justify-center shrink-0">
+                <i data-lucide="users" class="w-4 h-4"></i>
+              </div>
+              <div class="leading-tight">
+                <div id="capacitySpecText" class="capacity-spec-text text-xs font-bold text-gray-900">1 Person</div>
+                <div class="text-[11px] text-gray-500">Capacity</div>
+              </div>
+            </div>
+
+            <!-- Spec 2 -->
+            <div class="flex items-center gap-3 p-2.5 rounded-xl border border-gray-200/80 bg-white hover:border-brand-300 transition">
+              <div class="w-8 h-8 rounded-lg bg-gray-50 text-brand-700 flex items-center justify-center shrink-0">
+                <i data-lucide="shield-check" class="w-4 h-4"></i>
+              </div>
+              <div class="leading-tight">
+                <div class="text-xs font-bold text-gray-900">Waterproof</div>
+                <div class="text-[11px] text-gray-500">& Windproof</div>
+              </div>
+            </div>
+
+            <!-- Spec 3 -->
+            <div class="flex items-center gap-3 p-2.5 rounded-xl border border-gray-200/80 bg-white hover:border-brand-300 transition">
+              <div class="w-8 h-8 rounded-lg bg-gray-50 text-brand-700 flex items-center justify-center shrink-0">
+                <i data-lucide="triangle" class="w-4 h-4"></i>
+              </div>
+              <div class="leading-tight">
+                <div class="text-xs font-bold text-gray-900">Easy Setup</div>
+                <div class="text-[11px] text-gray-500">(10 mins)</div>
+              </div>
+            </div>
+
+            <!-- Spec 4 -->
+            <div class="flex items-center gap-3 p-2.5 rounded-xl border border-gray-200/80 bg-white hover:border-brand-300 transition">
+              <div class="w-8 h-8 rounded-lg bg-gray-50 text-brand-700 flex items-center justify-center shrink-0">
+                <i data-lucide="feather" class="w-4 h-4"></i>
+              </div>
+              <div class="leading-tight">
+                <div class="text-xs font-bold text-gray-900">Lightweight</div>
+                <div class="text-[11px] text-gray-500">& Portable</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stock Indicator Badge -->
+          <div class="mb-5 flex items-center gap-2 text-xs sm:text-sm font-semibold text-brand-700 bg-brand-50/60 border border-brand-200/80 px-3.5 py-2 rounded-xl w-fit">
+            <span class="w-2.5 h-2.5 rounded-full bg-brand-500 animate-pulse-dot"></span>
+            <span>Available In Stock &amp; Ready for Booking</span>
+          </div>
+
+          <!-- Add-ons Section -->
+          <div class="mb-5 sm:mb-6 bg-white sm:bg-transparent p-3.5 sm:p-0 rounded-2xl border border-gray-200/90 sm:border-0 shadow-2xs sm:shadow-none">
+            <div class="flex items-center justify-between mb-3">
+              <div>
+                <h3 class="text-sm sm:text-base font-bold text-gray-900 leading-tight">Add-on Accessories</h3>
+                <p class="text-[11px] sm:text-xs text-gray-500">Enhance your camping trip with essential gear</p>
+              </div>
+              <span class="text-[10px] sm:text-[11px] font-bold text-[#164e3f] bg-[#f7f3e8] border border-[#164e3f]/20 px-2.5 py-0.5 rounded-full shrink-0">
+                Optional
+              </span>
+            </div>
+
+            <!-- 4 Add-on Selection Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-2.5 sm:gap-3">
+              
+              <!-- Add-on 1: Chair -->
+              <div 
+                class="addon-card relative p-3 rounded-2xl border border-gray-200 bg-white hover:border-[#164e3f]/60 transition card-hover select-none group flex flex-col justify-between"
+                data-id="chair" 
+                data-name="Camping Chair" 
+                data-price="1200"
+              >
+                <!-- Checkbox / Badge (Top Right) -->
+                <div class="absolute top-2.5 right-2.5 z-10">
+                  <input 
+                    type="checkbox" 
+                    id="check-chair" 
+                    class="addon-checkbox w-4 h-4 text-[#164e3f] rounded border-gray-300 focus:ring-[#164e3f] cursor-pointer accent-[#164e3f]"
+                  >
+                </div>
+
+                <div>
+                  <div class="w-full aspect-square rounded-xl overflow-hidden bg-gray-50 flex items-center justify-center p-2 shrink-0 border border-gray-100 mb-2 group-hover:scale-105 transition duration-200">
+                    <img src="chair.jpg" alt="Camping Chair" class="w-full h-full object-contain">
+                  </div>
+                  <div>
+                    <div class="text-xs font-bold text-gray-900 truncate group-hover:text-[#164e3f] transition">Camping Chair</div>
+                    <div class="text-xs font-black text-[#164e3f] mt-0.5">+₹1,200</div>
+                  </div>
+                </div>
+
+                <!-- Quantity Stepper Controls (- Qty +) -->
+                <div class="mt-2.5 pt-2 border-t border-gray-100 flex items-center justify-between">
+                  <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Qty</span>
+                  <div class="flex items-center gap-1.5 bg-gray-100 px-1.5 py-0.5 rounded-lg border border-gray-200">
+                    <button 
+                      type="button" 
+                      class="addon-qty-dec w-5 h-5 rounded bg-white hover:bg-gray-200 active:scale-95 text-gray-800 font-extrabold text-xs flex items-center justify-center transition border border-gray-300 disabled:opacity-40 select-none cursor-pointer"
+                      data-id="chair"
+                      title="Decrease Quantity"
+                    >-</button>
+                    <span class="addon-qty-val text-xs font-black text-[#164e3f] min-w-[18px] text-center select-none">0</span>
+                    <button 
+                      type="button" 
+                      class="addon-qty-inc w-5 h-5 rounded bg-[#164e3f] hover:bg-[#0f382d] active:scale-95 text-white font-extrabold text-xs flex items-center justify-center transition shadow-2xs select-none cursor-pointer"
+                      data-id="chair"
+                      title="Increase Quantity"
+                    >+</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Add-on 2: Sleeping Bag -->
+              <div 
+                class="addon-card relative p-3 rounded-2xl border border-gray-200 bg-white hover:border-[#164e3f]/60 transition card-hover select-none group flex flex-col justify-between"
+                data-id="sleeping_bag" 
+                data-name="Sleeping Bag" 
+                data-price="1500"
+              >
+                <div class="absolute top-2.5 right-2.5 z-10">
+                  <input 
+                    type="checkbox" 
+                    id="check-sleeping_bag" 
+                    class="addon-checkbox w-4 h-4 text-[#164e3f] rounded border-gray-300 focus:ring-[#164e3f] cursor-pointer accent-[#164e3f]"
+                  >
+                </div>
+
+                <div>
+                  <div class="w-full aspect-square rounded-xl overflow-hidden bg-gray-50 flex items-center justify-center p-2 shrink-0 border border-gray-100 mb-2 group-hover:scale-105 transition duration-200">
+                    <img src="sleeping_bag.jpg" alt="Sleeping Bag" class="w-full h-full object-contain">
+                  </div>
+                  <div>
+                    <div class="text-xs font-bold text-gray-900 truncate group-hover:text-[#164e3f] transition">Sleeping Bag</div>
+                    <div class="text-xs font-black text-[#164e3f] mt-0.5">+₹1,500</div>
+                  </div>
+                </div>
+
+                <div class="mt-2.5 pt-2 border-t border-gray-100 flex items-center justify-between">
+                  <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Qty</span>
+                  <div class="flex items-center gap-1.5 bg-gray-100 px-1.5 py-0.5 rounded-lg border border-gray-200">
+                    <button 
+                      type="button" 
+                      class="addon-qty-dec w-5 h-5 rounded bg-white hover:bg-gray-200 active:scale-95 text-gray-800 font-extrabold text-xs flex items-center justify-center transition border border-gray-300 disabled:opacity-40 select-none cursor-pointer"
+                      data-id="sleeping_bag"
+                      title="Decrease Quantity"
+                    >-</button>
+                    <span class="addon-qty-val text-xs font-black text-[#164e3f] min-w-[18px] text-center select-none">0</span>
+                    <button 
+                      type="button" 
+                      class="addon-qty-inc w-5 h-5 rounded bg-[#164e3f] hover:bg-[#0f382d] active:scale-95 text-white font-extrabold text-xs flex items-center justify-center transition shadow-2xs select-none cursor-pointer"
+                      data-id="sleeping_bag"
+                      title="Increase Quantity"
+                    >+</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Add-on 3: Lantern -->
+              <div 
+                class="addon-card relative p-3 rounded-2xl border border-gray-200 bg-white hover:border-[#164e3f]/60 transition card-hover select-none group flex flex-col justify-between"
+                data-id="lantern" 
+                data-name="LED Lantern" 
+                data-price="800"
+              >
+                <div class="absolute top-2.5 right-2.5 z-10">
+                  <input 
+                    type="checkbox" 
+                    id="check-lantern" 
+                    class="addon-checkbox w-4 h-4 text-[#164e3f] rounded border-gray-300 focus:ring-[#164e3f] cursor-pointer accent-[#164e3f]"
+                  >
+                </div>
+
+                <div>
+                  <div class="w-full aspect-square rounded-xl overflow-hidden bg-gray-50 flex items-center justify-center p-2 shrink-0 border border-gray-100 mb-2 group-hover:scale-105 transition duration-200">
+                    <img src="lantern.jpg" alt="Lantern" class="w-full h-full object-contain">
+                  </div>
+                  <div>
+                    <div class="text-xs font-bold text-gray-900 truncate group-hover:text-[#164e3f] transition">LED Lantern</div>
+                    <div class="text-xs font-black text-[#164e3f] mt-0.5">+₹800</div>
+                  </div>
+                </div>
+
+                <div class="mt-2.5 pt-2 border-t border-gray-100 flex items-center justify-between">
+                  <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Qty</span>
+                  <div class="flex items-center gap-1.5 bg-gray-100 px-1.5 py-0.5 rounded-lg border border-gray-200">
+                    <button 
+                      type="button" 
+                      class="addon-qty-dec w-5 h-5 rounded bg-white hover:bg-gray-200 active:scale-95 text-gray-800 font-extrabold text-xs flex items-center justify-center transition border border-gray-300 disabled:opacity-40 select-none cursor-pointer"
+                      data-id="lantern"
+                      title="Decrease Quantity"
+                    >-</button>
+                    <span class="addon-qty-val text-xs font-black text-[#164e3f] min-w-[18px] text-center select-none">0</span>
+                    <button 
+                      type="button" 
+                      class="addon-qty-inc w-5 h-5 rounded bg-[#164e3f] hover:bg-[#0f382d] active:scale-95 text-white font-extrabold text-xs flex items-center justify-center transition shadow-2xs select-none cursor-pointer"
+                      data-id="lantern"
+                      title="Increase Quantity"
+                    >+</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Add-on 4: Rope Set -->
+              <div 
+                class="addon-card relative p-3 rounded-2xl border border-gray-200 bg-white hover:border-[#164e3f]/60 transition card-hover select-none group flex flex-col justify-between"
+                data-id="rope" 
+                data-name="Rope Set" 
+                data-price="600"
+              >
+                <div class="absolute top-2.5 right-2.5 z-10">
+                  <input 
+                    type="checkbox" 
+                    id="check-rope" 
+                    class="addon-checkbox w-4 h-4 text-[#164e3f] rounded border-gray-300 focus:ring-[#164e3f] cursor-pointer accent-[#164e3f]"
+                  >
+                </div>
+
+                <div>
+                  <div class="w-full aspect-square rounded-xl overflow-hidden bg-gray-50 flex items-center justify-center p-2 shrink-0 border border-gray-100 mb-2 group-hover:scale-105 transition duration-200">
+                    <img src="rope.jpg" alt="Rope Set" class="w-full h-full object-contain">
+                  </div>
+                  <div>
+                    <div class="text-xs font-bold text-gray-900 truncate group-hover:text-[#164e3f] transition">Rope Set</div>
+                    <div class="text-xs font-black text-[#164e3f] mt-0.5">+₹600</div>
+                  </div>
+                </div>
+
+                <div class="mt-2.5 pt-2 border-t border-gray-100 flex items-center justify-between">
+                  <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Qty</span>
+                  <div class="flex items-center gap-1.5 bg-gray-100 px-1.5 py-0.5 rounded-lg border border-gray-200">
+                    <button 
+                      type="button" 
+                      class="addon-qty-dec w-5 h-5 rounded bg-white hover:bg-gray-200 active:scale-95 text-gray-800 font-extrabold text-xs flex items-center justify-center transition border border-gray-300 disabled:opacity-40 select-none cursor-pointer"
+                      data-id="rope"
+                      title="Decrease Quantity"
+                    >-</button>
+                    <span class="addon-qty-val text-xs font-black text-[#164e3f] min-w-[18px] text-center select-none">0</span>
+                    <button 
+                      type="button" 
+                      class="addon-qty-inc w-5 h-5 rounded bg-[#164e3f] hover:bg-[#0f382d] active:scale-95 text-white font-extrabold text-xs flex items-center justify-center transition shadow-2xs select-none cursor-pointer"
+                      data-id="rope"
+                      title="Increase Quantity"
+                    >+</button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Total Price Banner / Box -->
+          <div class="bg-[#ecfdf5] border border-[#a7f3d0] rounded-xl p-4 flex items-center justify-between mb-4 shadow-2xs">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-brand-100 text-brand-700 flex items-center justify-center shrink-0">
+                <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <span class="text-sm font-bold text-gray-900">Total Price</span>
+                <span class="text-xs text-brand-700 ml-1 font-medium">(with selected add-ons)</span>
+              </div>
+            </div>
+            <div class="text-right">
+              <span id="totalPriceDisplay" class="text-2xl sm:text-3xl font-black text-[#0D7A57] tracking-tight">₹2,399</span>
+            </div>
+          </div>
+
+          <!-- CTA Button: Book Now -->
+          <button 
+            id="bookNowBtn" 
+            class="w-full bg-[#0D7A57] hover:bg-[#09593f] active:scale-[0.99] text-white font-bold py-3.5 px-6 rounded-xl flex items-center justify-center gap-2.5 shadow-md shadow-brand-900/10 transition duration-200 group text-base"
+          >
+            <i data-lucide="calendar" class="w-5 h-5"></i>
+            <span>Book Now</span>
+            <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition"></i>
+          </button>
+
+          <!-- GOGOCamping Booking Notice -->
+          <div class="flex items-center justify-center gap-1.5 text-xs text-gray-600 mt-2.5">
+            <i data-lucide="shield-check" class="w-4 h-4 text-[#164e3f] shrink-0"></i>
+            <span>Official direct booking secured by GOGOCamping</span>
+          </div>
+
+          <!-- Video Guide Section (Mobile Only: Appears directly after Book Now) -->
+          <div class="block lg:hidden mt-6 bg-white p-4 rounded-2xl border border-gray-200/80 shadow-xs">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-red-50 text-red-600 flex items-center justify-center shrink-0">
+                  <i data-lucide="play" class="w-4 h-4 fill-red-600"></i>
+                </div>
+                <div>
+                  <h3 class="text-sm font-bold text-gray-900 leading-tight">Tent Setup &amp; Tour Video</h3>
+                  <p class="text-[11px] text-gray-500">Step-by-step setup &amp; outdoor experience guide</p>
+                </div>
+              </div>
+              <span class="text-[11px] font-semibold text-brand-700 bg-brand-50 border border-brand-100 px-2.5 py-1 rounded-full flex items-center gap-1">
+                <i data-lucide="video" class="w-3.5 h-3.5"></i> Video Guide
+              </span>
+            </div>
+
+            <!-- Responsive YouTube Embed -->
+            <div class="relative w-full aspect-video rounded-xl overflow-hidden bg-black shadow-inner border border-gray-100">
+              <iframe 
+                class="w-full h-full" 
+                src="https://www.youtube.com/embed/ETORWgahumI" 
+                title="OutdoorTrips Tent Setup Video" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerpolicy="strict-origin-when-cross-origin" 
+                allowfullscreen
+              ></iframe>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ================= EXPLORE CATEGORIES SECTION ================= -->
+    <section class="mt-8 mb-6">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h2 class="text-xl font-bold text-gray-900">Explore Outdoor Categories</h2>
+          <p class="text-xs text-gray-500 mt-0.5">Find camping gear, campfire kits, safety apparel, and outdoor party essentials</p>
+        </div>
+        <a href="#" class="hidden sm:inline-flex items-center gap-1 text-xs font-bold text-brand-700 hover:text-brand-800 transition">
+          <span>View All</span>
+          <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+        </a>
+      </div>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        
+        <!-- Category 1: Camping -->
+        <a href="#" class="flex items-center justify-between p-3.5 bg-white border border-gray-200/80 rounded-2xl shadow-xs card-hover group">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-14 h-14 rounded-xl overflow-hidden bg-gray-100 shrink-0">
+              <img src="cat_camping.jpg" alt="Camping" class="w-full h-full object-cover group-hover:scale-105 transition">
+            </div>
+            <div class="min-w-0">
+              <h3 class="text-sm font-bold text-gray-900 truncate group-hover:text-brand-700 transition">Camping</h3>
+              <p class="text-[11px] text-gray-500 truncate">Tents, Sleeping Bags, Gear</p>
+            </div>
+          </div>
+          <div class="w-8 h-8 rounded-full bg-brand-700 text-white flex items-center justify-center shrink-0 ml-2 group-hover:scale-110 group-hover:bg-brand-800 transition">
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </div>
+        </a>
+
+        <!-- Category 2: Fire -->
+        <a href="#" class="flex items-center justify-between p-3.5 bg-white border border-gray-200/80 rounded-2xl shadow-xs card-hover group">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-14 h-14 rounded-xl overflow-hidden bg-gray-100 shrink-0">
+              <img src="cat_fire.jpg" alt="Fire" class="w-full h-full object-cover group-hover:scale-105 transition">
+            </div>
+            <div class="min-w-0">
+              <h3 class="text-sm font-bold text-gray-900 truncate group-hover:text-brand-700 transition">Fire</h3>
+              <p class="text-[11px] text-gray-500 truncate">Stoves, Firewood, Accessories</p>
+            </div>
+          </div>
+          <div class="w-8 h-8 rounded-full bg-brand-700 text-white flex items-center justify-center shrink-0 ml-2 group-hover:scale-110 group-hover:bg-brand-800 transition">
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </div>
+        </a>
+
+        <!-- Category 3: Party -->
+        <a href="#" class="flex items-center justify-between p-3.5 bg-white border border-gray-200/80 rounded-2xl shadow-xs card-hover group">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-14 h-14 rounded-xl overflow-hidden bg-gray-100 shrink-0">
+              <img src="cat_party.jpg" alt="Party" class="w-full h-full object-cover group-hover:scale-105 transition">
+            </div>
+            <div class="min-w-0">
+              <h3 class="text-sm font-bold text-gray-900 truncate group-hover:text-brand-700 transition">Party</h3>
+              <p class="text-[11px] text-gray-500 truncate">Lighting, Games, Decor</p>
+            </div>
+          </div>
+          <div class="w-8 h-8 rounded-full bg-brand-700 text-white flex items-center justify-center shrink-0 ml-2 group-hover:scale-110 group-hover:bg-brand-800 transition">
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </div>
+        </a>
+
+        <!-- Category 4: Safety Jackets -->
+        <a href="#" class="flex items-center justify-between p-3.5 bg-white border border-gray-200/80 rounded-2xl shadow-xs card-hover group">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-14 h-14 rounded-xl overflow-hidden bg-gray-100 shrink-0">
+              <img src="cat_safety.jpg" alt="Safety Jackets" class="w-full h-full object-cover group-hover:scale-105 transition">
+            </div>
+            <div class="min-w-0">
+              <h3 class="text-sm font-bold text-gray-900 truncate group-hover:text-brand-700 transition">Safety Jackets</h3>
+              <p class="text-[11px] text-gray-500 truncate">Reflective, Riding, Industrial</p>
+            </div>
+          </div>
+          <div class="w-8 h-8 rounded-full bg-brand-700 text-white flex items-center justify-center shrink-0 ml-2 group-hover:scale-110 group-hover:bg-brand-800 transition">
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </div>
+        </a>
+
+        <!-- Category 5: Others -->
+        <a href="#" class="flex items-center justify-between p-3.5 bg-white border border-gray-200/80 rounded-2xl shadow-xs card-hover group">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-14 h-14 rounded-xl overflow-hidden bg-gray-100 shrink-0">
+              <img src="cat_others.jpg" alt="Others" class="w-full h-full object-cover group-hover:scale-105 transition">
+            </div>
+            <div class="min-w-0">
+              <h3 class="text-sm font-bold text-gray-900 truncate group-hover:text-brand-700 transition">Others</h3>
+              <p class="text-[11px] text-gray-500 truncate">Tools, Accessories, More</p>
+            </div>
+          </div>
+          <div class="w-8 h-8 rounded-full bg-brand-700 text-white flex items-center justify-center shrink-0 ml-2 group-hover:scale-110 group-hover:bg-brand-800 transition">
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-white border-t border-gray-200 py-6 text-center text-xs text-gray-500">
+    <div class="max-w-[1380px] mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <div>&copy; 2026 GOGOCamping. All rights reserved. India's First Astronomy Camping Site.</div>
+      <div class="flex items-center gap-4 text-gray-600">
+        <a href="https://gogocamping.in/#about" class="hover:text-brand-700">About Us</a>
+        <span>•</span>
+        <a href="https://gogocamping.in/#activities" class="hover:text-brand-700">Activities</a>
+        <span>•</span>
+        <a href="https://gogocamping.in/#contact" class="hover:text-brand-700">Contact Us</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= GOGOCAMPING BOOKING MODAL ================= -->
+  <div id="bookingModal" class="fixed inset-0 z-50 bg-black/65 backdrop-blur-xs hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="bg-[#f4f5f8] rounded-3xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl relative border border-gray-200 overflow-hidden animate-fade-in my-auto">
+      
+      <!-- Modal Sticky Header -->
+      <div class="bg-white px-6 py-4 border-b border-gray-200 flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-[#f7f3e8] text-[#164e3f] border border-[#164e3f]/20 flex items-center justify-center">
+            <i data-lucide="tent" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-base sm:text-lg font-extrabold text-gray-900 leading-tight">Camper &amp; Guest Details</h3>
+            <p class="text-xs text-gray-500">GOGOCamping Tent Booking</p>
+          </div>
+        </div>
+        <button id="closeModalBtn" class="text-gray-400 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Scrollable Form Body -->
+      <div class="overflow-y-auto p-4 sm:p-6 space-y-4">
+
+        <!-- Trip Summary Header Pill -->
+        <div class="bg-white rounded-2xl p-4 border border-gray-200 shadow-2xs flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm">
+          <div>
+            <span class="text-gray-500 block text-xs">Selected Gear</span>
+            <span class="font-bold text-gray-900"><span id="modalTentLabel">1 Person Camping Tent</span> (<span id="modalTentQty">1 Camper</span>)</span>
+            <span id="modalTentSubtotal" class="text-[#164e3f] font-bold ml-1">₹2,399</span>
+          </div>
+          <div id="modalAddonsContainer" class="text-xs text-gray-600 hidden">
+            <!-- Dynamically populated selected add-ons -->
+          </div>
+          <div class="text-right">
+            <span class="text-gray-500 block text-xs">Total Amount</span>
+            <span id="modalGrandTotal" class="text-base font-extrabold text-[#164e3f]">₹4,799</span>
+          </div>
+        </div>
+
+        <!-- ================= SECTION 1: CONTACT DETAILS ================= -->
+        <div class="bg-white rounded-2xl p-5 border border-gray-200 shadow-2xs space-y-3.5">
+          <div>
+            <h4 class="text-base font-bold text-gray-900">Contact details</h4>
+            <p class="text-xs text-gray-500">Booking confirmation &amp; campsite access pass will be sent to</p>
+          </div>
+
+          <!-- Phone Row -->
+          <div class="grid grid-cols-12 rounded-xl border border-gray-300 overflow-hidden focus-within:border-[#164e3f] bg-white">
+            <div class="col-span-5 sm:col-span-4 border-r border-gray-200 bg-gray-50/60 flex flex-col justify-center px-3 py-2 cursor-pointer">
+              <span class="text-[10px] text-gray-500 font-medium leading-tight">Country Code</span>
+              <div class="flex items-center justify-between text-xs font-bold text-gray-800 mt-0.5">
+                <span>+91 (IND)</span>
+                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-500"></i>
+              </div>
+            </div>
+            <div class="col-span-7 sm:col-span-8 flex flex-col justify-center px-3.5 py-2">
+              <input 
+                type="tel" 
+                id="contactPhone"
+                placeholder="Phone *" 
+                value="9876543210"
+                class="w-full text-sm font-medium text-gray-900 focus:outline-none placeholder-gray-400"
+              >
+            </div>
+          </div>
+
+          <!-- Email ID -->
+          <div class="rounded-xl border border-gray-300 px-3.5 py-2.5 bg-white focus-within:border-[#164e3f]">
+            <input 
+              type="email" 
+              id="contactEmail"
+              placeholder="Email ID" 
+              value="traveler@example.com"
+              class="w-full text-sm font-medium text-gray-900 focus:outline-none placeholder-gray-400"
+            >
+          </div>
+
+          <!-- State of Residence -->
+          <div>
+            <div class="rounded-xl border border-gray-300 px-3.5 py-2 bg-white flex items-center justify-between focus-within:border-[#164e3f]">
+              <div class="w-full">
+                <span class="text-[10px] text-gray-500 font-medium block leading-tight">State of Residence *</span>
+                <select id="contactState" class="w-full text-xs sm:text-sm font-bold text-gray-900 bg-transparent focus:outline-none cursor-pointer mt-0.5">
+                  <option value="Karnataka" selected>Karnataka</option>
+                  <option value="Tamil Nadu">Tamil Nadu</option>
+                  <option value="Kerala">Kerala</option>
+                  <option value="Maharashtra">Maharashtra</option>
+                  <option value="Goa">Goa</option>
+                  <option value="Telangana">Telangana</option>
+                  <option value="Andhra Pradesh">Andhra Pradesh</option>
+                  <option value="Delhi">Delhi</option>
+                </select>
+              </div>
+            </div>
+            <span class="text-[11px] text-gray-400 mt-1 block">Required for GST Tax Invoicing</span>
+          </div>
+
+          <!-- WhatsApp Toggle Row -->
+          <div class="flex items-center justify-between pt-2 border-t border-gray-100">
+            <div class="flex items-center gap-2.5">
+              <div class="w-7 h-7 rounded-full bg-[#25D366]/15 flex items-center justify-center text-[#25D366] shrink-0">
+                <svg class="w-4 h-4 fill-[#25D366]" viewBox="0 0 24 24">
+                  <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.699c.974.554 1.765.82 2.796.82 3.18 0 5.767-2.586 5.768-5.766 0-3.18-2.588-5.766-5.768-5.766zm3.385 8.163c-.145.408-.847.777-1.18.825-.333.048-.769.071-2.457-.629-1.921-.798-3.149-2.763-3.245-2.89-.096-.128-.775-1.032-.775-1.968 0-.936.488-1.396.662-1.587.174-.191.381-.239.508-.239s.254.004.364.01c.119.006.277-.045.433.329.163.389.554 1.349.602 1.448.048.099.08.215.016.342-.064.128-.096.208-.191.319-.096.112-.202.25-.288.335-.096.096-.197.2-.085.392.112.191.498.82 1.069 1.328.736.654 1.356.857 1.547.953.191.096.303.08.415-.048.112-.128.48-.56.608-.752.128-.191.254-.16.425-.096.171.064 1.082.51 1.267.603.185.093.308.14.354.218.046.078.046.452-.099.86zM12 2C6.477 2 2 6.477 2 12c0 1.891.527 3.659 1.438 5.176L2 22l5.006-1.313A9.957 9.957 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/>
+                </svg>
+              </div>
+              <span class="text-xs text-gray-700 font-medium">Send booking details and trip updates on WhatsApp</span>
+            </div>
+
+            <!-- GOGOCamping Green Toggle Switch -->
+            <label class="relative inline-flex items-center cursor-pointer select-none">
+              <input type="checkbox" checked class="sr-only peer" id="whatsappToggle">
+              <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#164e3f]"></div>
+            </label>
+          </div>
+        </div>
+
+        <!-- ================= SECTION 2: CAMPER DETAILS ================= -->
+        <div class="bg-white rounded-2xl p-5 border border-gray-200 shadow-2xs space-y-4">
+          <h4 class="text-base font-bold text-gray-900">Camper details</h4>
+
+          <!-- Login banner -->
+          <div id="memberLoginBanner" class="bg-[#f7f3e8] border border-[#164e3f]/20 text-[#164e3f] text-xs font-semibold py-2.5 px-4 rounded-xl text-center cursor-pointer hover:bg-[#efe8d8] transition">
+            GOGOCamping Member? Click to Login & view saved campers list
+          </div>
+
+          <div id="passengersList" class="space-y-4">
+
+            <!-- Camper 1 -->
+            <div class="passenger-card space-y-3">
+              <div class="flex items-center justify-between cursor-pointer">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-7 h-7 rounded-full bg-[#f7f3e8] text-[#164e3f] border border-[#164e3f]/20 flex items-center justify-center text-xs font-bold">
+                    <i data-lucide="user" class="w-4 h-4"></i>
+                  </div>
+                  <div>
+                    <span class="text-sm font-bold text-gray-900">Camper 1</span>
+                    <span class="text-[11px] text-gray-500 block leading-tight">Lead Camper (Slot 1, 4-Person Dome)</span>
+                  </div>
+                </div>
+                <i data-lucide="chevron-up" class="w-4 h-4 text-gray-500"></i>
+              </div>
+
+              <!-- Name Field -->
+              <div>
+                <div class="rounded-xl border border-gray-300 px-3.5 py-2 bg-white focus-within:border-[#164e3f]">
+                  <input 
+                    type="text" 
+                    id="camper1NameInput"
+                    placeholder="Name *" 
+                    class="w-full text-sm font-medium text-gray-900 focus:outline-none placeholder-gray-400"
+                  >
+                </div>
+                <span class="text-[11px] text-gray-400 font-medium mt-1 block">Enter full name in English</span>
+              </div>
+
+              <!-- Age Field -->
+              <div>
+                <div class="rounded-xl border border-gray-300 px-3.5 py-2 bg-white focus-within:border-[#164e3f]">
+                  <input 
+                    type="number" 
+                    placeholder="Age *" 
+                    class="w-full text-sm font-medium text-gray-900 focus:outline-none placeholder-gray-400"
+                  >
+                </div>
+                <span class="text-[11px] text-gray-400 font-medium mt-1 block">Please enter valid Age</span>
+              </div>
+
+              <!-- Gender -->
+              <div>
+                <span class="text-xs font-medium text-gray-600 block mb-1">Gender *</span>
+                <div class="grid grid-cols-2 gap-3">
+                  <label class="gender-pill flex items-center justify-between px-4 py-2 border border-gray-300 rounded-full cursor-pointer hover:border-[#164e3f] transition select-none">
+                    <span class="text-xs font-semibold text-gray-800">Male</span>
+                    <input type="radio" name="gender-p1" value="Male" class="w-4 h-4 text-[#164e3f] accent-[#164e3f]" checked>
+                  </label>
+                  <label class="gender-pill flex items-center justify-between px-4 py-2 border border-gray-300 rounded-full cursor-pointer hover:border-[#164e3f] transition select-none">
+                    <span class="text-xs font-semibold text-gray-800">Female</span>
+                    <input type="radio" name="gender-p1" value="Female" class="w-4 h-4 text-[#164e3f] accent-[#164e3f]">
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="border-t border-dashed border-gray-200 my-3"></div>
+
+            <!-- Camper 2 -->
+            <div class="passenger-card space-y-3">
+              <div class="flex items-center justify-between cursor-pointer">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-7 h-7 rounded-full bg-[#f7f3e8] text-[#164e3f] border border-[#164e3f]/20 flex items-center justify-center text-xs font-bold">
+                    <i data-lucide="user" class="w-4 h-4"></i>
+                  </div>
+                  <div>
+                    <span class="text-sm font-bold text-gray-900">Camper 2</span>
+                    <span class="text-[11px] text-gray-500 block leading-tight">Slot 2, 4-Person Dome</span>
+                  </div>
+                </div>
+                <i data-lucide="chevron-up" class="w-4 h-4 text-gray-500"></i>
+              </div>
+
+              <div>
+                <div class="rounded-xl border border-gray-300 px-3.5 py-2 bg-white focus-within:border-[#164e3f]">
+                  <input 
+                    type="text" 
+                    placeholder="Name *" 
+                    class="w-full text-sm font-medium text-gray-900 focus:outline-none placeholder-gray-400"
+                  >
+                </div>
+              </div>
+
+              <div>
+                <div class="rounded-xl border border-gray-300 px-3.5 py-2 bg-white focus-within:border-[#164e3f]">
+                  <input 
+                    type="number" 
+                    placeholder="Age *" 
+                    class="w-full text-sm font-medium text-gray-900 focus:outline-none placeholder-gray-400"
+                  >
+                </div>
+              </div>
+
+              <div>
+                <span class="text-xs font-medium text-gray-600 block mb-1">Gender *</span>
+                <div class="grid grid-cols-2 gap-3">
+                  <label class="gender-pill flex items-center justify-between px-4 py-2 border border-gray-300 rounded-full cursor-pointer hover:border-[#164e3f] transition select-none">
+                    <span class="text-xs font-semibold text-gray-800">Male</span>
+                    <input type="radio" name="gender-p2" value="Male" class="w-4 h-4 text-[#164e3f] accent-[#164e3f]">
+                  </label>
+                  <label class="gender-pill flex items-center justify-between px-4 py-2 border border-gray-300 rounded-full cursor-pointer hover:border-[#164e3f] transition select-none">
+                    <span class="text-xs font-semibold text-gray-800">Female</span>
+                    <input type="radio" name="gender-p2" value="Female" class="w-4 h-4 text-[#164e3f] accent-[#164e3f]">
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="border-t border-dashed border-gray-200 my-3"></div>
+
+            <!-- Camper 3 -->
+            <div class="passenger-card space-y-3">
+              <div class="flex items-center justify-between cursor-pointer">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-7 h-7 rounded-full bg-[#f7f3e8] text-[#164e3f] border border-[#164e3f]/20 flex items-center justify-center text-xs font-bold">
+                    <i data-lucide="user" class="w-4 h-4"></i>
+                  </div>
+                  <div>
+                    <span class="text-sm font-bold text-gray-900">Camper 3</span>
+                    <span class="text-[11px] text-gray-500 block leading-tight">Slot 3, 4-Person Dome</span>
+                  </div>
+                </div>
+                <i data-lucide="chevron-up" class="w-4 h-4 text-gray-500"></i>
+              </div>
+
+              <div>
+                <div class="rounded-xl border border-gray-300 px-3.5 py-2 bg-white focus-within:border-[#164e3f]">
+                  <input 
+                    type="text" 
+                    placeholder="Name *" 
+                    class="w-full text-sm font-medium text-gray-900 focus:outline-none placeholder-gray-400"
+                  >
+                </div>
+              </div>
+
+              <div>
+                <div class="rounded-xl border border-gray-300 px-3.5 py-2 bg-white focus-within:border-[#164e3f]">
+                  <input 
+                    type="number" 
+                    placeholder="Age *" 
+                    class="w-full text-sm font-medium text-gray-900 focus:outline-none placeholder-gray-400"
+                  >
+                </div>
+              </div>
+
+              <div>
+                <span class="text-xs font-medium text-gray-600 block mb-1">Gender *</span>
+                <div class="grid grid-cols-2 gap-3">
+                  <label class="gender-pill flex items-center justify-between px-4 py-2 border border-gray-300 rounded-full cursor-pointer hover:border-[#164e3f] transition select-none">
+                    <span class="text-xs font-semibold text-gray-800">Male</span>
+                    <input type="radio" name="gender-p3" value="Male" class="w-4 h-4 text-[#164e3f] accent-[#164e3f]">
+                  </label>
+                  <label class="gender-pill flex items-center justify-between px-4 py-2 border border-gray-300 rounded-full cursor-pointer hover:border-[#164e3f] transition select-none">
+                    <span class="text-xs font-semibold text-gray-800">Female</span>
+                    <input type="radio" name="gender-p3" value="Female" class="w-4 h-4 text-[#164e3f] accent-[#164e3f]">
+                  </label>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Add Camper Button -->
+          <button id="addPassengerBtn" class="w-full py-2.5 border-2 border-dashed border-gray-300 hover:border-[#164e3f] text-gray-600 hover:text-[#164e3f] rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span>+ Add Another Camper</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Modal Sticky Footer -->
+      <div class="bg-white px-6 py-4 border-t border-gray-200 flex flex-wrap items-center justify-between gap-4 shrink-0">
+        <div>
+          <span class="text-xs text-gray-500 block">Total Payable</span>
+          <span id="modalBottomTotal" class="text-xl sm:text-2xl font-black text-[#164e3f]">₹4,799</span>
+        </div>
+        <button id="confirmRedirectBtn" class="bg-[#164e3f] hover:bg-[#0f382d] text-white font-bold py-3.5 px-8 rounded-xl flex items-center justify-center gap-2 shadow-md shadow-emerald-950/20 transition active:scale-95 text-sm sm:text-base">
+          <span>Confirm &amp; Proceed to Pay</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= GOGOCAMPING PAYMENT METHOD & CHECKOUT MODAL ================= -->
+  <div id="paymentModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl relative border border-gray-200 overflow-hidden animate-fade-in my-auto">
+      
+      <!-- Modal Header -->
+      <div class="bg-[#164e3f] text-white px-6 py-4 flex items-center justify-between shrink-0 shadow-sm">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center backdrop-blur-xs">
+            <i data-lucide="credit-card" class="w-5 h-5 text-emerald-300"></i>
+          </div>
+          <div>
+            <h3 class="text-base sm:text-lg font-extrabold leading-tight">Choose Payment Method</h3>
+            <p class="text-xs text-emerald-200">Step 2 of 2 • Review package, add-ons &amp; pay securely</p>
+          </div>
+        </div>
+        <button id="closePaymentModalBtn" class="text-emerald-200 hover:text-white p-2 rounded-full hover:bg-white/10 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body (Grid: Left Order Customizer + Right Payment Methods) -->
+      <div class="overflow-y-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- LEFT COLUMN: Clean Unified Order Summary (Lg: 6 Cols) -->
+        <div class="lg:col-span-6 space-y-4">
+          
+          <div class="flex items-center justify-between">
+            <h4 class="text-sm font-extrabold text-gray-900 uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="shopping-bag" class="w-4 h-4 text-[#164e3f]"></i>
+              Order Summary
+            </h4>
+          </div>
+
+          <!-- Unified Order Card -->
+          <div class="bg-[#f7f3e8]/70 border border-[#164e3f]/20 rounded-2xl p-4 sm:p-5 space-y-4 shadow-2xs">
+            
+            <!-- Package Header & Subtotal -->
+            <div class="flex items-start justify-between">
+              <div>
+                <span class="text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">Selected Package</span>
+                <h5 id="payModalPackageName" class="text-base font-black text-gray-900 mt-1">1 Person Camping Tent</h5>
+                <p class="text-xs text-gray-500 mt-0.5">₹2,399 per person</p>
+              </div>
+              <span id="payModalPackageSubtotal" class="text-lg font-black text-[#164e3f]">₹2,399</span>
+            </div>
+
+            <!-- Camper Quantity Selector (Big, Easy-to-Tap Buttons!) -->
+            <div class="flex items-center justify-between p-3 bg-white rounded-xl border border-gray-200 shadow-2xs">
+              <span class="text-xs font-bold text-gray-800">Total Campers:</span>
+              <div class="flex items-center gap-2.5">
+                <button 
+                  type="button" 
+                  id="payModalCamperDec" 
+                  class="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 active:scale-95 text-gray-800 font-extrabold text-base flex items-center justify-center transition border border-gray-300 disabled:opacity-40 select-none cursor-pointer"
+                  title="Decrease Campers"
+                >-</button>
+                <span id="payModalCamperCount" class="font-black text-[#164e3f] text-sm min-w-[50px] text-center select-none">1 Person</span>
+                <button 
+                  type="button" 
+                  id="payModalCamperInc" 
+                  class="w-8 h-8 rounded-lg bg-[#164e3f] hover:bg-[#0f382d] active:scale-95 text-white font-extrabold text-base flex items-center justify-center transition shadow-xs select-none cursor-pointer"
+                  title="Increase Campers"
+                >+</button>
+              </div>
+            </div>
+
+            <!-- Selected Add-ons List -->
+            <div>
+              <span class="text-xs font-bold text-gray-800 block mb-2">Selected Add-ons:</span>
+              <div id="payModalAddonsList" class="space-y-2">
+                <!-- Dynamically populated selected add-ons with remove buttons -->
+              </div>
+            </div>
+
+            <!-- Quick Add Extra Accessories Picker -->
+            <div class="pt-3 border-t border-[#164e3f]/15">
+              <span class="text-[11px] font-extrabold text-gray-700 block mb-2">+ Quick Add Extra Gear:</span>
+              <div id="payModalAddPicker" class="grid grid-cols-2 gap-2">
+                <!-- 4 Addon Quick Buttons -->
+                <button type="button" data-id="chair" class="pay-picker-btn text-left p-2 rounded-xl bg-white border border-gray-200 hover:border-[#164e3f] transition flex items-center justify-between text-xs group">
+                  <span class="truncate font-semibold text-gray-800">Chair</span>
+                  <span class="text-[#164e3f] font-extrabold shrink-0">+₹1,200</span>
+                </button>
+                <button type="button" data-id="sleeping_bag" class="pay-picker-btn text-left p-2 rounded-xl bg-white border border-gray-200 hover:border-[#164e3f] transition flex items-center justify-between text-xs group">
+                  <span class="truncate font-semibold text-gray-800">Sleeping Bag</span>
+                  <span class="text-[#164e3f] font-extrabold shrink-0">+₹1,500</span>
+                </button>
+                <button type="button" data-id="lantern" class="pay-picker-btn text-left p-2 rounded-xl bg-white border border-gray-200 hover:border-[#164e3f] transition flex items-center justify-between text-xs group">
+                  <span class="truncate font-semibold text-gray-800">LED Lantern</span>
+                  <span class="text-[#164e3f] font-extrabold shrink-0">+₹800</span>
+                </button>
+                <button type="button" data-id="rope" class="pay-picker-btn text-left p-2 rounded-xl bg-white border border-gray-200 hover:border-[#164e3f] transition flex items-center justify-between text-xs group">
+                  <span class="truncate font-semibold text-gray-800">Rope Set</span>
+                  <span class="text-[#164e3f] font-extrabold shrink-0">+₹600</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Total Amount Row inside Summary -->
+            <div class="pt-3 border-t border-[#164e3f]/15 flex items-center justify-between bg-white p-3 rounded-xl border border-emerald-200 shadow-2xs">
+              <div>
+                <span class="text-xs font-bold text-gray-900 block">Total Payable</span>
+                <span class="text-[10px] text-gray-500">Taxes &amp; fees included</span>
+              </div>
+              <span id="payModalTotalAmount" class="text-2xl font-black text-[#164e3f]">₹2,399</span>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: Payment Method Options & Default QR Code (Lg: 6 Cols) -->
+        <div class="lg:col-span-6 space-y-4">
+          
+          <h4 class="text-sm font-extrabold text-gray-900 uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="shield-check" class="w-4 h-4 text-[#164e3f]"></i>
+            Select Payment Option
+          </h4>
+
+          <!-- Payment Tabs Selector -->
+          <div class="grid grid-cols-2 gap-2 p-1.5 bg-gray-100 rounded-2xl border border-gray-200">
+            <button type="button" id="tabPayQr" class="pay-tab py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 text-gray-600 hover:text-gray-900">
+              <i data-lucide="qr-code" class="w-4 h-4"></i>
+              <span>UPI QR Code</span>
+            </button>
+            <button type="button" id="tabPayUpi" class="pay-tab py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 text-gray-600 hover:text-gray-900">
+              <i data-lucide="smartphone" class="w-4 h-4"></i>
+              <span>UPI App / VPA</span>
+            </button>
+            <button type="button" id="tabPayCard" class="pay-tab active py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 bg-white text-[#164e3f] shadow-xs">
+              <i data-lucide="credit-card" class="w-4 h-4"></i>
+              <span>Card / ATM</span>
+            </button>
+            <button type="button" id="tabPayNet" class="pay-tab py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 text-gray-600 hover:text-gray-900">
+              <i data-lucide="building-2" class="w-4 h-4"></i>
+              <span>Net Banking</span>
+            </button>
+          </div>
+
+          <!-- TAB 1 CONTENT: Instant UPI QR Code View (Hidden) -->
+          <div id="payViewQr" class="hidden bg-white border-2 border-emerald-600/30 rounded-2xl p-5 text-center space-y-4 shadow-sm relative overflow-hidden">
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
+              <span>Scan QR to Pay with any UPI App</span>
+            </div>
+
+            <!-- QR Code Graphic Container -->
+            <div class="relative w-52 h-52 mx-auto bg-white p-2.5 rounded-2xl border-2 border-[#164e3f] shadow-md flex items-center justify-center overflow-hidden">
+              <img src="payment.png" alt="GOGOCamping UPI QR Code" class="w-full h-full object-contain rounded-xl">
+            </div>
+
+            <!-- UPI Apps Supported Bar -->
+            <div class="flex items-center justify-center gap-3 py-1">
+              <span class="text-[11px] font-bold text-gray-500">Scan &amp; Pay with:</span>
+              <span class="text-xs font-black text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">GPay</span>
+              <span class="text-xs font-black text-purple-600 bg-purple-50 px-2 py-0.5 rounded border border-purple-200">PhonePe</span>
+              <span class="text-xs font-black text-blue-600 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">Paytm</span>
+              <span class="text-xs font-black text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">BHIM</span>
+            </div>
+
+            <!-- UPI ID & Copy -->
+            <div class="bg-gray-50 p-2.5 rounded-xl border border-gray-200 flex items-center justify-between text-xs">
+              <div class="text-left">
+                <span class="text-[10px] text-gray-400 block font-medium">GOGOCamping Official UPI ID</span>
+                <span class="font-bold text-gray-900">gogocamping@upi</span>
+              </div>
+              <button type="button" id="copyUpiBtn" class="text-xs font-bold text-[#164e3f] bg-white border border-[#164e3f]/30 hover:bg-[#164e3f] hover:text-white px-2.5 py-1 rounded-lg transition">
+                Copy UPI ID
+              </button>
+            </div>
+
+            <p class="text-[11px] text-gray-500">
+              ⚡ Open any UPI app on your phone and scan QR to complete booking payment.
+            </p>
+          </div>
+
+          <!-- TAB 2 CONTENT: UPI App / VPA View (Hidden) -->
+          <div id="payViewUpi" class="hidden bg-white border border-gray-200 rounded-2xl p-4 space-y-3">
+            <label class="block text-xs font-bold text-gray-800">Enter your UPI ID / VPA</label>
+            <div class="rounded-xl border border-gray-300 p-2.5 focus-within:border-[#164e3f]">
+              <input type="text" id="vpaInput" placeholder="e.g. mobile@upi or username@okaxis" class="w-full text-sm font-semibold text-gray-900 focus:outline-none">
+            </div>
+            <p class="text-[11px] text-gray-400">A payment collect request will be sent to your UPI app.</p>
+          </div>
+
+          <!-- TAB 3 CONTENT: Credit/Debit Card View (Default Selected) -->
+          <div id="payViewCard" class="bg-white border border-gray-200 rounded-2xl p-4 space-y-3 shadow-2xs">
+            <div>
+              <label class="block text-[11px] font-bold text-gray-700 mb-1">Card Number</label>
+              <input type="text" placeholder="4532 •••• •••• 8912" class="w-full p-2.5 border border-gray-300 rounded-xl text-xs font-medium focus:outline-none">
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-[11px] font-bold text-gray-700 mb-1">Expiry Date</label>
+                <input type="text" placeholder="MM/YY" class="w-full p-2.5 border border-gray-300 rounded-xl text-xs font-medium focus:outline-none">
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-gray-700 mb-1">CVV</label>
+                <input type="password" placeholder="•••" class="w-full p-2.5 border border-gray-300 rounded-xl text-xs font-medium focus:outline-none">
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 4 CONTENT: Net Banking View (Hidden) -->
+          <div id="payViewNet" class="hidden bg-white border border-gray-200 rounded-2xl p-4 space-y-3">
+            <label class="block text-xs font-bold text-gray-800">Select Bank</label>
+            <select class="w-full p-2.5 border border-gray-300 rounded-xl text-xs font-bold text-gray-800 focus:outline-none">
+              <option>State Bank of India (SBI)</option>
+              <option>HDFC Bank</option>
+              <option>ICICI Bank</option>
+              <option>Axis Bank</option>
+              <option>Kotak Mahindra Bank</option>
+            </select>
+          </div>
+
+          <!-- Final Payment Action Button -->
+          <button 
+            type="button" 
+            id="payNowBtn" 
+            class="w-full bg-[#164e3f] hover:bg-[#0f382d] active:scale-[0.99] text-white font-black py-4 px-6 rounded-2xl flex items-center justify-center gap-3 shadow-lg shadow-emerald-950/20 transition duration-200 text-base sm:text-lg"
+          >
+            <i data-lucide="lock" class="w-5 h-5 text-emerald-300"></i>
+            <span>Pay <span id="payBtnAmount">₹2,399</span> &amp; Complete Booking</span>
+            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+          </button>
+
+          <p class="text-[11px] text-gray-400 text-center">
+            🔒 256-Bit SSL Encrypted &amp; Verified by GOGOCamping Payment Gateway
+          </p>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= GOGOCAMPING PAYMENT SUCCESS MODAL ================= -->
+  <div id="paymentSuccessModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative border border-gray-100 text-center animate-fade-in my-auto">
+      
+      <!-- Big Glowing Green Checkmark Icon -->
+      <div class="w-16 h-16 rounded-full bg-emerald-100 border-4 border-emerald-500 text-emerald-600 flex items-center justify-center mx-auto mb-3 shadow-lg shadow-emerald-500/20">
+        <i data-lucide="check-circle-2" class="w-9 h-9 stroke-[2.5]"></i>
+      </div>
+
+      <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 text-[11px] font-black rounded-full uppercase tracking-wider mb-1.5">
+        ✓ PAYMENT RECEIVED
+      </span>
+
+      <h3 class="text-2xl font-black text-gray-900 tracking-tight">Booking Confirmed!</h3>
+      <p class="text-xs text-gray-500 mt-0.5 mb-4">
+        Your GOGOCamping tent slot &amp; equipment have been successfully reserved.
+      </p>
+
+      <!-- Sent Invoice & Pass Notification Banner -->
+      <div class="bg-emerald-50 border border-emerald-200/80 rounded-2xl p-3 mb-4 text-left space-y-1 text-[11px]">
+        <div class="flex items-center gap-1.5 font-extrabold text-emerald-900">
+          <i data-lucide="send" class="w-3.5 h-3.5 text-emerald-600 shrink-0"></i>
+          <span>Invoice &amp; Entry Pass Sent!</span>
+        </div>
+        <div class="text-emerald-800 pl-5 space-y-0.5 font-medium">
+          <p>📱 SMS &amp; WhatsApp: <span id="successSentPhone" class="font-bold text-emerald-950">+91 98765 43210</span></p>
+          <p>✉️ Tax Invoice PDF: <span id="successSentEmail" class="font-bold text-emerald-950">vijay.camper@gmail.com</span></p>
+        </div>
+      </div>
+
+      <!-- Booking Receipt Card -->
+      <div class="bg-gray-50 rounded-2xl p-4 border border-gray-200 text-left space-y-2 text-xs mb-5">
+        <div class="flex justify-between items-center pb-2 border-b border-gray-200">
+          <span class="text-gray-500 font-medium">Order ID:</span>
+          <span id="successOrderId" class="font-extrabold text-gray-900">#GOGO-2026-89412</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-500 font-medium">Lead Camper:</span>
+          <span id="successCamperName" class="font-bold text-gray-900">Vijay Kumar</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-500 font-medium">Mobile No:</span>
+          <span id="successUserPhone" class="font-bold text-gray-900">+91 98765 43210</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-500 font-medium">Email Address:</span>
+          <span id="successUserEmail" class="font-bold text-gray-900 truncate max-w-[190px]">vijay.camper@gmail.com</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-500 font-medium">Package:</span>
+          <span id="successPackageName" class="font-bold text-gray-900">1 Person Camping Tent</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-500 font-medium">Total Campers:</span>
+          <span id="successCamperCount" class="font-bold text-gray-900">1 Person</span>
+        </div>
+        <div id="successAddonsRow" class="flex justify-between items-start">
+          <span class="text-gray-500 font-medium">Add-ons:</span>
+          <span id="successAddonsText" class="font-bold text-gray-900 text-right">None</span>
+        </div>
+        <div class="flex justify-between items-center pt-2 border-t border-gray-200">
+          <span class="font-bold text-gray-800">Total Amount Paid:</span>
+          <span id="successTotalPaid" class="text-sm font-black text-[#164e3f]">₹2,399</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="space-y-2">
+        <button type="button" id="downloadPassBtn" class="w-full bg-[#164e3f] hover:bg-[#0f382d] text-white font-extrabold py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 text-xs sm:text-sm shadow-md transition active:scale-95">
+          <i data-lucide="download" class="w-4 h-4"></i>
+          <span>Download Campsite Entry Pass (PDF)</span>
+        </button>
+
+        <div class="grid grid-cols-2 gap-2">
+          <button type="button" id="resendEmailBtn" class="w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold py-2.5 px-3 rounded-xl text-xs border border-emerald-200 transition flex items-center justify-center gap-1.5">
+            <i data-lucide="mail" class="w-3.5 h-3.5"></i>
+            <span>Resend Email</span>
+          </button>
+          <button type="button" id="resendSmsBtn" class="w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold py-2.5 px-3 rounded-xl text-xs border border-emerald-200 transition flex items-center justify-center gap-1.5">
+            <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
+            <span>Resend SMS</span>
+          </button>
+        </div>
+
+        <button type="button" id="doneSuccessBtn" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-2.5 px-4 rounded-xl text-xs transition mt-1">
+          Back to Home Page
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= GOGOCAMPING CART DRAWER ================= -->
+  <div id="cartDrawer" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs hidden transition-opacity duration-300">
+    <div class="fixed inset-y-0 right-0 max-w-md w-full bg-white shadow-2xl flex flex-col border-l border-gray-200 animate-slide-left">
+      
+      <!-- Cart Drawer Header -->
+      <div class="bg-[#164e3f] text-white px-5 py-4 flex items-center justify-between shrink-0 shadow-sm">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center">
+            <i data-lucide="shopping-cart" class="w-5 h-5 text-emerald-300"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-extrabold leading-tight">Your Camping Cart</h3>
+            <p class="text-xs text-emerald-200"><span id="cartDrawerItemCount">1 Item</span> selected</p>
+          </div>
+        </div>
+        <button id="closeCartBtn" class="text-emerald-200 hover:text-white p-2 rounded-full hover:bg-white/10 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Cart Drawer Body (Scrollable Items List) -->
+      <div class="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
+        
+        <!-- Section 1: Selected Camping Package Card -->
+        <div class="bg-[#f7f3e8]/80 border border-[#164e3f]/20 rounded-2xl p-4 space-y-3 shadow-2xs">
+          <div class="flex items-start justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-[#164e3f] text-white flex items-center justify-center shrink-0 shadow-xs">
+                <i data-lucide="tent" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <span class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">Primary Package</span>
+                <h4 id="cartPkgTitle" class="text-sm font-black text-gray-900 mt-0.5">1 Person Camping Tent</h4>
+                <p class="text-[11px] text-gray-500">₹2,399 per person</p>
+              </div>
+            </div>
+            <span id="cartPkgSubtotal" class="text-sm font-black text-[#164e3f]">₹2,399</span>
+          </div>
+
+          <!-- Quantity Controls for Package (Total Campers) -->
+          <div class="flex items-center justify-between pt-2.5 border-t border-[#164e3f]/15 text-xs">
+            <span class="font-bold text-gray-800">Campers / Quantity:</span>
+            <div class="flex items-center gap-2 bg-white px-2 py-1 rounded-xl border border-gray-300 shadow-2xs">
+              <button type="button" id="cartPkgDecBtn" class="w-6 h-6 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold flex items-center justify-center transition disabled:opacity-40">-</button>
+              <span id="cartPkgQtyDisplay" class="font-extrabold text-[#164e3f] min-w-[36px] text-center">1 Person</span>
+              <button type="button" id="cartPkgIncBtn" class="w-6 h-6 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-bold flex items-center justify-center transition">+</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Selected Add-on Accessories List -->
+        <div class="bg-white border border-gray-200 rounded-2xl p-4 space-y-3 shadow-2xs">
+          <div class="flex items-center justify-between pb-2 border-b border-gray-100">
+            <h4 class="text-xs font-black text-gray-900 uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="package-check" class="w-4 h-4 text-[#164e3f]"></i>
+              Add-on Accessories
+            </h4>
+            <span id="cartAddonsCountBadge" class="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">0 Items</span>
+          </div>
+
+          <div id="cartAddonsContainer" class="space-y-3">
+            <!-- Dynamically populated add-on items with quantity adjuster + trash button -->
+          </div>
+        </div>
+
+        <!-- Section 3: Quick Add Extra Accessories Picker inside Cart -->
+        <div class="bg-emerald-50/50 border border-emerald-200/80 rounded-2xl p-3.5 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-black text-gray-900">+ Add Extra Gear</span>
+            <span class="text-[10px] text-emerald-700 font-bold">Tap to add to cart</span>
+          </div>
+
+          <div id="cartQuickAddPicker" class="grid grid-cols-2 gap-2">
+            <!-- 4 Addon Quick Buttons -->
+            <button type="button" data-id="chair" class="cart-picker-btn text-left p-2 rounded-xl bg-white border border-gray-200 hover:border-[#164e3f] transition flex items-center justify-between text-xs group">
+              <span class="truncate font-semibold text-gray-800">Chair</span>
+              <span class="text-[#164e3f] font-extrabold shrink-0">+₹1,200</span>
+            </button>
+            <button type="button" data-id="sleeping_bag" class="cart-picker-btn text-left p-2 rounded-xl bg-white border border-gray-200 hover:border-[#164e3f] transition flex items-center justify-between text-xs group">
+              <span class="truncate font-semibold text-gray-800">Sleeping Bag</span>
+              <span class="text-[#164e3f] font-extrabold shrink-0">+₹1,500</span>
+            </button>
+            <button type="button" data-id="lantern" class="cart-picker-btn text-left p-2 rounded-xl bg-white border border-gray-200 hover:border-[#164e3f] transition flex items-center justify-between text-xs group">
+              <span class="truncate font-semibold text-gray-800">LED Lantern</span>
+              <span class="text-[#164e3f] font-extrabold shrink-0">+₹800</span>
+            </button>
+            <button type="button" data-id="rope" class="cart-picker-btn text-left p-2 rounded-xl bg-white border border-gray-200 hover:border-[#164e3f] transition flex items-center justify-between text-xs group">
+              <span class="truncate font-semibold text-gray-800">Rope Set</span>
+              <span class="text-[#164e3f] font-extrabold shrink-0">+₹600</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Cart Drawer Sticky Footer -->
+      <div class="bg-gray-50 border-t border-gray-200 p-4 sm:p-5 space-y-3 shrink-0 shadow-lg">
+        <div class="space-y-1.5 text-xs">
+          <div class="flex justify-between text-gray-600">
+            <span>Package Subtotal:</span>
+            <span id="cartDrawerPkgTotal" class="font-bold text-gray-900">₹2,399</span>
+          </div>
+          <div class="flex justify-between text-gray-600">
+            <span>Add-ons Subtotal:</span>
+            <span id="cartDrawerAddonsTotal" class="font-bold text-gray-900">₹0</span>
+          </div>
+          <div class="flex justify-between text-gray-600">
+            <span>Taxes &amp; Campsite Fees:</span>
+            <span class="font-bold text-emerald-700">FREE (₹0)</span>
+          </div>
+          <div class="flex justify-between items-center pt-2 border-t border-gray-200 text-sm">
+            <span class="font-extrabold text-gray-900">Total Payable Amount:</span>
+            <span id="cartDrawerGrandTotal" class="text-xl font-black text-[#164e3f]">₹2,399</span>
+          </div>
+        </div>
+
+        <button 
+          type="button" 
+          id="cartCheckoutBtn" 
+          class="w-full bg-[#164e3f] hover:bg-[#0f382d] active:scale-[0.99] text-white font-black py-3.5 px-5 rounded-2xl flex items-center justify-center gap-2.5 shadow-md shadow-emerald-950/20 transition text-sm"
+        >
+          <i data-lucide="calendar" class="w-4 h-4"></i>
+          <span>Proceed to Book &amp; Pay</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= GOGOCAMPING LOGIN MODAL ================= -->
+  <div id="loginModal" class="fixed inset-0 z-50 bg-black/65 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative border border-gray-100 animate-fade-in overflow-hidden">
+      <!-- Top Accent Bar -->
+      <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-[#164e3f] via-[#0d7a57] to-[#22c55e]"></div>
+
+      <button id="closeLoginModalBtn" class="absolute top-5 right-5 text-gray-400 hover:text-gray-700 p-1.5 rounded-full hover:bg-gray-100 transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <!-- Logo & Welcome -->
+      <div class="text-center mb-6 pt-2">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#f7f3e8] to-[#e8dfc8] border border-[#164e3f]/20 text-[#164e3f] flex items-center justify-center mx-auto mb-3 shadow-xs">
+          <i data-lucide="tent" class="w-7 h-7"></i>
+        </div>
+        <h3 class="text-2xl font-black text-gray-900 tracking-tight">Camper Login</h3>
+        <p class="text-xs text-gray-500 mt-1">Sign in to save bookings, track equipment &amp; unlock camper discounts</p>
+      </div>
+
+      <!-- Login Form (Full Name + Phone Number) -->
+      <form id="loginForm" class="space-y-4">
+        <!-- Full Name Field -->
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 flex items-center justify-between">
+            <span class="flex items-center gap-1.5">
+              <i data-lucide="user" class="w-3.5 h-3.5 text-[#164e3f]"></i>
+              Full Name
+            </span>
+            <span class="text-[10px] text-emerald-700 font-semibold uppercase">Required</span>
+          </label>
+          <div class="relative rounded-xl border border-gray-300 focus-within:border-[#164e3f] focus-within:ring-2 focus-within:ring-[#164e3f]/20 transition bg-gray-50/50 focus-within:bg-white">
+            <input 
+              type="text" 
+              id="loginNameInput" 
+              placeholder="e.g. Vijay Kumar" 
+              class="w-full px-4 py-3 text-sm text-gray-900 rounded-xl focus:outline-none font-semibold placeholder:font-normal placeholder:text-gray-400"
+              required
+            >
+          </div>
+        </div>
+
+        <!-- Mobile Number Field -->
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 flex items-center justify-between">
+            <span class="flex items-center gap-1.5">
+              <i data-lucide="phone" class="w-3.5 h-3.5 text-[#164e3f]"></i>
+              Mobile Number
+            </span>
+            <span class="text-[10px] text-emerald-700 font-semibold uppercase">10 Digits</span>
+          </label>
+          <div class="flex rounded-xl border border-gray-300 overflow-hidden focus-within:border-[#164e3f] focus-within:ring-2 focus-within:ring-[#164e3f]/20 transition bg-gray-50/50 focus-within:bg-white">
+            <span class="bg-gray-100 px-3.5 py-3 text-xs font-extrabold text-gray-700 border-r border-gray-300 flex items-center gap-1.5">
+              <span class="text-sm">🇮🇳</span> +91
+            </span>
+            <input 
+              type="tel" 
+              id="loginPhoneInput" 
+              placeholder="Enter 10-digit number" 
+              maxlength="10" 
+              pattern="[0-9]{10}"
+              class="w-full px-3.5 py-3 text-sm text-gray-900 focus:outline-none font-semibold placeholder:font-normal placeholder:text-gray-400"
+              required
+            >
+          </div>
+        </div>
+
+        <!-- Email Address Field -->
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 flex items-center justify-between">
+            <span class="flex items-center gap-1.5">
+              <i data-lucide="mail" class="w-3.5 h-3.5 text-[#164e3f]"></i>
+              Email Address (For Invoice)
+            </span>
+            <span class="text-[10px] text-emerald-700 font-semibold uppercase">Required</span>
+          </label>
+          <div class="relative rounded-xl border border-gray-300 focus-within:border-[#164e3f] focus-within:ring-2 focus-within:ring-[#164e3f]/20 transition bg-gray-50/50 focus-within:bg-white">
+            <input 
+              type="email" 
+              id="loginEmailInput" 
+              placeholder="e.g. vijay.camper@gmail.com" 
+              class="w-full px-4 py-3 text-sm text-gray-900 rounded-xl focus:outline-none font-semibold placeholder:font-normal placeholder:text-gray-400"
+              required
+            >
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button 
+          type="submit" 
+          id="sendOtpBtn" 
+          class="w-full bg-[#164e3f] hover:bg-[#0f382d] active:scale-[0.99] text-white font-bold py-3.5 px-6 rounded-xl transition duration-200 text-sm shadow-md shadow-emerald-950/20 flex items-center justify-center gap-2 group mt-2"
+        >
+          <span>Verify &amp; Login</span>
+          <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+        </button>
+      </form>
+
+      <!-- Divider -->
+      <div class="relative flex py-4 items-center">
+        <div class="flex-grow border-t border-gray-200"></div>
+        <span class="flex-shrink mx-3 text-gray-400 text-xs font-bold uppercase tracking-wider">Or continue with</span>
+        <div class="flex-grow border-t border-gray-200"></div>
+      </div>
+
+      <!-- Google Sign In Option -->
+      <button 
+        type="button" 
+        id="googleLoginBtn" 
+        class="w-full border border-gray-300 hover:border-gray-400 bg-white hover:bg-gray-50 text-gray-700 font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-3 text-xs shadow-xs transition active:scale-[0.99]"
+      >
+        <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+        </svg>
+        <span>Continue with Google Account</span>
+      </button>
+
+      <p class="text-[11px] text-gray-400 text-center mt-4">
+        By continuing, you agree to GOGOCamping's <a href="#" class="text-[#164e3f] underline font-medium">Terms</a> &amp; <a href="#" class="text-[#164e3f] underline font-medium">Privacy Policy</a>.
+      </p>
+    </div>
+  </div>
+
+  <!-- Google Account Select Modal -->
+  <div id="googleModal" class="fixed inset-0 z-50 bg-black/65 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl relative border border-gray-100 animate-fade-in">
+      <button id="closeGoogleModalBtn" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 p-1 rounded-full hover:bg-gray-100 transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+      
+      <div class="flex items-center gap-2 mb-4">
+        <svg class="w-6 h-6 shrink-0" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+        </svg>
+        <span class="text-sm font-bold text-gray-800">Sign in with Google</span>
+      </div>
+
+      <p class="text-xs text-gray-500 mb-4">Choose an account to continue to <strong>GOGOCamping</strong></p>
+
+      <div class="space-y-2.5">
+        <button id="selectGoogleUserBtn" class="w-full p-3 rounded-2xl border border-gray-200 hover:border-[#164e3f] hover:bg-emerald-50/50 flex items-center gap-3 text-left transition group">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-emerald-600 to-teal-500 text-white font-extrabold flex items-center justify-center text-sm shadow-xs shrink-0">
+            V
+          </div>
+          <div class="overflow-hidden">
+            <p id="googleUserDisplayName" class="text-xs sm:text-sm font-bold text-gray-900 group-hover:text-[#164e3f]">Vijay Kumar</p>
+            <p class="text-[11px] text-gray-500 truncate">vijay.camper@gmail.com</p>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toastNotification" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none bg-gray-900 text-white text-sm px-4 py-3 rounded-xl shadow-xl flex items-center gap-2">
+    <i data-lucide="info" class="w-4 h-4 text-emerald-400"></i>
+    <span id="toastMessage">Notification</span>
+  </div>
+
+  <script>
+    if (window.location.pathname.endsWith('/cms') || window.location.pathname.endsWith('/cms/')) {
+      window.location.href = 'cms/index.html';
+    }
+  </script>
+  <script src="app.js"></script>
+</body>
+</html>

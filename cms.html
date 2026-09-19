@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CMS Admin Dashboard & Analytics - GOGOCamping</title>
+  <meta name="description" content="Admin CMS Dashboard and Analytics for GOGOCamping bookings, revenue tracking, gear inventory and customer details.">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              200: '#bbf7d0',
+              300: '#86efac',
+              400: '#4ade80',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#0D7A57',
+              800: '#09593f',
+              900: '#06422f',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Chart.js CDN for Analytics Charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-50 text-gray-800 antialiased min-h-screen flex flex-col justify-between selection:bg-emerald-100 selection:text-emerald-900">
+
+  <!-- ================= TOP ADMIN NAVBAR ================= -->
+  <header class="bg-[#164e3f] text-white border-b border-emerald-800/60 sticky top-0 z-40 shadow-md">
+    <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between gap-4">
+      
+      <!-- Brand & Badge -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-emerald-300 shadow-inner">
+          <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-xl font-black tracking-tight text-white">GOGOCamping</span>
+            <span class="px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[10px] font-extrabold uppercase tracking-wider">CMS ADMIN</span>
+          </div>
+          <p class="text-[11px] text-emerald-200/80 font-medium">Real-time Booking &amp; Revenue Analytics</p>
+        </div>
+      </div>
+
+      <!-- Quick Action Header Controls -->
+      <div class="flex items-center gap-3">
+        <!-- Back to Customer Website Link -->
+        <a 
+          href="./index.html" 
+          class="bg-emerald-950/60 hover:bg-emerald-900 text-emerald-200 font-extrabold text-xs py-2.5 px-3.5 rounded-xl border border-emerald-700/50 flex items-center gap-1.5 transition"
+        >
+          <i data-lucide="external-link" class="w-4 h-4"></i>
+          <span class="hidden sm:inline">Main Website</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ================= MAIN CMS BODY ================= -->
+  <main class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-1 space-y-6">
+
+    <!-- ================= SECTION 1 (FIRST SECTION): BOOKINGS DIRECTORY & OPERATIONS CONTROL CENTER ================= -->
+    <div class="bg-white rounded-3xl border border-gray-200 shadow-xs space-y-5 p-5 sm:p-6">
+      
+      <!-- Top Title Bar + Add Booking / Export CSV buttons -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-gray-100">
+        <div>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-emerald-100 text-[#164e3f] flex items-center justify-center shadow-2xs">
+              <i data-lucide="book-open-check" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h2 class="text-xl font-black text-gray-900">Bookings Directory &amp; Live Operations Summary</h2>
+              <p class="text-xs text-gray-500 mt-0.5">Real-time tracking for total bookings, confirmed, completed, cancelled, and logged-in member accounts</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <!-- Add Manual Booking -->
+          <button id="addBookingBtn" type="button" class="bg-[#164e3f] hover:bg-[#0f382d] text-white font-extrabold text-xs py-2.5 px-4 rounded-xl flex items-center gap-1.5 shadow-2xs transition cursor-pointer">
+            <i data-lucide="plus-circle" class="w-4 h-4"></i>
+            <span>Add Booking</span>
+          </button>
+          <!-- Export CSV -->
+          <button id="exportCsvBtn" type="button" class="bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold text-xs py-2.5 px-3.5 rounded-xl border border-gray-300 flex items-center gap-1.5 transition cursor-pointer">
+            <i data-lucide="download" class="w-4 h-4 text-emerald-700"></i>
+            <span>Export CSV</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 6 Key Operation Counter Cards Grid (Bookings, Confirmed, Completed, Cancelled, Logged-in Users, Revenue) -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
+        
+        <!-- Counter 1: Total Bookings -->
+        <div class="bg-slate-50 border border-slate-200 p-3.5 rounded-2xl space-y-1">
+          <span class="text-[11px] font-extrabold text-gray-500 uppercase tracking-wider block">Total Bookings</span>
+          <div id="kpiTotalBookings" class="text-2xl font-black text-gray-900">0</div>
+          <span class="text-[10px] text-gray-500 font-semibold">All reservations</span>
+        </div>
+
+        <!-- Counter 2: Confirmed Bookings -->
+        <div class="bg-emerald-50/80 border border-emerald-200 p-3.5 rounded-2xl space-y-1">
+          <span class="text-[11px] font-extrabold text-emerald-800 uppercase tracking-wider block">Confirmed</span>
+          <div id="kpiConfirmedBookings" class="text-2xl font-black text-[#164e3f]">0</div>
+          <span class="text-[10px] text-emerald-700 font-semibold">Active &amp; Paid</span>
+        </div>
+
+        <!-- Counter 3: Completed Trips -->
+        <div class="bg-blue-50/80 border border-blue-200 p-3.5 rounded-2xl space-y-1">
+          <span class="text-[11px] font-extrabold text-blue-800 uppercase tracking-wider block">Completed</span>
+          <div id="kpiCompletedBookings" class="text-2xl font-black text-blue-900">0</div>
+          <span class="text-[10px] text-blue-700 font-semibold">Finished Camping</span>
+        </div>
+
+        <!-- Counter 4: Cancelled Bookings -->
+        <div class="bg-red-50/80 border border-red-200 p-3.5 rounded-2xl space-y-1">
+          <span class="text-[11px] font-extrabold text-red-800 uppercase tracking-wider block">Cancelled</span>
+          <div id="kpiCancelledBookings" class="text-2xl font-black text-red-700">0</div>
+          <span class="text-[10px] text-red-600 font-semibold">Cancelled / Refunded</span>
+        </div>
+
+        <!-- Counter 5: Logged-in Users -->
+        <div class="bg-purple-50/80 border border-purple-200 p-3.5 rounded-2xl space-y-1">
+          <span class="text-[11px] font-extrabold text-purple-800 uppercase tracking-wider block">Logged-in Users</span>
+          <div id="kpiLoggedInUsers" class="text-2xl font-black text-purple-900">0</div>
+          <span class="text-[10px] text-purple-700 font-semibold">Registered Campers</span>
+        </div>
+
+        <!-- Counter 6: Total Revenue -->
+        <div class="bg-teal-50/80 border border-teal-200 p-3.5 rounded-2xl space-y-1">
+          <span class="text-[11px] font-extrabold text-teal-800 uppercase tracking-wider block">Total Revenue</span>
+          <div id="kpiTotalRevenue" class="text-2xl font-black text-[#164e3f]">₹0</div>
+          <span class="text-[10px] text-teal-700 font-semibold">Gross Income</span>
+        </div>
+
+      </div>
+
+      <!-- Filter Controls & Search Bar -->
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2">
+        <!-- Status Filter Buttons -->
+        <div class="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1.5 rounded-2xl border border-gray-200/80 text-xs">
+          <button type="button" data-status="all" class="table-filter-btn px-3.5 py-1.5 rounded-xl font-bold bg-[#164e3f] text-white shadow-2xs transition">
+            All Bookings
+          </button>
+          <button type="button" data-status="confirmed" class="table-filter-btn px-3.5 py-1.5 rounded-xl font-bold text-gray-600 hover:bg-gray-200 transition">
+            Confirmed
+          </button>
+          <button type="button" data-status="completed" class="table-filter-btn px-3.5 py-1.5 rounded-xl font-bold text-gray-600 hover:bg-gray-200 transition">
+            Completed
+          </button>
+          <button type="button" data-status="cancelled" class="table-filter-btn px-3.5 py-1.5 rounded-xl font-bold text-red-600 hover:bg-red-50 transition">
+            Cancelled
+          </button>
+          <button type="button" data-status="loggedin" class="table-filter-btn px-3.5 py-1.5 rounded-xl font-bold text-purple-700 hover:bg-purple-50 transition">
+            Logged-in Members
+          </button>
+        </div>
+
+        <!-- Search Input -->
+        <div class="relative w-full sm:w-64">
+          <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Search Order, Name, Phone..." 
+            class="w-full bg-slate-50 border border-gray-300 text-gray-900 placeholder-gray-400 text-xs rounded-xl pl-9 pr-3 py-2 focus:outline-none focus:border-[#164e3f]"
+          >
+          <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-2.5"></i>
+        </div>
+      </div>
+
+      <!-- Scrollable Bookings Directory Table -->
+      <div class="overflow-x-auto rounded-2xl border border-gray-200">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-slate-100 text-gray-600 font-extrabold text-[11px] uppercase tracking-wider border-b border-gray-200">
+              <th class="py-3 px-4">Order ID</th>
+              <th class="py-3 px-4">Lead Camper &amp; Login Status</th>
+              <th class="py-3 px-4">Tent Package</th>
+              <th class="py-3 px-4">Add-on Accessories</th>
+              <th class="py-3 px-4">Total Paid</th>
+              <th class="py-3 px-4">Payment &amp; Date</th>
+              <th class="py-3 px-4">Status</th>
+              <th class="py-3 px-4 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="bookingsTableBody">
+            <!-- Dynamically Populated by cms.js -->
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <!-- ================= SECTION 2: VISUAL CHARTS & ANALYTICS GRID ================= -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      
+      <!-- Chart 1: Revenue Trend (Line Chart) -->
+      <div class="lg:col-span-2 bg-white p-5 rounded-2xl border border-gray-200 shadow-2xs space-y-4">
+        <div class="flex items-center justify-between pb-2 border-b border-gray-100">
+          <div>
+            <h3 class="text-base font-extrabold text-gray-900 flex items-center gap-2">
+              <i data-lucide="trending-up" class="w-5 h-5 text-[#164e3f]"></i>
+              Revenue &amp; Booking Growth Trend
+            </h3>
+            <p class="text-xs text-gray-500">Daily campsite booking income over time</p>
+          </div>
+          <span class="px-2.5 py-1 rounded-lg bg-emerald-50 text-[#164e3f] text-xs font-bold border border-emerald-200">
+            September 2026
+          </span>
+        </div>
+        <div class="h-64 w-full">
+          <canvas id="chartRevenue"></canvas>
+        </div>
+      </div>
+
+      <!-- Chart 2: Tent Package Popularity (Donut Chart) -->
+      <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-2xs space-y-4">
+        <div class="pb-2 border-b border-gray-100">
+          <h3 class="text-base font-extrabold text-gray-900 flex items-center gap-2">
+            <i data-lucide="tent" class="w-5 h-5 text-[#164e3f]"></i>
+            Tent Packages Breakdown
+          </h3>
+          <p class="text-xs text-gray-500">Share of 1, 2, 3, 4 Person Tent Bookings</p>
+        </div>
+        <div class="h-64 w-full relative flex items-center justify-center">
+          <canvas id="chartPackages"></canvas>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ================= SECTION 3: ADD-ON GEAR ANALYTICS & PAYMENT DISTRIBUTION ================= -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      
+      <!-- Chart 3: Add-on Gear Rented (Bar Chart) -->
+      <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-2xs space-y-4">
+        <div class="pb-2 border-b border-gray-100">
+          <h3 class="text-base font-extrabold text-gray-900 flex items-center gap-2">
+            <i data-lucide="package" class="w-5 h-5 text-[#164e3f]"></i>
+            Add-on Gear Units Sold
+          </h3>
+          <p class="text-xs text-gray-500">Popularity of extra accessories</p>
+        </div>
+        <div class="h-56 w-full">
+          <canvas id="chartAddons"></canvas>
+        </div>
+      </div>
+
+      <!-- Chart 4: Payment Methods Distribution (Pie Chart) -->
+      <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-2xs space-y-4">
+        <div class="pb-2 border-b border-gray-100">
+          <h3 class="text-base font-extrabold text-gray-900 flex items-center gap-2">
+            <i data-lucide="credit-card" class="w-5 h-5 text-[#164e3f]"></i>
+            Payment Method Preference
+          </h3>
+          <p class="text-xs text-gray-500">Card vs UPI vs QR Code breakdown</p>
+        </div>
+        <div class="h-56 w-full relative flex items-center justify-center">
+          <canvas id="chartPayment"></canvas>
+        </div>
+      </div>
+
+      <!-- Add-on Inventory Live Stock Cards Grid -->
+      <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-2xs space-y-3">
+        <div class="pb-2 border-b border-gray-100 flex justify-between items-center">
+          <div>
+            <h3 class="text-base font-extrabold text-gray-900 flex items-center gap-2">
+              <i data-lucide="boxes" class="w-5 h-5 text-[#164e3f]"></i>
+              Gear Inventory Status
+            </h3>
+            <p class="text-xs text-gray-500">Live equipment rental stats</p>
+          </div>
+          <span class="text-[10px] font-black uppercase text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">IN STOCK</span>
+        </div>
+
+        <div id="addonInventoryGrid" class="space-y-2.5">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ================= CMS FOOTER ================= -->
+  <footer class="bg-white border-t border-gray-200 py-4 text-center text-xs text-gray-500 mt-8">
+    <div class="max-w-[1440px] mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <div>
+        <span class="font-extrabold text-[#164e3f]">GOGOCamping CMS Admin</span> &copy; 2026. All rights reserved.
+      </div>
+      <div class="flex items-center gap-4 text-gray-600">
+        <a href="./index.html" class="hover:text-[#164e3f] font-bold">Booking Site</a>
+        <span>•</span>
+        <a href="./index.html#addons" class="hover:text-[#164e3f] font-bold">Add-on Accessories</a>
+        <span>•</span>
+        <span class="text-emerald-700 font-extrabold">v2.4 Live System</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= VIEW BOOKING DETAIL MODAL ================= -->
+  <div id="bookingDetailModal" class="fixed inset-0 z-50 bg-black/65 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl relative border border-gray-100 animate-fade-in my-auto">
+      <button id="closeDetailModalBtn" class="absolute top-5 right-5 text-gray-400 hover:text-gray-700 p-1.5 rounded-full hover:bg-gray-100 transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div id="bookingDetailContent">
+        <!-- Filled by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= ADD MANUAL OFFLINE BOOKING MODAL ================= -->
+  <div id="addBookingModal" class="fixed inset-0 z-50 bg-black/65 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative border border-gray-100 animate-fade-in my-auto">
+      <button id="closeAddBookingModalBtn" class="absolute top-5 right-5 text-gray-400 hover:text-gray-700 p-1.5 rounded-full hover:bg-gray-100 transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="text-center mb-5">
+        <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-[#164e3f] flex items-center justify-center mx-auto mb-2">
+          <i data-lucide="plus-circle" class="w-6 h-6"></i>
+        </div>
+        <h3 class="text-xl font-black text-gray-900">Add Offline / Walk-in Booking</h3>
+        <p class="text-xs text-gray-500">Record a new campsite tent reservation directly into CMS</p>
+      </div>
+
+      <form id="addBookingForm" class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-gray-700 mb-1">Lead Camper Name *</label>
+          <input type="text" id="newCamperName" required placeholder="e.g. Ramesh Kumar" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-[#164e3f]">
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-bold text-gray-700 mb-1">Mobile No *</label>
+            <input type="tel" id="newCamperPhone" required placeholder="9876543210" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-[#164e3f]">
+          </div>
+          <div>
+            <label class="block font-bold text-gray-700 mb-1">Email Address</label>
+            <input type="email" id="newCamperEmail" placeholder="ramesh@gmail.com" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-[#164e3f]">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-gray-700 mb-1">Camping Package *</label>
+          <select id="newCamperPkg" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-[#164e3f]">
+            <option value="1 Person Camping Tent">1 Person Camping Tent (₹2,399)</option>
+            <option value="2 Person Camping Tent">2 Person Camping Tent (₹4,798)</option>
+            <option value="3 Person Camping Tent">3 Person Camping Tent (₹7,197)</option>
+            <option value="4 Person Camping Tent">4 Person Camping Tent (₹9,596)</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-bold text-gray-700 mb-1">Camper Count</label>
+            <input type="number" id="newCamperQty" min="1" max="10" value="1" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-[#164e3f]">
+          </div>
+          <div>
+            <label class="block font-bold text-gray-700 mb-1">Payment Method</label>
+            <select id="newCamperPay" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-[#164e3f]">
+              <option value="Card / ATM">Card / ATM</option>
+              <option value="UPI / GPay">UPI / GPay</option>
+              <option value="QR Code Pay">QR Code Pay</option>
+              <option value="Net Banking">Net Banking</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="w-full bg-[#164e3f] hover:bg-[#0f382d] text-white font-extrabold py-3 px-4 rounded-xl text-sm transition mt-2">
+          Save Booking Record
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= CMS TOAST NOTIFICATION ================= -->
+  <div id="cmsToast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="bg-gray-900 text-white px-5 py-3 rounded-2xl shadow-xl border border-gray-800 flex items-center gap-3 text-xs font-bold">
+      <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
+      <span id="cmsToastText">Notification</span>
+    </div>
+  </div>
+
+  <!-- CMS Engine JavaScript -->
+  <script src="./cms/cms.js"></script>
+</body>
+</html>
