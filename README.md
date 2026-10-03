@@ -38,7 +38,7 @@ An interactive camping equipment & tent booking webpage created for **GOGOCampin
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/ec4you-digital-marketing-creator/gogo_booking_page-.git
+   git clone https://github.com/codestobecreated/gogo_camping.git
    ```
 2. Navigate into the folder and open `index.html` in your browser, or start a local server:
    ```bash
