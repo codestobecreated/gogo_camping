@@ -45,3 +45,13 @@ An interactive camping equipment & tent booking webpage created for **GOGOCampin
    python -m http.server 8080
    ```
 3. Visit `http://localhost:8080` in your web browser.
+
+## 📁 Site Structure (v2.0.0)
+
+- `index.html` – GOGO Camping Jawadhu Hills home page (sticky navbar; "Reserve Your Camp" opens the tent booking page)
+- `assests/` – home page images
+- `rental/` – tent booking page (`index.html`, `app.js`, `styles.css`, product images)
+  - Click the main photo to open a full-screen photo popup
+  - Package (Solo / Couple / Trio / Group) is chosen only on this page; the booking popup and cart follow it
+  - The GOGOCamping logo returns to the home page
+- `rental/cms/` – CMS admin dashboard

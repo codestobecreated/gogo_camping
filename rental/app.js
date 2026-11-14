@@ -362,6 +362,75 @@ nextImageBtn.addEventListener("click", () => {
   setActiveImage(currentImageIndex + 1);
 });
 
+// Image Lightbox Popup
+const imageLightbox = document.getElementById("imageLightbox");
+const lightboxImg = document.getElementById("lightboxImg");
+const lightboxCounter = document.getElementById("lightboxCounter");
+const lightboxThumbs = document.getElementById("lightboxThumbs");
+
+lightboxThumbs.innerHTML = galleryImages.map((src, i) => `
+  <button data-index="${i}" class="lightbox-thumb w-16 h-12 sm:w-20 sm:h-14 rounded-lg overflow-hidden border-2 shrink-0 transition">
+    <img src="${src}" alt="Thumbnail ${i + 1}" class="w-full h-full object-cover">
+  </button>`).join("");
+const lightboxThumbItems = lightboxThumbs.querySelectorAll(".lightbox-thumb");
+
+function showLightboxImage(index) {
+  setActiveImage(index);
+  lightboxImg.style.opacity = "0.4";
+  setTimeout(() => {
+    lightboxImg.src = galleryImages[currentImageIndex];
+    lightboxImg.style.opacity = "1";
+  }, 100);
+  lightboxCounter.textContent = `${currentImageIndex + 1} / ${galleryImages.length}`;
+  lightboxThumbItems.forEach((thumb, i) => {
+    thumb.classList.toggle("border-white", i === currentImageIndex);
+    thumb.classList.toggle("border-transparent", i !== currentImageIndex);
+    thumb.classList.toggle("opacity-50", i !== currentImageIndex);
+  });
+}
+
+function openLightbox() {
+  showLightboxImage(currentImageIndex);
+  imageLightbox.classList.remove("hidden");
+  document.body.style.overflow = "hidden";
+}
+
+function closeLightbox() {
+  imageLightbox.classList.add("hidden");
+  document.body.style.overflow = "";
+}
+
+mainGalleryImg.addEventListener("click", openLightbox);
+document.getElementById("lightboxCloseBtn").addEventListener("click", closeLightbox);
+document.getElementById("lightboxPrevBtn").addEventListener("click", () => showLightboxImage(currentImageIndex - 1));
+document.getElementById("lightboxNextBtn").addEventListener("click", () => showLightboxImage(currentImageIndex + 1));
+lightboxThumbItems.forEach((thumb) => {
+  thumb.addEventListener("click", () => showLightboxImage(parseInt(thumb.getAttribute("data-index"), 10)));
+});
+
+// Close when clicking the dark background
+imageLightbox.addEventListener("click", (e) => {
+  if (e.target === imageLightbox) closeLightbox();
+});
+
+// Keyboard: Esc to close, arrows to switch
+document.addEventListener("keydown", (e) => {
+  if (imageLightbox.classList.contains("hidden")) return;
+  if (e.key === "Escape") closeLightbox();
+  if (e.key === "ArrowLeft") showLightboxImage(currentImageIndex - 1);
+  if (e.key === "ArrowRight") showLightboxImage(currentImageIndex + 1);
+});
+
+// Mobile swipe
+let lightboxTouchX = null;
+imageLightbox.addEventListener("touchstart", (e) => { lightboxTouchX = e.touches[0].clientX; }, { passive: true });
+imageLightbox.addEventListener("touchend", (e) => {
+  if (lightboxTouchX === null) return;
+  const diff = e.changedTouches[0].clientX - lightboxTouchX;
+  if (Math.abs(diff) > 50) showLightboxImage(currentImageIndex + (diff < 0 ? 1 : -1));
+  lightboxTouchX = null;
+});
+
 // Quantity Selector Handlers (if present)
 if (qtyIncreaseBtn) {
   qtyIncreaseBtn.addEventListener("click", () => {
@@ -489,7 +558,7 @@ function renderCampers() {
     const isLead = i === 1;
     const slotLabel = isLead 
       ? `Lead Camper (Slot 1, ${selectedPackage.name})` 
-      : `Slot ${i}, Additional Guest (+₹2,399)`;
+      : `Slot ${i}, ${selectedPackage.name}`;
 
     card.innerHTML = `
       <div class="flex items-center justify-between">
@@ -502,12 +571,7 @@ function renderCampers() {
             <span class="text-[11px] text-gray-500 block leading-tight">${slotLabel}</span>
           </div>
         </div>
-        ${!isLead ? `
-          <button type="button" class="remove-camper-btn text-xs font-semibold text-red-500 hover:text-red-700 hover:bg-red-50 px-2 py-1 rounded-lg transition flex items-center gap-1">
-            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-            <span>Remove</span>
-          </button>
-        ` : '<i data-lucide="chevron-up" class="w-4 h-4 text-gray-500"></i>'}
+        ${isLead ? '<i data-lucide="chevron-up" class="w-4 h-4 text-gray-500"></i>' : ''}
       </div>
 
       <div>
@@ -547,15 +611,6 @@ function renderCampers() {
         </div>
       </div>
     `;
-
-    if (!isLead) {
-      const removeBtn = card.querySelector(".remove-camper-btn");
-      if (removeBtn) {
-        removeBtn.addEventListener("click", () => {
-          window.changePayModalCampers(-1);
-        });
-      }
-    }
 
     passengersList.appendChild(card);
   }
@@ -597,6 +652,16 @@ bookNowBtn.addEventListener("click", () => {
 
 closeModalBtn.addEventListener("click", () => {
   bookingModal.classList.add("hidden");
+});
+
+// Package can only be changed on the product page: close popups and scroll to the package cards
+document.querySelectorAll(".change-package-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    bookingModal.classList.add("hidden");
+    const drawer = document.getElementById("cartDrawer");
+    if (drawer) drawer.classList.add("hidden");
+    document.getElementById("packageSection").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
 });
 
 bookingModal.addEventListener("click", (e) => {
