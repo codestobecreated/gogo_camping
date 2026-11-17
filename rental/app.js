@@ -130,6 +130,16 @@ function changeAddonQty(id, delta, unitPrice, name, showToastMsg = true) {
   let currentQty = currentItem ? currentItem.qty : 0;
   let newQty = currentQty + delta;
 
+  // Do not allow more than the stock the admin has set in the CMS
+  if (delta > 0 && window.GogoInventory) {
+    const available = window.GogoInventory.available(id);
+    if (newQty > available) {
+      showToast(available === 0 ? `${name} is out of stock` : `Only ${available} ${name} available`);
+      updateAddonCardsUI();
+      return;
+    }
+  }
+
   if (newQty <= 0) {
     selectedAddons.delete(id);
     if (showToastMsg) showToast(`Removed ${name}`);
@@ -158,10 +168,32 @@ function updateAddonCardsUI() {
     const qtyValEl = card.querySelector(".addon-qty-val");
     const qtyDecBtn = card.querySelector(".addon-qty-dec");
     
+    const qtyIncBtn = card.querySelector(".addon-qty-inc");
+
     const qty = getAddonQty(id);
 
     if (qtyValEl) qtyValEl.textContent = qty;
     if (qtyDecBtn) qtyDecBtn.disabled = (qty <= 0);
+
+    // Stock from the CMS: grey out sold-out gear and warn when only a few are left
+    if (window.GogoInventory) {
+      const available = window.GogoInventory.available(id);
+      const isOut = available === 0;
+      let note = card.querySelector(".addon-stock-note");
+      if (!note) {
+        note = document.createElement("div");
+        note.className = "addon-stock-note text-[10px] font-extrabold uppercase mt-1";
+        const priceEl = card.querySelector(".text-xs.font-black");
+        if (priceEl) priceEl.after(note);
+      }
+      note.textContent = isOut ? "Out of stock" : (available <= window.GogoInventory.LOW_STOCK ? `Only ${available} left` : "");
+      note.classList.toggle("text-red-600", isOut);
+      note.classList.toggle("text-amber-700", !isOut);
+      card.classList.toggle("opacity-60", isOut && qty === 0);
+      card.classList.toggle("cursor-not-allowed", isOut && qty === 0);
+      if (qtyIncBtn) qtyIncBtn.disabled = qty >= available;
+      if (qtyIncBtn) qtyIncBtn.classList.add("disabled:opacity-40", "disabled:cursor-not-allowed");
+    }
 
     if (qty > 0) {
       card.classList.add("selected", "border-2", "border-[#164e3f]", "bg-emerald-50/40", "shadow-2xs");
@@ -392,12 +424,10 @@ function showLightboxImage(index) {
 function openLightbox() {
   showLightboxImage(currentImageIndex);
   imageLightbox.classList.remove("hidden");
-  document.body.style.overflow = "hidden";
 }
 
 function closeLightbox() {
   imageLightbox.classList.add("hidden");
-  document.body.style.overflow = "";
 }
 
 mainGalleryImg.addEventListener("click", openLightbox);
@@ -1136,14 +1166,43 @@ function getInitial(name) {
   return "C";
 }
 
-function setUserSession(name, phone, email) {
+// Every login is saved as a member account for the CMS "Logged-in Members" tab (localStorage "gogo_members_db").
+// loginMethod is "Mobile" or "Google" for a login; leave it out for a profile edit (details only, no new login).
+function saveMemberAccount(user, previousPhone, loginMethod) {
+  let members = [];
+  try {
+    members = JSON.parse(localStorage.getItem("gogo_members_db") || "[]");
+  } catch (e) {}
+  const now = new Date().toISOString();
+  const lookupPhone = previousPhone || user.phone;
+  let member = members.find(m => m.phone === lookupPhone || (user.email && m.email === user.email));
+  if (!member) {
+    member = { firstLogin: now, loginCount: 0, loginMethod: loginMethod || "Mobile" };
+    members.unshift(member);
+  }
+  member.name = user.name;
+  member.phone = user.phone;
+  member.email = user.email;
+  if (loginMethod) {
+    member.loginMethod = loginMethod;
+    member.lastLogin = now;
+    member.loginCount = (member.loginCount || 0) + 1;
+  }
+  localStorage.setItem("gogo_members_db", JSON.stringify(members));
+}
+
+function setUserSession(name, phone, email, loginMethod) {
+  // A profile edit (no loginMethod) updates the same account even if the phone changed;
+  // a new login is always looked up by the phone / email that was entered
+  const previousPhone = !loginMethod && currentUser.isLoggedIn ? currentUser.phone : null;
   currentUser.isLoggedIn = true;
   currentUser.name = name ? name.trim() : "Vijay Kumar";
   currentUser.phone = phone ? phone.trim() : "9876543210";
-  currentUser.email = email && email.trim() !== "" 
-    ? email.trim() 
+  currentUser.email = email && email.trim() !== ""
+    ? email.trim()
     : (currentUser.name.toLowerCase().replace(/\s+/g, ".") + "@gmail.com");
   currentUser.initial = getInitial(currentUser.name);
+  saveMemberAccount(currentUser, previousPhone, loginMethod);
 
   updateNavbarUI();
   prefillCamperDetails();
@@ -1400,7 +1459,7 @@ if (loginForm) {
         if (window.lucide) lucide.createIcons();
       }
 
-      setUserSession(name, phone, email);
+      setUserSession(name, phone, email, "Mobile");
       closeLoginModal();
     }, 900);
   });
@@ -1414,7 +1473,7 @@ if (googleLoginBtn) {
     // If user already typed name in login modal, use it!
     if (enteredName) {
       closeLoginModal();
-      setUserSession(enteredName, "9876543210");
+      setUserSession(enteredName, "9876543210", "", "Google");
       showToast(`✓ Signed in with Google as ${enteredName}!`);
       return;
     }
@@ -1438,7 +1497,7 @@ if (closeGoogleModalBtn && googleModal) {
 if (selectGoogleUserBtn) {
   selectGoogleUserBtn.addEventListener("click", () => {
     if (googleModal) googleModal.classList.add("hidden");
-    setUserSession("Vijay Kumar", "9876543210", "vijay.camper@gmail.com");
+    setUserSession("Vijay Kumar", "9876543210", "vijay.camper@gmail.com", "Google");
     showToast("✓ Welcome Vijay Kumar! Signed in with Google. 3 Booking records loaded.");
   });
 }
@@ -1911,6 +1970,12 @@ document.addEventListener("DOMContentLoaded", () => {
   if (qtyDecreaseBtn) qtyDecreaseBtn.disabled = (currentQuantity <= 1);
   selectPackageByPersons(1, false);
   renderCartDrawerUI();
+  updateAddonCardsUI();
+});
+
+// Stock or bookings changed in another tab (e.g. admin updated stock in the CMS)
+window.addEventListener("storage", (e) => {
+  if (e.key === "gogo_inventory_stock" || e.key === "gogo_bookings_db") updateAddonCardsUI();
 });
 
 if (window.lucide) {

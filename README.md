@@ -55,3 +55,16 @@ An interactive camping equipment & tent booking webpage created for **GOGOCampin
   - Package (Solo / Couple / Trio / Group) is chosen only on this page; the booking popup and cart follow it
   - The GOGOCamping logo returns to the home page
 - `rental/cms/` – CMS admin dashboard
+
+## 🆕 What's new in v2.1.0
+
+- **Home page redesign** from the Figma "GOGO Redesign" file, using its original photos (`assests/figma/`); navbar unchanged
+  - Full-screen hero, frosted-glass "What happens when you GOGO?" card, torn-paper edges, photo collage, testimonials
+  - Booking bar: "Check availability" opens the tent booking page (`rental/`)
+- **Popups** on every page stop the page behind from scrolling (`scroll-lock.js`)
+- **CMS admin** (`rental/cms/`)
+  - Gear stock: set the stock for each add-on; shows In use / Available and In stock, Low stock, Out of stock (`rental/inventory.js`). The booking page blocks sold-out gear
+  - Booking status is a dropdown (Confirmed / Completed / Cancelled)
+  - Offline booking supports Custom / Group packages (5+ campers)
+  - Add-on and booking insight panels under the charts
+  - "Logged-in Members" lists accounts that logged in but have not booked yet

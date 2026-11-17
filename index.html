@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GOGO Camping â€” Jawadhu Hills | Where the Wi-Fi gets weak and the stories get good</title>
+  <title>GOGO Camping &mdash; Jawadhu Hills | Where the Wi-Fi gets weak and the stories get good</title>
   <meta name="description" content="A small-footprint camp in the Jawadhu highlands (Eastern Ghats). Starry nights, campfires, kayaking, trekking, and astro-camping." />
 
   <!-- Google Fonts: Fraunces, Caveat, DM Sans -->
@@ -140,6 +140,54 @@
     #siteHeader.is-scrolled #siteNav { padding-top: 0.9rem; padding-bottom: 0.9rem; }
     #siteHeader.is-scrolled a[href="rental/"] { background-color: #A8462D; }
   </style>
+  <style>
+    /* ===== Figma "GOGO Redesign" home page ===== */
+    .gg-hero-bg { filter: url(#paintedPhoto) saturate(0.9); transform: scale(1.04); object-position: center 62%; }
+    .gg-weather { border: 1.5px solid rgba(255,255,255,.85); border-radius: 999px; transform: rotate(-1.5deg); }
+
+    /* Torn paper edge at the bottom of the hero */
+    .gg-torn-bottom { position: absolute; left: -2%; right: -2%; bottom: -8px; height: 22px; background: var(--torn-color); filter: url(#tornEdge); z-index: 5; }
+
+    /* Torn paper cards: the background sits on a pseudo element so the text stays crisp */
+    .gg-torn-card { position: relative; }
+    .gg-torn-card::before { content: ""; position: absolute; inset: -2px; background: rgba(255,255,255,.55); filter: url(#tornEdgeRim) drop-shadow(0 8px 18px rgba(0,0,0,.12)); }
+    .gg-torn-card::after { content: ""; position: absolute; inset: 0; background: var(--card-bg); filter: url(#tornEdge); box-shadow: inset 0 0 40px rgba(120,105,70,.12); }
+    /* "What happens when you GOGO?" card: frosted glass over the cream/green background (Figma) */
+    .gg-glass-card::before { display: none; }
+    .gg-glass-card::after { background: rgba(244,239,226,.06); -webkit-backdrop-filter: blur(28px) saturate(1.05); backdrop-filter: blur(28px) saturate(1.05); box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.4), inset 0 0 50px rgba(110,95,60,.10); filter: url(#tornEdge) drop-shadow(0 8px 18px rgba(0,0,0,.12)); }
+    /* Fog where the cream meets the green, centred on the split line (set by placeGlassSplit) */
+    .gg-glass-fog { position: absolute; left: 0; right: 0; top: calc(var(--gg-split-card, 600px) - 115px); height: 230px; pointer-events: none; z-index: 20;
+      background: linear-gradient(to bottom, rgba(240,234,220,0) 0%, rgba(240,234,220,.42) 45%, rgba(205,212,182,.22) 62%, rgba(120,140,95,0) 100%); filter: blur(8px); }
+
+    .gg-pill { display: inline-flex; align-items: center; gap: 12px; height: 44px; padding: 0 44px 0 20px; border: 1px solid #CFC8B6; border-radius: 999px; background: #F4EFE2; font-size: 15px; font-weight: 700; text-transform: uppercase; color: #1d211c; }
+    .gg-pill svg { width: 19px; height: 19px; stroke-width: 2.2; color: #1d211c; }
+
+    .gg-book-box { position: relative; display: flex; align-items: center; gap: 14px; min-height: 82px; padding: 0 18px; border: 1px solid #D4CBB6; border-radius: 10px; background: #FCFAF4; cursor: pointer; transition: border-color .2s; }
+    .gg-book-box:hover { border-color: #1B3D2A; }
+    .gg-book-label { display: block; font-size: 8.5px; font-weight: 700; text-transform: uppercase; color: #55594f; letter-spacing: .02em; }
+    .gg-book-value { display: block; font-size: 14px; font-weight: 700; color: #151815; margin: 3px 0 4px; }
+    .gg-book-sub { display: block; font-size: 10px; color: #6b6d64; }
+    .gg-date-input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+
+    /* Photo collage: drawn at the Figma size (1440 wide) and scaled down on smaller screens */
+    .gg-collage-wrap { position: relative; height: 500px; }
+    .gg-collage { position: absolute; top: 0; left: 50%; width: 1440px; height: 560px; transform: translateX(-50%); transform-origin: top center; }
+    .gg-collage img { position: absolute; object-fit: cover; border-radius: 9px; }
+    @media (max-width: 1100px) { .gg-collage-wrap { height: 420px; } .gg-collage { transform: translateX(-50%) scale(.75); } }
+    @media (max-width: 760px)  { .gg-collage-wrap { height: 280px; } .gg-collage { transform: translateX(-50%) scale(.5); } }
+    @media (max-width: 480px)  { .gg-collage-wrap { height: 215px; } .gg-collage { transform: translateX(-50%) scale(.38); } }
+
+    .gg-note h3 { display: flex; align-items: center; gap: 12px; font-size: 12.5px; font-weight: 700; text-transform: uppercase; color: #F2EEE4; margin-bottom: 18px; }
+    .gg-note h3 svg { width: 20px; height: 20px; color: #C9643F; }
+    .gg-note p { font-size: 14.5px; line-height: 22px; color: #B8BCB2; }
+    .gg-note p + p { margin-top: 10px; }
+
+    .gg-season { padding: 4px 22px; border-left: 1px solid rgba(255,255,255,.18); }
+    .gg-season b { display: flex; align-items: center; gap: 8px; font-size: 10px; font-weight: 700; text-transform: uppercase; color: #F2EEE4; }
+    .gg-season b i { display: block; width: 22px; height: 3px; border-radius: 2px; }
+    .gg-season span { display: block; font-size: 12px; color: #B8BCB2; margin-top: 8px; }
+    @media (max-width: 767px) { .gg-season { padding: 10px 16px; } }
+  </style>
 </head>
 <body class="paper-texture text-gogo-charcoal antialiased">
 
@@ -169,731 +217,386 @@
     </nav>
   </header>
 
-  <!-- ================= 1. HERO SECTION ================= -->
-  <section class="relative min-h-screen flex flex-col justify-between overflow-hidden bg-gogo-darkForest text-white pt-24 pb-12 sm:pb-16 px-6 sm:px-8 lg:px-12">
-    <!-- Hero Image Background with Atmospheric Gradients -->
-    <div class="absolute inset-0 z-0">
-      <img 
-        src="./assests/Hero%20Image.jpg" 
-        alt="Jawadhu Hills panoramic highlands overlooking forested mist valleys" 
-        class="w-full h-full object-cover object-center"
-        id="heroMainBg"
-      />
-      <!-- Atmospheric Soft Vignette Overlay -->
-      <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/40"></div>
-      <div class="absolute inset-0 bg-[#173D2B]/20 mix-blend-multiply"></div>
-    </div>
+  <!-- SVG filters used for the torn-paper edges and the painted hero (Figma "GOGO Redesign") -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <filter id="tornEdge" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="3" seed="4" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="9" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+    <filter id="tornEdgeRim" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="3" seed="9" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="6" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+    <filter id="paintedPhoto" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.008 0.045" numOctaves="2" seed="11" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="22" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+  </svg>
 
-    <!-- Top Left: Coordinates & Live Weather Widget -->
-    <div class="relative z-10 max-w-7xl mx-auto w-full pt-4 space-y-2">
-      <!-- Coordinates -->
-      <div class="flex items-center gap-2 text-xs sm:text-sm text-stone-300 font-medium tracking-wide">
-        <i data-lucide="map-pin" class="w-3.5 h-3.5 text-stone-300"></i>
-        <span>12.6045&deg; N â€¢ 78.7845&deg; E â€¢ 1,150 M</span>
+  <!-- ================= 1. HERO ================= -->
+  <section class="gg-hero relative overflow-hidden text-[#F8F4EA]">
+    <img src="./assests/figma/hero-bg.jpg" alt="Misty Jawadhu hills and forest under a cloudy sky" class="gg-hero-bg absolute inset-0 w-full h-full object-cover" />
+    <div class="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/55"></div>
+
+    <div class="relative z-10 max-w-[1296px] mx-auto px-6 lg:px-0 pt-[clamp(96px,15svh,140px)] pb-[clamp(36px,7svh,90px)] h-[100svh] min-h-[560px] flex flex-col">
+      <!-- Coordinates + live weather -->
+      <div class="space-y-6">
+        <div class="flex items-center gap-2.5 text-[12px] font-medium tracking-wide text-white/90">
+          <i data-lucide="map-pin" class="w-4 h-4"></i>
+          <span>12.6045&deg; N &middot; 78.7845&deg; E &middot; 1,150 M</span>
+        </div>
+        <div class="gg-weather inline-flex items-center gap-2 px-4 py-2 text-[9px] font-semibold text-white">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#D6C230]"></span>
+          <span>Live</span>
+          <span class="pl-2">23&deg;C | Overcast</span>
+        </div>
       </div>
 
-      <!-- Live Weather Capsule -->
-      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/30 backdrop-blur-md border border-white/20 text-xs text-stone-200">
-        <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-        <span class="text-amber-300 font-semibold text-[11px]">Live</span>
-        <span class="text-stone-400">|</span>
-        <span>23&deg;C</span>
-        <span class="text-stone-400">|</span>
-        <span>Overcast</span>
-      </div>
-    </div>
-
-    <!-- Bottom Content: 2-Column Split (Headline & Right Card) -->
-    <div class="relative z-10 max-w-7xl mx-auto w-full pt-16 sm:pt-24 pb-4">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
-        
-        <!-- Left Hero Typography -->
-        <div class="lg:col-span-7 space-y-3 sm:space-y-4">
-          <div class="font-caveat text-2xl sm:text-3xl lg:text-4xl text-[#85831A] italic tracking-wide">
-            250 km from Chennai. 160 km from Bangalore
-          </div>
-
-          <h1 class="font-serif text-4xl sm:text-6xl lg:text-[64px] font-normal tracking-tight leading-[1.08] text-gogo-textCream">
-            Where the Wi-Fi gets weak<br />
-            and the stories get good
+      <div class="mt-auto grid grid-cols-1 lg:grid-cols-[1fr_397px] gap-10 lg:gap-[42px] items-end">
+        <!-- Headline -->
+        <div>
+          <p class="font-caveat text-[26px] sm:text-[28px] text-[#C6C14A] leading-none mb-4">250 km from Chennai. 160 km from Bangalore</p>
+          <h1 class="font-serif text-[40px] sm:text-[56px] lg:text-[66px] leading-[1.03] tracking-[-0.02em] font-normal">
+            Where the Wi-Fi gets weak and the stories get good
           </h1>
         </div>
 
-        <!-- Right Hero Floating Card & Booking Bar -->
-        <div class="lg:col-span-5 space-y-4">
-          <!-- Floating Image with Rounded Corners -->
-          <div class="rounded-2xl sm:rounded-3xl overflow-hidden aspect-[4/3] shadow-2xl group border border-white/10">
-            <img 
-              src="./assests/IMG_7361.JPG" 
-              alt="Campsite tents under bright sky with clouds in Jawadhu" 
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-            />
+        <!-- Photo card + intro + CTA -->
+        <div>
+          <div class="rounded-[8px] overflow-hidden h-[clamp(160px,calc(100svh_-_560px),402px)] shadow-2xl mb-[clamp(20px,4svh,56px)] hidden lg:block">
+            <img src="./assests/figma/hero-card.jpg" alt="Row of tents under a bright cloudy sky at GOGO" class="w-full h-full object-cover object-[center_75%]" />
           </div>
-
-          <!-- Description Text -->
-          <p class="text-stone-200 text-xs sm:text-sm leading-relaxed font-sans font-light">
+          <p class="text-[14.5px] leading-[22px] text-white/95 mb-[clamp(16px,3svh,32px)] max-w-[370px]">
             A small-footprint camp in the Jawadhu highlands. Long walks, clear nights and weekends you wish lasted longer.
           </p>
-
-          <!-- Action Button + Price Tag -->
-          <div class="flex flex-wrap items-center justify-between gap-4 pt-1">
-            <a href="#booking" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#85831A] hover:bg-[#737116] text-gogo-btnCream text-xs font-bold uppercase tracking-wider shadow-lg hover:scale-105 active:scale-95 transition-all">
-              <span>BOOK YOUR DATES</span>
-              <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+          <div class="flex items-center gap-5">
+            <a href="#booking" class="inline-flex items-center gap-4 h-[54px] px-6 whitespace-nowrap shrink-0 rounded-full bg-[#7F7B1D] hover:bg-[#6d6a18] text-[#F8F4EA] text-[14px] font-bold uppercase tracking-wide transition">
+              <span>Book your dates</span>
+              <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
             </a>
-
-            <div class="text-left sm:text-right">
-              <span class="text-xs font-bold text-white block">From &#8377;2,500 / person</span>
-              <span class="text-[11px] text-stone-300 block font-light">including dinner + breakfast</span>
+            <div class="text-[12px] leading-[17px] text-white/85">
+              <span class="block">From &#8377;2,500 / person</span>
+              <span class="block">including dinner + breakfast</span>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+    <!-- torn paper edge into the cream section -->
+    <div class="gg-torn-bottom" style="--torn-color:#F0EADD"></div>
+  </section>
 
+  <!-- ================= 2. SAME CITY. SAME ROUTINE. ================= -->
+  <section id="about" class="bg-[#F0EADD] pt-[125px] pb-[95px]">
+    <div class="max-w-[1042px] mx-auto px-6 lg:px-0 grid grid-cols-1 md:grid-cols-[400px_1fr] gap-10 md:gap-0">
+      <div class="pt-3">
+        <p class="flex items-center gap-2 text-[11px] font-bold uppercase text-[#1d211c] mb-4">
+          <span class="w-[5px] h-[5px] rounded-full bg-[#7F7B1D]"></span>
+          You could do the usual. Or you could GOGO.
+        </p>
+        <div class="font-caveat text-[19px] leading-[22px] text-[#7F7B1D]">
+          <p>The air gets cooler.</p>
+          <p>The roads get quieter.</p>
+          <p>The sky gets darker.</p>
+        </div>
+      </div>
+      <div>
+        <h2 class="font-serif text-[34px] sm:text-[40px] leading-[46px] tracking-[-0.015em] text-[#121512] mb-10">
+          Same city. Same routine.<br />
+          Same weekend? <span class="font-caveat text-[52px] text-[#7F7B1D] ml-6 align-[-2px]">Nah!</span>
+        </h2>
+        <div class="text-[14.5px] leading-[22px] text-[#1d211c]">
+          <p>Sometimes, you just need to get out.</p>
+          <p>Out of the city.</p>
+          <p>Out of the routine.</p>
+          <p>Out of that group chat that has been planning a trip for six months.</p>
+          <p>Up in Jawadhu, the pace changes. Bring your favorite people. Stay out a little later. GOGO began with a simple idea: get people closer to nature.</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ================= 2. "SAME CITY. SAME ROUTINE." SECTION ================= -->
-  <section id="about" class="py-20 sm:py-28 bg-gogo-overallBg text-gogo-charcoal relative">
-    <div class="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12">
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-16 items-start">
-        
-        <!-- Left Side Tagline / Friday Question -->
-        <div class="md:col-span-5 space-y-4 pt-2">
-          <div class="flex items-center gap-2">
-            <span class="font-bold text-[12px] underline tracking-wider uppercase text-black">You could do the usual. Or you could GOGO.</span>
-          </div>
-          <div class="font-caveat text-[28px] text-[#85831A] space-y-1 italic leading-tight">
-            <p>The air gets cooler.</p>
-            <p>The roads get quieter.</p>
-            <p>The sky gets darker.</p>
-          </div>
-        </div>
+  <!-- ================= 3 + 4. WHAT HAPPENS WHEN YOU GOGO? / IT'S JAWADHU (green paper) ================= -->
+  <section id="experience" class="relative" style="background:linear-gradient(rgba(58,80,40,.6),rgba(58,80,40,.6)), url('./assests/figma/paper-green.jpg') center top / cover, #5F7A40;">
+    <div class="absolute inset-x-0 top-0 bg-[#F0EADD]" style="height:var(--gg-split,633px)"></div>
 
-        <!-- Right Side Story Content -->
-        <div class="md:col-span-7 space-y-6">
-          <h2 class="font-serif text-3xl sm:text-5xl lg:text-[48px] font-normal text-black leading-tight">
-            Same city. Same routine.<br />
-            Same weekend? <span class="font-caveat text-4xl sm:text-6xl text-[#85831A] font-bold align-middle ml-1">Nah!</span>
-          </h2>
-
-          <div class="space-y-3 text-[16px] sm:text-[18px] text-black/90 leading-relaxed font-sans font-light">
-            <p>Sometimes, you just need to get out.</p>
-            <p>Out of the city.</p>
-            <p>Out of the routine.</p>
-            <p>Out of that group chat that has been planning a trip for six months.</p>
-            <p class="pt-2">
-              Up in Jawadhu, the pace changes. Bring your favorite people. Stay out a little later. GOGO began with a simple idea: get people closer to nature.
-            </p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= 3. "WHAT HAPPENS WHEN YOU GOGO?" SECTION ================= -->
-  <section id="experience" class="py-12 sm:py-20 bg-gogo-overallBg">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      
-      <!-- Rough Paper Styled Container Card with Soft Gradient Base -->
-      <div class="bg-[#FAF6EC] rounded-3xl p-6 sm:p-12 lg:p-16 relative overflow-hidden border border-gogo-btnGreen/15 shadow-xl">
-        
-        <!-- Header -->
-        <div class="max-w-4xl space-y-3 mb-8">
-          <h2 class="font-serif text-3xl sm:text-5xl text-gogo-charcoal font-normal">
-            What happens when you GOGO?
-          </h2>
-          <p class="font-caveat text-2xl sm:text-3xl text-gogo-textGreen italic">
-            a little adventure, a lot of nothing &amp; nights to remember
-          </p>
-          <p class="text-xs sm:text-sm text-gogo-charcoal/85 leading-relaxed font-sans pt-2 font-light">
+    <div class="relative max-w-[1182px] mx-auto px-4 lg:px-0">
+      <div class="gg-torn-card gg-glass-card" id="ggGlassCard">
+        <div class="gg-glass-fog"></div>
+        <div class="relative z-10 px-6 sm:px-[83px] pt-[112px] pb-[118px]">
+          <h2 class="font-serif text-[34px] sm:text-[42px] leading-[1.1] tracking-[-0.015em] text-[#121512]">What happens when you GOGO?</h2>
+          <p class="font-caveat text-[25px] text-[#7F7B1D] mt-2 ml-2">a little adventure, a lot of nothing &amp; nights to remember</p>
+          <p class="text-[14px] leading-[22px] text-[#1d211c] mt-5 max-w-[1020px]">
             Come with your crew. Meet new ones. Leave with more stories than you arrived with. Campfires, conversations, music, stars, and the occasional questionable dance move. Lie back. Watch the clouds. Read a book. Do absolutely nothing.
           </p>
-        </div>
 
-        <!-- 6 Activity Pills in 2 Rows (Matching reference image) -->
-        <div class="space-y-3 mb-10">
-          <!-- Row 1 -->
-          <div class="flex flex-wrap items-center gap-3">
-            <div class="px-4 py-2.5 rounded-full border border-stone-300 bg-white text-gogo-charcoal text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-sm hover:border-gogo-btnGreen transition-colors cursor-pointer">
-              <i data-lucide="sun" class="w-3.5 h-3.5 text-gogo-iconColor"></i>
-              <span>CAMPFIRES GET LATE</span>
+          <div class="mt-5 flex flex-col gap-[17px]">
+            <div class="flex flex-wrap gap-6">
+              <span class="gg-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="miter" aria-hidden="true"><polygon points="12.00,3.00 14.86,6.05 19.04,6.39 18.43,10.53 20.77,14.00 17.16,16.12 15.90,20.11 12.00,18.60 8.10,20.11 6.84,16.12 3.23,14.00 5.57,10.53 4.96,6.39 9.14,6.05"/></svg>Campfires get late</span>
+              <span class="gg-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="miter" aria-hidden="true"><polygon points="12.00,3.00 14.86,6.05 19.04,6.39 18.43,10.53 20.77,14.00 17.16,16.12 15.90,20.11 12.00,18.60 8.10,20.11 6.84,16.12 3.23,14.00 5.57,10.53 4.96,6.39 9.14,6.05"/></svg>The sky gets bigger</span>
+              <span class="gg-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="miter" aria-hidden="true"><polygon points="12.00,3.00 14.86,6.05 19.04,6.39 18.43,10.53 20.77,14.00 17.16,16.12 15.90,20.11 12.00,18.60 8.10,20.11 6.84,16.12 3.23,14.00 5.57,10.53 4.96,6.39 9.14,6.05"/></svg>Get on the water</span>
             </div>
-            <div class="px-4 py-2.5 rounded-full border border-stone-300 bg-white text-gogo-charcoal text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-sm hover:border-gogo-btnGreen transition-colors cursor-pointer">
-              <i data-lucide="sun" class="w-3.5 h-3.5 text-gogo-iconColor"></i>
-              <span>THE SKY GETS BIGGER</span>
-            </div>
-            <div class="px-4 py-2.5 rounded-full border border-stone-300 bg-white text-gogo-charcoal text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-sm hover:border-gogo-btnGreen transition-colors cursor-pointer">
-              <i data-lucide="sun" class="w-3.5 h-3.5 text-gogo-iconColor"></i>
-              <span>GET ON THE WATER</span>
+            <div class="flex flex-wrap gap-6">
+              <span class="gg-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="miter" aria-hidden="true"><polygon points="12.00,3.00 14.86,6.05 19.04,6.39 18.43,10.53 20.77,14.00 17.16,16.12 15.90,20.11 12.00,18.60 8.10,20.11 6.84,16.12 3.23,14.00 5.57,10.53 4.96,6.39 9.14,6.05"/></svg>Good food, good mornings</span>
+              <span class="gg-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="miter" aria-hidden="true"><polygon points="12.00,3.00 14.86,6.05 19.04,6.39 18.43,10.53 20.77,14.00 17.16,16.12 15.90,20.11 12.00,18.60 8.10,20.11 6.84,16.12 3.23,14.00 5.57,10.53 4.96,6.39 9.14,6.05"/></svg>Trek around GOGO</span>
+              <span class="gg-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="miter" aria-hidden="true"><polygon points="12.00,3.00 14.86,6.05 19.04,6.39 18.43,10.53 20.77,14.00 17.16,16.12 15.90,20.11 12.00,18.60 8.10,20.11 6.84,16.12 3.23,14.00 5.57,10.53 4.96,6.39 9.14,6.05"/></svg>New people, new stories</span>
             </div>
           </div>
 
-          <!-- Row 2 -->
-          <div class="flex flex-wrap items-center gap-3">
-            <div class="px-4 py-2.5 rounded-full border border-stone-300 bg-white text-gogo-charcoal text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-sm hover:border-gogo-btnGreen transition-colors cursor-pointer">
-              <i data-lucide="sun" class="w-3.5 h-3.5 text-gogo-iconColor"></i>
-              <span>GOOD FOOD, GOOD MORNINGS</span>
-            </div>
-            <div class="px-4 py-2.5 rounded-full border border-stone-300 bg-white text-gogo-charcoal text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-sm hover:border-gogo-btnGreen transition-colors cursor-pointer">
-              <i data-lucide="sun" class="w-3.5 h-3.5 text-gogo-iconColor"></i>
-              <span>TREK AROUND GOGO</span>
-            </div>
-            <div class="px-4 py-2.5 rounded-full border border-stone-300 bg-white text-gogo-charcoal text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-sm hover:border-gogo-btnGreen transition-colors cursor-pointer">
-              <i data-lucide="sun" class="w-3.5 h-3.5 text-gogo-iconColor"></i>
-              <span>NEW PEOPLE, NEW STORIES</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 3 Activity Cards Grid (Kayaking, Night Campfire, Bird Photography with Tripod) -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
-          
-          <!-- Card 1: Kayaking on lake -->
-          <div class="rounded-2xl overflow-hidden aspect-square bg-stone-100 shadow-md group border border-stone-200">
-            <img 
-              src="./assests/kayak1.jpg" 
-              alt="Kayaking on calm lake waters in Jawadhu" 
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            />
+          <div id="ggGlassPhotos" class="relative grid grid-cols-1 sm:grid-cols-3 gap-[29px] max-w-[897px] mx-auto mt-16">
+            <img src="./assests/figma/act-kayak.jpg" alt="Kayaking on the lake" class="w-full aspect-square object-cover rounded-[6px]" />
+            <img src="./assests/figma/act-campfire.jpg" alt="Campers around the campfire at night" class="w-full aspect-square object-cover rounded-[6px]" />
+            <img src="./assests/figma/act-birding.jpg" alt="Bird photography with a telephoto lens" class="w-full aspect-square object-cover rounded-[6px]" />
           </div>
 
-          <!-- Card 2: Night Campfire & Gathering -->
-          <div class="rounded-2xl overflow-hidden aspect-square bg-stone-100 shadow-md group border border-stone-200">
-            <img 
-              src="./assests/IMG_1930.jpg" 
-              alt="Campers gathering around lanterns and warm campfire at dusk" 
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            />
-          </div>
-
-          <!-- Card 3: Bird Photography with telephoto lens on tripod -->
-          <div class="rounded-2xl overflow-hidden aspect-square bg-stone-100 shadow-md group border border-stone-200">
-            <img 
-              src="./assests/bird%20photography.jpg" 
-              alt="Photographer observing birds and nature with camera on tripod" 
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            />
-          </div>
-
-        </div>
-
-        <!-- Bottom Note on subtle green gradient background -->
-        <div class="pt-4 border-t border-gogo-btnGreen/10">
-          <p class="text-xs text-gogo-muted leading-relaxed font-sans font-light">
+          <p class="text-[14px] text-white mt-9 -ml-1">
             GOGO currently offers camping equipment and rentals including tents, kayaks, cycles and barbecue equipment, depending on your setup.
           </p>
         </div>
-
       </div>
-
     </div>
-  </section>
 
-  <!-- ================= 4. "IT'S NOT JUST A CAMPSITE. IT'S JAWADHU." ================= -->
-  <section id="jawadhu" class="relative py-24 sm:py-36 bg-[#3f5032] text-gogo-textCream overflow-hidden">
-    <!-- Background Image with Forest Green Atmospheric & Textured Overlay -->
-    <div class="absolute inset-0 z-0">
-      <img 
-        src="./assests/plufow-le-studio-zAvE6uAPkZk-unsplash.jpg" 
-        alt="Jawadhu starry texture" 
-        class="w-full h-full object-cover object-center opacity-70"
-      />
-      <!-- Forest Green Canvas Overlays matching reference image -->
+    <!-- It's not just a campsite -->
+    <div id="jawadhu" class="relative max-w-[1042px] mx-auto px-6 lg:px-0 pt-[120px] pb-[96px] text-[#F8F4EA] grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8">
+      <div>
+        <h2 class="font-serif text-[34px] sm:text-[40px] leading-[46px] tracking-[-0.015em]">It&rsquo;s not just a campsite.<br />It&rsquo;s Jawadhu.</h2>
+        <div class="text-[14px] leading-[22px] text-white/95 mt-8">
+          <p>Set in the Eastern Ghats, GOGO sits among hills, forest, open skies and some seriously good reasons to stay outside.</p>
+          <p>There are trails to follow, water to explore, birds to spot and skies to wait for. And when the sun goes down?</p>
+          <p>That&rsquo;s when GOGO really comes alive.</p>
+        </div>
+        <a href="#booking" class="inline-flex items-center gap-5 h-[54px] px-6 mt-8 rounded-full bg-[#1E3B2B] hover:bg-[#173022] text-[#F8F4EA] text-[14px] font-bold uppercase tracking-wide transition">
+          <span>Explore Jawadhu</span>
+          <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+        </a>
       </div>
-
-    <div class="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-end">
-        
-        <!-- Left Column -->
-        <div class="lg:col-span-8 space-y-6">
-          <h2 class="font-serif text-3xl sm:text-5xl lg:text-[54px] font-normal leading-tight text-gogo-textCream">
-            It's not just a campsite.<br />
-            It's Jawadhu.
-          </h2>
-
-          <div class="space-y-4 text-stone-200 text-xs sm:text-sm leading-relaxed max-w-2xl font-light">
-            <p>
-              Set in the Eastern Ghats, GOGO sits among hills, forest, open skies and some seriously good reasons to stay outside.
-            </p>
-            <p>
-              There are trails to follow, water to explore, birds to spot and skies to wait for. And when the sun goes down?
-            </p>
-            <p class="font-medium text-white">
-              That's when GOGO really comes alive.
-            </p>
-          </div>
-
-          <div class="pt-3">
-            <a href="#booking" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#132c1f] hover:bg-[#1b3d2b] text-gogo-btnCream text-xs font-bold uppercase tracking-wider border border-white/20 transition-all shadow-lg hover:scale-105">
-              <span>EXPLORE JAWADHU</span>
-              <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
-            </a>
-          </div>
-        </div>
-
-        <!-- Right Column (Bottom Right Handwritten Accents) -->
-        <div class="lg:col-span-4 flex flex-col items-start lg:items-end justify-end">
-          <div class="font-caveat text-2xl sm:text-3xl text-[#D0CD2C] lg:text-right space-y-1">
-            <p>day mode &rarr; explore</p>
-            <p>night mode &rarr; look up</p>
-          </div>
-        </div>
-
+      <div class="font-caveat text-[25px] leading-[31px] text-[#E4DA3A] lg:pt-4 lg:pr-6">
+        <p>day mode &rarr; explore</p>
+        <p>night mode &rarr; look up</p>
       </div>
     </div>
   </section>
 
-  <!-- ================= 5. "AND THEN THERE'S THE SKY" & OVERLAPPING "WHEN THE SUN GOES DOWN" CARD ================= -->
-  <section id="astrocamping" class="relative pt-24 sm:pt-32 pb-36 sm:pb-48 bg-[#070b09] text-gogo-textCream">
-    <!-- Dark Cosmic Sky Background -->
-    <div class="absolute inset-0 z-0 overflow-hidden">
-      <img 
-        src="./assests/kyle-gregory-devaras-QFjSiok61xA-unsplash.jpg" 
-        alt="Milky Way Galaxy starfield over Jawadhu mountain campsite" 
-        class="w-full h-full object-cover opacity-85 object-center"
-      />
-      <div class="absolute inset-0 bg-gradient-to-b from-[#070b09]/90 via-[#070b09]/40 to-[#070b09]/95"></div>
+  <!-- ================= 5. AND THEN THERE'S THE SKY ================= -->
+  <section id="astrocamping" class="relative text-[#F8F4EA]" style="background:linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.5)), url('./assests/figma/sky.jpg') center / cover, #000;">
+    <div class="max-w-[1042px] mx-auto px-6 lg:px-0 pt-[140px] pb-[270px] grid grid-cols-1 md:grid-cols-[526px_1fr] gap-8">
+      <div class="md:pt-[148px] md:pl-[106px]">
+        <p class="font-caveat text-[36px] text-[#E6D9BD]">seriously, look up</p>
+      </div>
+      <div>
+        <h2 class="font-serif text-[34px] sm:text-[40px] leading-[46px] tracking-[-0.015em] mb-7">And then there&rsquo;s the sky</h2>
+        <div class="text-[14px] leading-[22px] text-white/95 max-w-[410px]">
+          <p>GOGO&rsquo;s story with astronomy started almost by accident.<br />The Vainu Bappu Observatory sits just around 2 km from the campsite. The hills&rsquo; distance from city lights make the night sky one of the biggest reasons to stay after dark.</p>
+          <p class="mt-[22px]">So when the sun goes down, don&rsquo;t automatically go to bed.<br />Find a spot &amp; look up.</p>
+        </div>
+        <button type="button" onclick="openAstroModal()" class="inline-flex items-center gap-5 h-[54px] px-6 mt-7 rounded-full bg-[#CFBE9C] hover:bg-[#c2b08b] text-[#151815] text-[14px] font-bold uppercase tracking-wide transition cursor-pointer">
+          <span>Discover astro-camping</span>
+          <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+        </button>
+      </div>
     </div>
+  </section>
 
-    <!-- Astro-Camping Content Block -->
-    <div class="relative z-10 max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 mb-16 sm:mb-20">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-        
-        <!-- Left Handwritten Accent -->
-        <div class="lg:col-span-4 flex items-center justify-start lg:justify-center">
-          <div class="font-caveat text-3xl sm:text-4xl lg:text-5xl text-stone-200 tracking-wide italic">
-            seriously, look up
+  <!-- ================= 6. WHEN THE SUN GOES DOWN + BOOKING ================= -->
+  <section id="booking" class="relative flow-root bg-[#F0EADD] scroll-mt-12 pb-[110px]">
+    <div class="relative max-w-[902px] mx-auto px-4 lg:px-0 -mt-[150px]">
+      <div class="gg-torn-card" style="--card-bg:linear-gradient(to bottom,#1d1d1c 0%,#262624 13%,rgba(110,106,96,.75) 22%,#EFE8D9 31%,#F1EBDD 100%)">
+        <div class="relative z-10 text-center px-6 pt-[150px] pb-[95px]">
+          <h2 class="font-serif text-[34px] sm:text-[40px] leading-[46px] tracking-[-0.015em] text-[#121512] max-w-[340px] mx-auto">When the sun goes down</h2>
+          <div class="text-[14px] leading-[22px] text-[#1d211c] mt-12 max-w-[480px] mx-auto">
+            <p>The hills get quiet.</p>
+            <p>The campfire gets going.</p>
+            <p>Someone starts a conversation. Someone else brings out the snacks. And eventually, everyone looks up.</p>
+            <p>No city lights competing for attention.</p>
+            <p>Just Jawadhu after dark.</p>
           </div>
+          <p class="font-caveat text-[25px] text-[#77766E] mt-12">this is why you came.</p>
         </div>
-
-        <!-- Right Content Block -->
-        <div class="lg:col-span-8 space-y-5">
-          <h2 class="font-serif text-3xl sm:text-5xl lg:text-[50px] font-normal text-gogo-textCream leading-tight">
-            And then there's the sky
-          </h2>
-
-          <div class="space-y-3.5 text-stone-200 text-xs sm:text-[14px] leading-relaxed font-light max-w-2xl">
-            <p>
-              GOGO's story with astronomy started almost by accident.
-            </p>
-            <div class="space-y-1.5 text-stone-300 pl-1">
-              <p>&bull; The Vainu Bappu Observatory sits just around 2 km from the campsite.</p>
-              <p>&bull; The hills' distance from city lights make the night sky one of the biggest reasons to stay after dark.</p>
-            </div>
-            <p class="pt-1.5">
-              So when the sun goes down, don't automatically go to bed.<br />
-              Find a spot &amp; look up.
-            </p>
-          </div>
-
-          <div class="pt-2">
-            <button onclick="openAstroModal()" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gogo-btnCream hover:bg-white text-gogo-btnGreen text-xs font-bold uppercase tracking-wider transition-all shadow-xl hover:scale-105 active:scale-95 cursor-pointer">
-              <span>DISCOVER ASTRO-CAMPING</span>
-              <span class="text-sm font-normal">&nearr;</span>
-            </button>
-          </div>
-        </div>
-
       </div>
     </div>
 
-    <!-- "WHEN THE SUN GOES DOWN" CARD (Overlapping Glass Card) -->
-    <div class="relative z-20 max-w-4xl mx-auto px-4 sm:px-6 -mb-64 sm:-mb-72">
-      <div class="rounded-3xl pt-14 sm:pt-20 pb-12 sm:pb-14 px-6 sm:px-12 text-center relative overflow-hidden shadow-2xl border border-white/20 backdrop-blur-xl bg-gradient-to-b from-black/55 via-[#16211b]/50 to-[#223127]/60 text-white">
-        
-        <!-- Heading -->
-        <h2 class="font-serif text-3xl sm:text-5xl text-white font-normal mb-6 relative z-10 tracking-tight">
-          When the sun goes<br />down
-        </h2>
+    <div class="max-w-[1042px] mx-auto px-4 lg:px-0 mt-[110px]">
+      <p class="font-caveat text-[25px] text-[#7F7B1D] leading-none">You could spend another weekend doing the usual.</p>
+      <h2 class="font-serif text-[34px] sm:text-[42px] leading-[1.15] tracking-[-0.015em] text-[#121512]">Or you could wake up in the hills</h2>
+      <p class="text-[14px] text-[#1d211c] mt-4 ml-1">Pick your dates. Bring your people. We&rsquo;ll see you at GOGO.</p>
 
-        <!-- Centered Rhythmic Text -->
-        <div class="space-y-2 text-xs sm:text-[14px] text-stone-200 leading-relaxed font-sans max-w-md mx-auto relative z-10 font-light">
-          <p>The hills get quiet.</p>
-          <p>The campfire gets going.</p>
-          <p>Someone starts a conversation. Someone else brings out the snacks.</p>
-          <p>And eventually, everyone looks up.</p>
-          <p>No city lights competing for attention.</p>
-          <p class="font-normal text-white pt-1">Just Jawadhu after dark.</p>
+      <!-- Booking bar -->
+      <div class="mt-9 rounded-[22px] border border-[#D8CFBA] bg-[#F6F2E7] p-[21px] shadow-[0_10px_30px_rgba(23,61,43,0.05)]">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_212px] gap-3">
+          <label class="gg-book-box">
+            <i data-lucide="calendar-days" class="w-5 h-5 text-[#A8462D] shrink-0"></i>
+            <span class="flex-1">
+              <span class="gg-book-label">Check in</span>
+              <span class="gg-book-value" id="checkinLabel">Fri, 16 Oct</span>
+              <span class="gg-book-sub">After 2:00 PM</span>
+            </span>
+            <i data-lucide="chevron-down" class="w-4 h-4 text-[#2a2e29]"></i>
+            <input type="date" id="checkinInput" value="2026-10-16" onchange="calculatePrice()" class="gg-date-input" aria-label="Check in date" />
+          </label>
+          <label class="gg-book-box">
+            <i data-lucide="calendar-check" class="w-5 h-5 text-[#A8462D] shrink-0"></i>
+            <span class="flex-1">
+              <span class="gg-book-label">Check out</span>
+              <span class="gg-book-value" id="checkoutLabel">Sun, 18 Oct</span>
+              <span class="gg-book-sub">Before 11:00 AM</span>
+            </span>
+            <i data-lucide="chevron-down" class="w-4 h-4 text-[#2a2e29]"></i>
+            <input type="date" id="checkoutInput" value="2026-10-18" onchange="calculatePrice()" class="gg-date-input" aria-label="Check out date" />
+          </label>
+          <label class="gg-book-box">
+            <i data-lucide="users" class="w-5 h-5 text-[#A8462D] shrink-0"></i>
+            <span class="flex-1">
+              <span class="gg-book-label">Guests</span>
+              <select id="guestCount" onchange="calculatePrice()" class="gg-book-value bg-transparent focus:outline-none cursor-pointer appearance-none w-full">
+                <option value="2">2 adults</option>
+                <option value="4">4 adults</option>
+                <option value="6">6 adults</option>
+                <option value="1">1 adult (solo)</option>
+                <option value="8">8+ adults</option>
+              </select>
+              <span class="gg-book-sub">1 tent</span>
+            </span>
+            <i data-lucide="chevron-down" class="w-4 h-4 text-[#2a2e29]"></i>
+          </label>
+          <a href="rental/" class="rounded-[10px] bg-[#1B3D2A] hover:bg-[#214a33] text-[#F8F4EA] flex flex-col items-center justify-center gap-1 min-h-[82px] transition cursor-pointer">
+            <span class="flex items-center gap-2 text-[15px] font-bold"><i data-lucide="search" class="w-4 h-4"></i>Check availability</span>
+            <span class="text-[10px] text-white/70">Instant confirmation</span>
+          </a>
         </div>
-
-        <!-- Handwritten Accent -->
-        <div class="pt-6 relative z-10">
-          <p class="font-caveat text-2xl sm:text-3xl text-[#d0cd2c] italic">
-            this is why you came.
-          </p>
+        <div class="mt-[18px]">
+          <p id="nightDetails" class="text-[11.5px] text-[#55594f]">2 nights &middot; 2 adults &middot; breakfast, tea &amp; guided sunrise walk included</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ================= 6. "OR YOU COULD WAKE UP IN THE HILLS" & BOOKING BAR ================= -->
-  <section id="booking" class="relative pt-44 sm:pt-56 pb-16 sm:pb-24 bg-gogo-overallBg scroll-mt-12">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-      
-      <!-- Heading Area -->
-      <div class="space-y-2">
-        <h2 class="font-serif text-3xl sm:text-5xl lg:text-[46px] text-[#171c17] font-normal leading-tight">
-          Or you could wake up in the hills
-        </h2>
-        <p class="text-[14px] sm:text-[15px] text-[#4a5247] font-normal">
-          Pick your dates. Bring your people. We'll see you at GOGO.
-        </p>
+  <!-- ================= 7. PHOTO COLLAGE ================= -->
+  <section id="gallery" class="bg-[#F0EADD] overflow-hidden">
+    <div class="gg-collage-wrap">
+      <div class="gg-collage">
+        <img src="./assests/figma/gal-boat.jpg" alt="Boating on a misty lake" style="left:-89px;top:34px;width:212px;height:346px" />
+        <img src="./assests/figma/gal-dog.jpg" alt="Camp dogs at GOGO" style="left:140px;top:75px;width:212px;height:255px" />
+        <img src="./assests/figma/gal-lilies.jpg" alt="Water lilies on the lake" style="left:140px;top:346px;width:212px;height:136px" />
+        <img src="./assests/figma/gal-field.jpg" alt="Campsite meadow with parked cars" style="left:369px;top:-15px;width:212px;height:200px" />
+        <img src="./assests/figma/gal-tent-sunset.jpg" alt="A tent at sunset" style="left:369px;top:202px;width:212px;height:228px" />
+        <img src="./assests/figma/gal-founder.jpg" alt="P. Gopal, founder of GOGO" style="left:598px;top:56px;width:244px;height:351px" />
+        <img src="./assests/figma/gal-calf.jpg" alt="A young calf" style="left:859px;top:6px;width:212px;height:152px" />
+        <img src="./assests/figma/gal-telescope.jpg" alt="Group around a telescope" style="left:859px;top:176px;width:212px;height:272px" />
+        <img src="./assests/figma/gal-kayak.jpg" alt="Kayaking on the lake" style="left:1088px;top:112px;width:212px;height:283px" />
+        <img src="./assests/figma/gal-geese.jpg" alt="Geese near the farmhouse" style="left:1322px;top:56px;width:212px;height:231px" />
+        <img src="./assests/figma/gal-bikers.jpg" alt="Bikers riding to Jawadhu" style="left:1322px;top:310px;width:212px;height:153px" />
       </div>
-
-      <!-- Booking Bar Card Widget -->
-      <div class="bg-[#FAF6ED] rounded-[28px] sm:rounded-[32px] p-6 sm:p-8 lg:p-10 shadow-[0_15px_40px_rgba(23,61,43,0.06)] border border-[#e2d8c3]">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch mb-6">
-          
-          <!-- Box 1: CHECK IN -->
-          <div class="border border-[#e5ded0] rounded-2xl p-4 sm:p-5 bg-white hover:border-[#173D2B] transition-colors flex flex-col justify-between shadow-sm">
-            <span class="block text-[10px] font-bold uppercase text-[#737373] tracking-wider mb-2 font-mono">CHECK IN</span>
-            <div class="flex items-center justify-between gap-2">
-              <div class="flex items-center gap-2.5">
-                <i data-lucide="calendar" class="w-5 h-5 text-[#A8462D]"></i>
-                <input type="date" id="checkinInput" value="2026-10-16" onchange="calculatePrice()" class="bg-transparent text-[15px] sm:text-[16px] font-bold text-[#171c17] focus:outline-none cursor-pointer" />
-              </div>
-              <i data-lucide="chevron-down" class="w-4 h-4 text-[#737373]"></i>
-            </div>
-            <span class="text-[11px] text-[#8a8a8a] block mt-2 font-light">After 2:00 PM</span>
-          </div>
-
-          <!-- Box 2: CHECK OUT -->
-          <div class="border border-[#e5ded0] rounded-2xl p-4 sm:p-5 bg-white hover:border-[#173D2B] transition-colors flex flex-col justify-between shadow-sm">
-            <span class="block text-[10px] font-bold uppercase text-[#737373] tracking-wider mb-2 font-mono">CHECK OUT</span>
-            <div class="flex items-center justify-between gap-2">
-              <div class="flex items-center gap-2.5">
-                <i data-lucide="calendar-check" class="w-5 h-5 text-[#A8462D]"></i>
-                <input type="date" id="checkoutInput" value="2026-10-18" onchange="calculatePrice()" class="bg-transparent text-[15px] sm:text-[16px] font-bold text-[#171c17] focus:outline-none cursor-pointer" />
-              </div>
-              <i data-lucide="chevron-down" class="w-4 h-4 text-[#737373]"></i>
-            </div>
-            <span class="text-[11px] text-[#8a8a8a] block mt-2 font-light">Before 11:00 AM</span>
-          </div>
-
-          <!-- Box 3: GUESTS -->
-          <div class="border border-[#e5ded0] rounded-2xl p-4 sm:p-5 bg-white hover:border-[#173D2B] transition-colors flex flex-col justify-between shadow-sm">
-            <span class="block text-[10px] font-bold uppercase text-[#737373] tracking-wider mb-2 font-mono">GUESTS</span>
-            <div class="flex items-center justify-between gap-2">
-              <div class="flex items-center gap-2.5 w-full">
-                <i data-lucide="users" class="w-5 h-5 text-[#A8462D]"></i>
-                <select id="guestCount" onchange="calculatePrice()" class="bg-transparent text-[15px] sm:text-[16px] font-bold text-[#171c17] focus:outline-none cursor-pointer w-full">
-                  <option value="2">2 adults</option>
-                  <option value="4">4 adults</option>
-                  <option value="6">6 adults</option>
-                  <option value="1">1 adult (solo)</option>
-                  <option value="8">8+ adults</option>
-                </select>
-              </div>
-              <i data-lucide="chevron-down" class="w-4 h-4 text-[#737373]"></i>
-            </div>
-            <span class="text-[11px] text-[#8a8a8a] block mt-2 font-light">1 tent</span>
-          </div>
-
-          <!-- Box 4: Check availability Button -->
-          <button onclick="confirmBookingModal()" class="rounded-2xl bg-[#173D2B] hover:bg-[#205139] text-[#f8f4ea] p-4 sm:p-5 flex flex-col items-center justify-center gap-1 shadow-md hover:scale-[1.02] active:scale-95 transition-all text-center cursor-pointer">
-            <div class="flex items-center gap-2 font-bold text-[15px] tracking-wide">
-              <i data-lucide="search" class="w-4 h-4 text-white"></i>
-              <span>Check availability</span>
-            </div>
-            <span class="text-[11px] text-emerald-200/90 font-light">Instant confirmation</span>
-          </button>
-
-        </div>
-
-        <!-- Bottom Sub-Row: Note & Price + Book CTA -->
-        <div class="pt-5 border-t border-[#e2d8c3]/80 flex flex-wrap items-center justify-between gap-4 text-xs font-light text-[#787870]">
-          <div id="nightDetails" class="text-[13px] text-[#6c7365]">
-            2 nights &middot; 2 adults &middot; breakfast, tea &amp; guided sunrise walk included
-          </div>
-
-          <div class="flex items-center gap-4 sm:gap-6">
-            <span class="text-[13px] text-[#787870]">Estimated total</span>
-            <span class="font-serif font-bold text-[28px] sm:text-[32px] text-[#173D2B]" id="totalPriceDisplay">&#8377;9,600</span>
-            <button onclick="confirmBookingModal()" class="h-[52px] px-7 rounded-full bg-[#A8462D] hover:bg-[#923c26] text-[#F8F4EA] font-bold text-[14px] shadow-md hover:scale-105 active:scale-95 transition-all flex items-center gap-2 cursor-pointer">
-              <span>Book your stay</span>
-              <i data-lucide="arrow-right" class="w-4 h-4"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-
     </div>
   </section>
 
-  <!-- ================= 8. PHOTO GALLERY GRID ================= -->
-  <section id="gallery" class="pt-16 pb-12 sm:pt-20 sm:pb-16 bg-[#F1EBDD] overflow-hidden">
-    <div class="w-full max-w-[1550px] mx-auto px-4 sm:px-6">
-      
-      <!-- Staggered 7-Column Photo Strip matching reference layout -->
-      <div class="flex items-center justify-center gap-3 sm:gap-4 overflow-x-auto lg:overflow-visible pb-4 pt-2 no-scrollbar">
-        
-        <!-- Col 1: Boating / Misty Lake (Single tall) -->
-        <div class="shrink-0 w-[140px] sm:w-[170px] md:w-[190px] flex flex-col justify-center">
-          <div class="rounded-2xl overflow-hidden h-[260px] sm:h-[330px] md:h-[350px] shadow-sm hover:shadow-md transition-all duration-300">
-            <img src="./assests/boating.jpg" alt="Boating in Jawadhu Lake" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
-          </div>
-        </div>
-
-        <!-- Col 2: Stacked Dog & Lake Lilies -->
-        <div class="shrink-0 w-[140px] sm:w-[170px] md:w-[190px] flex flex-col justify-center gap-3 sm:gap-4">
-          <div class="rounded-2xl overflow-hidden h-[160px] sm:h-[200px] md:h-[220px] shadow-sm hover:shadow-md transition-all duration-300">
-            <img src="./assests/dog.jpg" alt="Friendly camp dog" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
-          </div>
-          <div class="rounded-2xl overflow-hidden h-[95px] sm:h-[120px] md:h-[135px] shadow-sm hover:shadow-md transition-all duration-300">
-            <img src="./assests/Lake.jpg" alt="Water lilies at Jawadhu Lake" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
-          </div>
-        </div>
-
-        <!-- Col 3: Stacked Meadow Tents & Sunset Tent -->
-        <div class="shrink-0 w-[140px] sm:w-[170px] md:w-[190px] flex flex-col justify-center gap-3 sm:gap-4">
-          <div class="rounded-2xl overflow-hidden h-[130px] sm:h-[160px] md:h-[175px] shadow-sm hover:shadow-md transition-all duration-300">
-            <img src="./assests/IMG_7361.JPG" alt="Meadow campsite Jawadhu" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
-          </div>
-          <div class="rounded-2xl overflow-hidden h-[130px] sm:h-[160px] md:h-[175px] shadow-sm hover:shadow-md transition-all duration-300">
-            <img src="./assests/IMG_1949.JPG" alt="Camp tent at sunset" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
-          </div>
-        </div>
-
-        <!-- Col 4: Founder Centerpiece (Man with glasses) -->
-        <div class="shrink-0 w-[150px] sm:w-[190px] md:w-[220px] flex flex-col justify-center">
-          <div class="rounded-2xl overflow-hidden h-[290px] sm:h-[370px] md:h-[400px] shadow-md hover:shadow-lg transition-all duration-300">
-            <img src="./assests/IMG_1694.png" alt="P. Gopal, Founder of GOGO Camping" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
-          </div>
-        </div>
-
-        <!-- Col 5: Stacked Calf & Telescope Group -->
-        <div class="shrink-0 w-[140px] sm:w-[170px] md:w-[190px] flex flex-col justify-center gap-3 sm:gap-4">
-          <div class="rounded-2xl overflow-hidden h-[105px] sm:h-[135px] md:h-[150px] shadow-sm hover:shadow-md transition-all duration-300">
-            <img src="./assests/IMG_4271.jpg" alt="Calf at Jawadhu camp" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
-          </div>
-          <div class="rounded-2xl overflow-hidden h-[160px] sm:h-[200px] md:h-[220px] shadow-sm hover:shadow-md transition-all duration-300">
-            <img src="./assests/Big%20group%20telescope.jpg" alt="Group observing night sky through telescope" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
-          </div>
-        </div>
-
-        <!-- Col 6: Kayak (Single tall) -->
-        <div class="shrink-0 w-[140px] sm:w-[170px] md:w-[190px] flex flex-col justify-center">
-          <div class="rounded-2xl overflow-hidden h-[260px] sm:h-[330px] md:h-[350px] shadow-sm hover:shadow-md transition-all duration-300">
-            <img src="./assests/kayak1.jpg" alt="Kayaking on calm lake" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
-          </div>
-        </div>
-
-        <!-- Col 7: Stacked Geese & Bikers -->
-        <div class="shrink-0 w-[140px] sm:w-[170px] md:w-[190px] flex flex-col justify-center gap-3 sm:gap-4">
-          <div class="rounded-2xl overflow-hidden h-[145px] sm:h-[180px] md:h-[195px] shadow-sm hover:shadow-md transition-all duration-300">
-            <img src="./assests/geese.jpg" alt="Geese grazing near water" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
-          </div>
-          <div class="rounded-2xl overflow-hidden h-[120px] sm:h-[150px] md:h-[165px] shadow-sm hover:shadow-md transition-all duration-300">
-            <img src="./assests/landscape5.jpeg" alt="Bikers riding to Jawadhu Hills" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
-          </div>
-        </div>
-
+  <!-- ================= 8. IT STARTED WITH A NEED TO GET AWAY ================= -->
+  <section class="bg-[#F0EADD] pt-[48px] pb-[72px] text-center">
+    <div class="max-w-[700px] mx-auto px-6">
+      <h2 class="font-serif text-[34px] sm:text-[40px] leading-[46px] tracking-[-0.015em] text-[#121512] max-w-[420px] mx-auto">It started with a need to get away.</h2>
+      <div class="text-[14px] leading-[22px] text-[#1d211c] mt-[72px] space-y-[22px]">
+        <p>GOGO began in 2012, when founder P. Gopal was looking for a change from everyday life.<br />He found his way to Jawadhu Hills.<br />Then came the trekking. The exploration. The forests.<br />The history. The observatory.<br />And eventually, the fascination with astronomy.</p>
+        <p>What began as a personal escape became a place for other nature lovers, trekkers, bikers, cyclists, photographers and campers to discover the hills too.</p>
+        <p>And GOGO is still here, doing much the same thing: getting people a little closer to nature.</p>
       </div>
-
+      <p class="font-caveat text-[25px] text-[#7F7B1D] mt-12">some good things start as a weekend plan.</p>
     </div>
   </section>
 
-  <!-- ================= 9. "IT STARTED WITH A NEED TO GET AWAY." ================= -->
-  <section class="pt-8 pb-24 sm:pb-32 bg-[#F1EBDD] text-center">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-7">
-      
-      <!-- Heading -->
-      <h2 class="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-[46px] leading-[1.2] text-[#17201b] font-normal tracking-tight">
-        It started with a need to get<br class="hidden sm:inline" /> away.
-      </h2>
-
-      <!-- Story Copy -->
-      <div class="space-y-6 text-[14px] sm:text-[15px] text-[#2c332c] leading-relaxed font-sans max-w-2xl mx-auto">
-        <p>
-          GOGO began in 2012, when founder P. Gopal was looking for a change from everyday life.<br />
-          He found his way to Jawadhu Hills.<br />
-          Then came the trekking. The exploration. The forests.<br />
-          The history. The observatory.<br />
-          And eventually, the fascination with astronomy.
-        </p>
-
-        <p>
-          What began as a personal escape became a place for other nature lovers, trekkers, bikers, cyclists,<br class="hidden sm:inline" />
-          photographers and campers to discover the hills too.
-        </p>
-
-        <p>
-          And GOGO is still here, doing much the same thing: getting people a little closer to nature.
-        </p>
-      </div>
-
-      <!-- Handwritten Note -->
-      <div class="pt-4 sm:pt-6">
-        <p class="font-caveat text-xl sm:text-2xl text-[#85831a]">
-          some good things start as a weekend plan.
-        </p>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ================= 10. "ENOUGH DETAIL TO ARRIVE EASY." (FIELD NOTES) ================= -->
-  <section id="fieldguide" class="py-20 sm:py-28 bg-[#111815] text-[#f8f4ea]">
-    <div class="max-w-7xl mx-auto px-6 sm:px-12 lg:px-16 space-y-10">
-      
-      <!-- Top Title & Action Button -->
-      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
-        <div class="space-y-3">
-          <div class="flex items-center gap-2">
-            <span class="w-1.5 h-1.5 rounded-full bg-[#A8462D] shrink-0"></span>
-            <span class="font-bold text-[11px] sm:text-[12px] tracking-[0.15em] uppercase text-[#c9d0c4]">THE USEFUL PAGE OF THE NOTEBOOK</span>
-          </div>
-          <h2 class="font-serif text-3xl sm:text-4xl lg:text-[46px] font-normal leading-tight text-[#f8f4ea] tracking-tight">
-            Enough detail to arrive easy.
-          </h2>
-        </div>
-
+  <!-- ================= 9. ENOUGH DETAIL TO ARRIVE EASY (FIELD NOTES) ================= -->
+  <section id="fieldguide" class="bg-[#121815] text-[#F8F4EA] pt-[105px] pb-[180px]">
+    <div class="max-w-[1042px] mx-auto px-6 lg:px-0">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-[38px] border-b border-white/20">
         <div>
-          <button onclick="openFieldGuideModal()" class="inline-flex items-center gap-2.5 bg-[#f8f4ea] hover:bg-white text-[#17201b] px-6 py-3 rounded-full font-bold text-[12px] uppercase tracking-wider transition-all shadow-md hover:scale-105 active:scale-95 cursor-pointer">
-            <span>READ THE FULL FIELD GUIDE</span>
-            <span class="text-sm font-normal">â†—</span>
-          </button>
+          <p class="flex items-center gap-2.5 text-[11px] font-bold uppercase text-[#E8E3D6]">
+            <span class="w-[7px] h-[7px] rounded-full bg-[#C25B3A]"></span>The useful page of the notebook
+          </p>
+          <h2 class="font-serif text-[34px] sm:text-[40px] leading-[46px] tracking-[-0.015em] mt-3">Enough detail to arrive easy.</h2>
+        </div>
+        <button type="button" onclick="openFieldGuideModal()" class="inline-flex items-center gap-5 h-[54px] px-6 rounded-full bg-[#F4EFE3] hover:bg-white text-[#151815] text-[14px] font-bold uppercase tracking-wide transition cursor-pointer">
+          <span>Read the full field guide</span>
+          <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-14 pt-11">
+        <div class="gg-note">
+          <h3><i data-lucide="route"></i>Getting here</h3>
+          <p>250 km from Chennai and 160 km from Bangalore, GOGO is an easy road-trip from either city. The campsite is connected by a paved highway, with the final stretch taking you into the hills.</p>
+        </div>
+        <div class="gg-note">
+          <h3><i data-lucide="calendar-days"></i>Best windows</h3>
+          <p>October&ndash;March brings clear walking weather. If you&rsquo;re coming for the stars, keep an eye on the moon phase and weather forecast. Darker, clearer nights make for better stargazing.</p>
+        </div>
+        <div class="gg-note">
+          <h3><i data-lucide="backpack"></i>Pack light, for the outdoors</h3>
+          <p>Comfortable clothes, sturdy footwear, personal toiletries, sunscreen, insect repellent and a light jacket or extra layer are a good start. Bring a torch, power bank and any personal camping essentials you don&rsquo;t want to be without.</p>
+          <p><strong class="font-bold text-[#F8F4EA]">Camping gear:</strong> Bring your own setup or rent tents and selected equipment from GOGO</p>
+        </div>
+        <div class="gg-note">
+          <h3><i data-lucide="signal-low"></i>Know before</h3>
+          <p>Mobile signal can be limited and there&rsquo;s no Wi-Fi, sort of the point. Expect uneven and rocky paths the campsite and surrounding terrain. The campsite to the forest boundary and the final 200 m parking is rocky.</p>
+          <p>Come prepared for the outdoors, not a resort.</p>
+        </div>
+        <div class="gg-note">
+          <h3><i data-lucide="backpack"></i>Kids &amp; pets</h3>
+          <p>Kids are welcome when accompanied by adults, and GOGO KT is pet-friendly. Just keep little explorers and four-legged campers supervised around uneven terrain, open areas, water and the forest boundary.</p>
+        </div>
+        <div class="gg-note">
+          <h3><i data-lucide="backpack"></i>At camp</h3>
+          <p>Depending on your campsite, GOGO provides essentials including restrooms with showers, dining areas, kitchen facilities and campfire/BBQ spaces. Tents can be rented, and equipment such as kayaks, cycles and BBQ sets is also available.</p>
+          <p>Check what&rsquo;s included with your chosen</p>
         </div>
       </div>
 
-      <!-- Divider -->
-      <div class="h-px bg-white/10"></div>
-
-      <!-- 6 Practical Detail Cards Grid (Exact match with reference image) -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 pt-2">
-        
-        <!-- 1: Getting Here -->
-        <div class="flex flex-col gap-3">
-          <div class="flex items-center gap-2.5">
-            <div class="w-5 h-5 flex items-center justify-center">
-              <i data-lucide="git-commit" class="w-4 h-4 text-[#A8462D]"></i>
-            </div>
-            <span class="font-bold text-[12px] tracking-wider uppercase text-[#f8f4ea]">GETTING HERE</span>
-          </div>
-          <p class="text-[13.5px] leading-relaxed text-[#a8b3a5] font-light">
-            250 km from Chennai and 160 km from Bangalore, GOGO is an easy road-trip from either city. The campsite is connected by a paved highway, with the final stretch taking you into the hills.
-          </p>
+      <!-- The hill, by season -->
+      <div class="mt-11 rounded-[16px] bg-[#233629] px-7 py-[26px] flex flex-col lg:flex-row lg:items-center gap-6">
+        <p class="font-caveat text-[22px] text-[#D9D42E] lg:pr-6 lg:border-r lg:border-white/20 whitespace-nowrap">the hill, by season</p>
+        <div class="grid grid-cols-2 md:grid-cols-4 flex-1">
+          <div class="gg-season"><b><i style="background:#C98A5A"></i>Oct&ndash;Jan</b><span>Clear &middot; cool &middot; stargazing</span></div>
+          <div class="gg-season"><b><i style="background:#E9E1CC"></i>Feb&ndash;Mar</b><span>Dry &middot; bright &middot; long walks</span></div>
+          <div class="gg-season"><b><i style="background:#717C69"></i>Apr&ndash;Jun</b><span>Warm &middot; flowering &middot; quiet</span></div>
+          <div class="gg-season"><b><i style="background:#6E767F"></i>Jul&ndash;Sep</b><span>Deep rain &middot; limited dates</span></div>
         </div>
-
-        <!-- 2: Best Windows -->
-        <div class="flex flex-col gap-3">
-          <div class="flex items-center gap-2.5">
-            <div class="w-5 h-5 flex items-center justify-center">
-              <i data-lucide="calendar" class="w-4 h-4 text-[#A8462D]"></i>
-            </div>
-            <span class="font-bold text-[12px] tracking-wider uppercase text-[#f8f4ea]">BEST WINDOWS</span>
-          </div>
-          <p class="text-[13.5px] leading-relaxed text-[#a8b3a5] font-light">
-            October"March brings clear walking weather. If you're coming for the stars, keep an eye on the moon phase and weather forecast. Darker, clearer nights make for better stargazing.
-          </p>
-        </div>
-
-        <!-- 3: Pack Light -->
-        <div class="flex flex-col gap-3">
-          <div class="flex items-center gap-2.5">
-            <div class="w-5 h-5 flex items-center justify-center">
-              <i data-lucide="package" class="w-4 h-4 text-[#A8462D]"></i>
-            </div>
-            <span class="font-bold text-[12px] tracking-wider uppercase text-[#f8f4ea]">PACK LIGHT, FOR THE OUTDOORS</span>
-          </div>
-          <p class="text-[13.5px] leading-relaxed text-[#a8b3a5] font-light">
-            Comfortable clothes, sturdy footwear, personal toiletries, sunscreen, insect repellent and a light jacket or extra layer are a good start. Bring a torch, power bank and any personal camping essentials you don't want to be without.<br />
-            <span class="font-medium text-[#f8f4ea] pt-2 block">Camping gear: <span class="font-light text-[#a8b3a5]">Bring your own setup or rent tents and selected equipment from GOGO</span></span>
-          </p>
-        </div>
-
-        <!-- 4: Know Before -->
-        <div class="flex flex-col gap-3">
-          <div class="flex items-center gap-2.5">
-            <div class="w-5 h-5 flex items-center justify-center">
-              <i data-lucide="alert-circle" class="w-4 h-4 text-[#A8462D]"></i>
-            </div>
-            <span class="font-bold text-[12px] tracking-wider uppercase text-[#f8f4ea]">KNOW BEFORE</span>
-          </div>
-          <p class="text-[13.5px] leading-relaxed text-[#a8b3a5] font-light">
-            Mobile signal can be limited and there's no Wi-Fi, sort of the point. Expect uneven and rocky paths the campsite and surrounding terrain. The campsite to the forest boundary and the final 200 m park is rocky.<br />
-            <span class="italic text-[#d0d8cc] block pt-2">Come prepared for the outdoors, not a resort.</span>
-          </p>
-        </div>
-
-        <!-- 5: Kids & Pets -->
-        <div class="flex flex-col gap-3">
-          <div class="flex items-center gap-2.5">
-            <div class="w-5 h-5 flex items-center justify-center">
-              <i data-lucide="paw-print" class="w-4 h-4 text-[#A8462D]"></i>
-            </div>
-            <span class="font-bold text-[12px] tracking-wider uppercase text-[#f8f4ea]">KIDS &amp; PETS</span>
-          </div>
-          <p class="text-[13.5px] leading-relaxed text-[#a8b3a5] font-light">
-            Kids are welcome when accompanied by adults, and GOGO KT is pet-friendly. Just keep little explorers and four-legged campers supervised around uneven terrain, open areas, water and the forest boundary.
-          </p>
-        </div>
-
-        <!-- 6: AT CAMP -->
-        <div class="flex flex-col gap-3">
-          <div class="flex items-center gap-2.5">
-            <div class="w-5 h-5 flex items-center justify-center">
-              <i data-lucide="tent" class="w-4 h-4 text-[#A8462D]"></i>
-            </div>
-            <span class="font-bold text-[12px] tracking-wider uppercase text-[#f8f4ea]">AT CAMP</span>
-          </div>
-          <p class="text-[13.5px] leading-relaxed text-[#a8b3a5] font-light">
-            Depending on your campsite, GOGO provides essentials including restrooms with showers, dining areas, kitchen facilities and campfire/BBQ spaces. Tents can be rented, and equipment such as kayaks, cycles and BBQ sets is also available.<br />
-            <span class="text-[#d0d8cc] block pt-2">Check what's included with your chosen</span>
-          </p>
-        </div>
-
       </div>
+    </div>
+  </section>
 
-      <!-- ================= SEASONAL WEATHER BAR (Figma exact match) ================= -->
-      <div class="mt-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 bg-[#18281f] p-5 sm:px-8 sm:py-5 rounded-2xl border border-white/10">
-        <span class="font-caveat text-2xl sm:text-[28px] text-[#d0cd2c] whitespace-nowrap">
-          the hill, by season
-        </span>
-
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 w-full md:w-auto grow md:pl-8">
-          
-          <!-- Oct"Jan -->
-          <div class="flex flex-col gap-1.5 pl-4 border-l border-[#2e4437]">
-            <div class="flex items-center gap-2">
-              <div class="w-[22px] h-[3px] bg-[#e38a58] rounded-full"></div>
-              <span class="font-bold text-[10px] uppercase text-[#f8f4ea] tracking-wider">OCT"JAN</span>
-            </div>
-            <span class="font-normal text-[12px] text-[#a8b3a5]">Clear &middot; cool &middot; stargazing</span>
+  <!-- ================= 10. WORDS CARRIED HOME (TESTIMONIALS) ================= -->
+  <section class="bg-[#E4DDCB] pt-[103px] pb-[130px]">
+    <div class="max-w-[1055px] mx-auto px-6 lg:px-0 grid grid-cols-1 lg:grid-cols-[579px_412px] justify-between gap-12">
+      <div class="pt-[48px]">
+        <p class="flex items-center gap-2.5 text-[11px] font-bold uppercase text-[#1d211c]">
+          <span class="w-[7px] h-[7px] rounded-full bg-[#C25B3A]"></span>Words carried home
+        </p>
+        <blockquote class="font-serif text-[32px] sm:text-[40px] leading-[46px] tracking-[-0.015em] text-[#121512] mt-8">
+          &ldquo;Nothing competed for our attention. By the second evening, we could tell which sound meant wind and which meant rain.&rdquo;
+        </blockquote>
+        <div class="flex items-center gap-[18px] mt-6">
+          <img src="./assests/figma/avatar-ananya.jpg" alt="Ananya R." class="w-14 h-14 rounded-full object-cover" />
+          <div>
+            <p class="text-[14px] font-bold text-[#151815]">Ananya R. &middot; Bengaluru</p>
+            <p class="text-[12px] text-[#6b6d64] mt-0.5">GOGO KT, three nights &middot; February 2026</p>
           </div>
-
-          <!-- Feb"Mar -->
-          <div class="flex flex-col gap-1.5 pl-4 border-l border-[#2e4437]">
-            <div class="flex items-center gap-2">
-              <div class="w-[22px] h-[3px] bg-[#d7cbb6] rounded-full"></div>
-              <span class="font-bold text-[10px] uppercase text-[#f8f4ea] tracking-wider">FEB"MAR</span>
-            </div>
-            <span class="font-normal text-[12px] text-[#a8b3a5]">Dry &middot; bright &middot; long walks</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-[66px]">
+          <div class="border-t border-[#a9a18e] pt-6">
+            <p class="text-[14px] leading-[22px] text-[#2a2d27]">&ldquo;The Kavalur trail felt companioned, never packaged. Mani knew when to explain and when to let the hill be.&rdquo;</p>
+            <p class="text-[9.5px] font-bold uppercase text-[#C25B3A] mt-2.5">Meera &amp; Dev &middot; Chennai</p>
           </div>
-
-          <!-- Apr"Jun -->
-          <div class="flex flex-col gap-1.5 pl-4 border-l border-[#2e4437]">
-            <div class="flex items-center gap-2">
-              <div class="w-[22px] h-[3px] bg-[#65715a] rounded-full"></div>
-              <span class="font-bold text-[10px] uppercase text-[#f8f4ea] tracking-wider">APR"JUN</span>
-            </div>
-            <span class="font-normal text-[12px] text-[#a8b3a5]">Warm &middot; flowering &middot; quiet</span>
+          <div class="border-t border-[#a9a18e] pt-6">
+            <p class="text-[14px] leading-[22px] text-[#2a2d27]">&ldquo;We still talk about the keerai, ragi mudde and that smoky tomato chutney under a sky with no edge.&rdquo;</p>
+            <p class="text-[9.5px] font-bold uppercase text-[#C25B3A] mt-2.5">Leah S. &middot; London</p>
           </div>
-
-          <!-- Jul"Sep -->
-          <div class="flex flex-col gap-1.5 pl-4 border-l border-[#2e4437]">
-            <div class="flex items-center gap-2">
-              <div class="w-[22px] h-[3px] bg-[#66707d] rounded-full"></div>
-              <span class="font-bold text-[10px] uppercase text-[#f8f4ea] tracking-wider">JUL"SEP</span>
-            </div>
-            <span class="font-normal text-[12px] text-[#a8b3a5]">Deep rain &middot; limited dates</span>
-          </div>
-
         </div>
       </div>
 
+      <div class="relative rounded-[14px] overflow-hidden aspect-[412/582]">
+        <img src="./assests/figma/food-table.jpg" alt="Shared dinner table with lanterns in the forest" class="absolute inset-0 w-full h-full object-cover" />
+        <div class="absolute left-[52px] right-[60px] bottom-[38px] rounded-[6px] bg-[#1d241d]/85 px-5 py-4">
+          <p class="font-caveat text-[22px] text-[#E8894F] leading-none">the table is part of the trail</p>
+          <p class="text-[11.5px] leading-[17px] text-white/85 mt-2.5">Kezhvaragu, field greens, wood-smoked brinjal and whatever arrived from our neighbours that morning.</p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -934,10 +637,10 @@
         <div>
           <h4 class="text-xs uppercase font-bold tracking-wider text-gogo-btnGreen mb-4">Camp Rules</h4>
           <ul class="space-y-2 text-xs text-gogo-charcoal/80">
-            <li>â€¢ Leave no trace &amp; zero plastic waste</li>
-            <li>â€¢ Respect quiet hours after 11 PM</li>
-            <li>â€¢ Supervised pet &amp; kid friendly camp</li>
-            <li>â€¢ Campfire safety strictly observed</li>
+            <li>&bull; Leave no trace &amp; zero plastic waste</li>
+            <li>&bull; Respect quiet hours after 11 PM</li>
+            <li>&bull; Supervised pet &amp; kid friendly camp</li>
+            <li>&bull; Campfire safety strictly observed</li>
           </ul>
         </div>
 
@@ -1081,11 +784,12 @@
       let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       if (diffDays < 1) diffDays = 1;
 
-      // Rate: Rs 2,400 per adult per night (inclusive of tent stay, meals, BBQ, kayak, trek)
-      const basePerPersonNight = 2400;
-      const total = diffDays * guests * basePerPersonNight;
-
-      document.getElementById('totalPriceDisplay').textContent = '\u20B9' + total.toLocaleString('en-IN');
+      // Booking bar labels in the Figma style ("Fri, 16 Oct")
+      const fmt = (d) => d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }).replace(/^(\w+)/, '$1,');
+      const guestText = guests === 1 ? '1 adult' : guests + ' adults';
+      document.getElementById('checkinLabel').textContent = fmt(checkin);
+      document.getElementById('checkoutLabel').textContent = fmt(checkout);
+      document.getElementById('nightDetails').textContent = diffDays + ' night' + (diffDays > 1 ? 's' : '') + ' \u00B7 ' + guestText + ' \u00B7 breakfast, tea & guided sunrise walk included';
     }
 
     // Modal triggers
@@ -1171,7 +875,7 @@
           noiseNode.start(0);
 
           isPlaying = true;
-          document.getElementById('audioText').textContent = 'Camp Sound: On ðŸªµ';
+          document.getElementById('audioText').textContent = 'Camp Sound: On 🪵';
           document.getElementById('audioToggleBtn').classList.add('bg-emerald-900', 'text-white');
         } catch (e) {
           console.log('Audio init error:', e);
@@ -1197,6 +901,23 @@
     }
     window.addEventListener('scroll', updateHeaderOnScroll, { passive: true });
     updateHeaderOnScroll();
+
+    // "What happens when you GOGO?": put the cream/green split across the photo row (Figma),
+    // so the glass card always shows the colour change, on every screen size
+    function placeGlassSplit() {
+      const section = document.getElementById('experience');
+      const card = document.getElementById('ggGlassCard');
+      const photos = document.getElementById('ggGlassPhotos');
+      const lastPhoto = photos.lastElementChild;
+      const top = section.getBoundingClientRect().top;
+      const split = lastPhoto.getBoundingClientRect().bottom - top - lastPhoto.offsetHeight * 0.3;
+      section.style.setProperty('--gg-split', split + 'px');
+      card.style.setProperty('--gg-split-card', (split - (card.getBoundingClientRect().top - top)) + 'px');
+    }
+    window.addEventListener('load', placeGlassSplit);
+    window.addEventListener('resize', placeGlassSplit);
+    placeGlassSplit();
   </script>
+  <script src="scroll-lock.js"></script>
 </body>
 </html>

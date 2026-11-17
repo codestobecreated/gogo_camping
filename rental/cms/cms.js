@@ -182,7 +182,17 @@ document.addEventListener("DOMContentLoaded", () => {
   renderBookingsTable();
   renderCharts();
   renderAddonInventory();
+  renderInsights();
   setupEventListeners();
+});
+
+// A login or booking on the booking site (another tab) shows up here without a manual refresh
+window.addEventListener("storage", (e) => {
+  if (e.key === "gogo_members_db") filterAndRender();
+  if (e.key === "gogo_bookings_db") {
+    bookingsData = getBookings();
+    filterAndRender();
+  }
 });
 
 function initLucideIcons() {
@@ -198,7 +208,7 @@ function renderKPIs() {
   const confirmedBookings = bookingsData.filter(b => b.status === "Confirmed").length;
   const completedBookings = bookingsData.filter(b => b.status === "Completed").length;
   const cancelledBookings = bookingsData.filter(b => b.status === "Cancelled").length;
-  const loggedInUsersCount = bookingsData.filter(b => b.isLoggedInUser !== false).length;
+  const loggedInUsersCount = getMembers().length; // every account that logged in, booked or not
   const totalCampers = bookingsData.reduce((acc, b) => acc + (b.camperCount || 1), 0);
   const totalAddonsRevenue = bookingsData.reduce((acc, b) => acc + (b.addonsSubtotal || 0), 0);
 
@@ -251,11 +261,20 @@ function renderBookingsTable() {
       ? b.addons.map(a => `${a.name} (${a.qty}×)`).join(", ")
       : "<span class='text-gray-400'>None</span>";
 
-    const statusBadge = b.status === "Confirmed"
-      ? `<span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-extrabold border border-emerald-200">Confirmed</span>`
-      : b.status === "Completed"
-      ? `<span class="px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 text-[11px] font-extrabold border border-blue-200">Completed</span>`
-      : `<span class="px-2.5 py-1 rounded-full bg-red-100 text-red-800 text-[11px] font-extrabold border border-red-200">Cancelled</span>`;
+    // Status dropdown, coloured like the old badge (green / blue / red)
+    const statusColors = {
+      Confirmed: "bg-emerald-100 text-emerald-800 border-emerald-200",
+      Completed: "bg-blue-100 text-blue-800 border-blue-200",
+      Cancelled: "bg-red-100 text-red-800 border-red-200"
+    };
+    const statusBadge = `
+      <div class="relative inline-flex items-center">
+        <select onchange="setBookingStatus('${b.id}', this.value)" aria-label="Booking status for ${b.id}"
+          class="appearance-none cursor-pointer pl-2.5 pr-7 py-1 rounded-full text-[11px] font-extrabold border focus:outline-none focus:ring-2 focus:ring-[#164e3f]/30 ${statusColors[b.status] || statusColors.Confirmed}">
+          ${["Confirmed", "Completed", "Cancelled"].map(s => `<option value="${s}" ${s === b.status ? "selected" : ""}>${s}</option>`).join("")}
+        </select>
+        <i data-lucide="chevron-down" class="w-3.5 h-3.5 absolute right-2 pointer-events-none opacity-70"></i>
+      </div>`;
 
     const userBadge = b.isLoggedInUser !== false
       ? `<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-800 text-[10px] font-bold border border-emerald-200 ml-1.5"><i data-lucide="user-check" class="w-3 h-3"></i> Member</span>`
@@ -284,9 +303,6 @@ function renderBookingsTable() {
       <td class="py-3.5 px-4 text-right space-x-1">
         <button type="button" onclick="viewBookingDetails(${index})" class="p-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-[#164e3f] transition font-bold" title="View Details">
           <i data-lucide="eye" class="w-4 h-4"></i>
-        </button>
-        <button type="button" onclick="toggleBookingStatus('${b.id}')" class="p-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 transition font-bold" title="Toggle Status (Confirmed/Completed/Cancelled)">
-          <i data-lucide="refresh-cw" class="w-4 h-4"></i>
         </button>
         <button type="button" onclick="deleteBooking('${b.id}')" class="p-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 transition font-bold" title="Delete Record">
           <i data-lucide="trash-2" class="w-4 h-4"></i>
@@ -362,13 +378,11 @@ function renderCharts() {
   if (ctxPackage) {
     if (packageChartInstance) packageChartInstance.destroy();
 
-    const pkgCounts = { "1 Person": 0, "2 Person": 0, "3 Person": 0, "4 Person": 0 };
+    const pkgCounts = { "1 Person": 0, "2 Person": 0, "3 Person": 0, "4 Person": 0, "Group (5+)": 0 };
     bookingsData.forEach(b => {
-      const name = b.packageName || "";
-      if (name.includes("1 Person")) pkgCounts["1 Person"]++;
-      else if (name.includes("2 Person")) pkgCounts["2 Person"]++;
-      else if (name.includes("3 Person")) pkgCounts["3 Person"]++;
-      else if (name.includes("4 Person")) pkgCounts["4 Person"]++;
+      const persons = b.camperCount || parseInt(b.packageName, 10) || 1;
+      if (persons >= 5) pkgCounts["Group (5+)"]++;
+      else pkgCounts[`${persons} Person`]++;
     });
 
     packageChartInstance = new Chart(ctxPackage, {
@@ -377,7 +391,7 @@ function renderCharts() {
         labels: Object.keys(pkgCounts),
         datasets: [{
           data: Object.values(pkgCounts),
-          backgroundColor: ["#10b981", "#164e3f", "#0284c7", "#f59e0b"],
+          backgroundColor: ["#10b981", "#164e3f", "#0284c7", "#f59e0b", "#a8462d"],
           borderWidth: 2,
           borderColor: "#ffffff"
         }]
@@ -400,6 +414,7 @@ function renderCharts() {
 
     const addonSales = { "Camping Chair": 0, "Sleeping Bag": 0, "LED Lantern": 0, "Rope Set": 0 };
     bookingsData.forEach(b => {
+      if (b.status === "Cancelled") return; // cancelled bookings never took the gear
       if (Array.isArray(b.addons)) {
         b.addons.forEach(item => {
           if (addonSales.hasOwnProperty(item.name)) {
@@ -465,25 +480,187 @@ function renderCharts() {
   }
 }
 
+// Sample login-only accounts (dummy data), added once alongside any real logins
+const SAMPLE_MEMBERS = [
+  { name: "Deepika Raman", phone: "9840011223", email: "deepika.raman@gmail.com", loginMethod: "Google", firstLogin: "2026-11-02T09:14:00", lastLogin: "2026-11-16T20:41:00", loginCount: 4 },
+  { name: "Harish Kannan", phone: "9003344556", email: "harish.k@yahoo.com", loginMethod: "Mobile", firstLogin: "2026-11-10T18:05:00", lastLogin: "2026-11-15T11:22:00", loginCount: 2 },
+  { name: "Sneha Iyer", phone: "9884455667", email: "sneha.iyer@outlook.com", loginMethod: "Google", firstLogin: "2026-11-14T07:48:00", lastLogin: "2026-11-14T07:48:00", loginCount: 1 },
+  { name: "Mohammed Riyaz", phone: "9566778899", email: "riyaz.m@gmail.com", loginMethod: "Mobile", firstLogin: "2026-10-28T21:30:00", lastLogin: "2026-11-12T19:05:00", loginCount: 6 },
+  { name: "Lakshmi Prabhu", phone: "9442233445", email: "lakshmi.prabhu@gmail.com", loginMethod: "Mobile", firstLogin: "2026-11-08T13:10:00", lastLogin: "2026-11-09T16:55:00", loginCount: 3 },
+  { name: "Arjun Mehta", phone: "9176655443", email: "arjun.mehta@gmail.com", loginMethod: "Google", firstLogin: "2026-11-05T10:02:00", lastLogin: "2026-11-05T10:02:00", loginCount: 1 }
+];
+
+function seedSampleMembers() {
+  if (localStorage.getItem("gogo_members_seeded")) return;
+  let saved = [];
+  try {
+    saved = JSON.parse(localStorage.getItem("gogo_members_db") || "[]");
+  } catch (e) {}
+  SAMPLE_MEMBERS.forEach(s => {
+    if (!saved.some(m => m.phone === s.phone)) saved.push(s);
+  });
+  localStorage.setItem("gogo_members_db", JSON.stringify(saved));
+  localStorage.setItem("gogo_members_seeded", "1");
+}
+
+// Logged-in members: accounts that logged in on the booking site ("gogo_members_db")
+// but have not made a single booking yet (matched to bookings by phone or email).
+function getMembers() {
+  seedSampleMembers();
+  let saved = [];
+  try {
+    saved = JSON.parse(localStorage.getItem("gogo_members_db") || "[]");
+  } catch (e) {}
+  const sameMember = (m, b) => (m.phone && m.phone === b.phone) || (m.email && m.email === b.email);
+  return saved
+    .filter(m => !bookingsData.some(b => sameMember(m, b)))
+    .sort((a, b) => String(b.lastLogin || "").localeCompare(String(a.lastLogin || "")));
+}
+
+function formatDateShort(value) {
+  if (!value) return "&ndash;";
+  const d = new Date(value);
+  if (isNaN(d)) return value;
+  return `${d.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}, ${d.toLocaleTimeString("en-IN", { hour: "numeric", minute: "2-digit" })}`;
+}
+
+function renderMembersTable(members) {
+  const tbody = document.getElementById("membersTableBody");
+  if (!tbody) return;
+  if (!members.length) {
+    tbody.innerHTML = `<tr><td colspan="7" class="text-center py-10 text-gray-400 text-sm font-medium">No logged-in accounts without a booking.</td></tr>`;
+    return;
+  }
+  const methodBadge = {
+    Google: "bg-blue-50 text-blue-700 border-blue-200",
+    Mobile: "bg-emerald-50 text-emerald-800 border-emerald-200"
+  };
+  tbody.innerHTML = members.map(m => `
+      <tr class="border-b border-gray-100 hover:bg-purple-50/40 transition text-xs">
+        <td class="py-3.5 px-4">
+          <div class="flex items-center gap-2.5">
+            <span class="w-8 h-8 rounded-full bg-purple-100 text-purple-800 font-black flex items-center justify-center">${(m.name || "?").trim().charAt(0).toUpperCase()}</span>
+            <span class="font-extrabold text-gray-900">${m.name || "&ndash;"}</span>
+          </div>
+        </td>
+        <td class="py-3.5 px-4 text-gray-600 font-medium">
+          <div>📱 +91 ${m.phone || "&ndash;"}</div>
+          <div class="text-[11px] text-gray-500">✉️ ${m.email || "&ndash;"}</div>
+        </td>
+        <td class="py-3.5 px-4"><span class="px-2 py-0.5 rounded border text-[10px] font-bold ${methodBadge[m.loginMethod] || methodBadge.Mobile}">${m.loginMethod || "Mobile"}</span></td>
+        <td class="py-3.5 px-4 text-gray-700 font-semibold">${formatDateShort(m.firstLogin)}</td>
+        <td class="py-3.5 px-4 text-gray-700 font-semibold">${formatDateShort(m.lastLogin)}</td>
+        <td class="py-3.5 px-4 font-black text-gray-900">${m.loginCount || 1}</td>
+        <td class="py-3.5 px-4"><span class="px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 text-[11px] font-extrabold">No booking yet</span></td>
+      </tr>`).join("");
+}
+
+// Insight panels under the Add-on and Payment charts.
+// Revenue and averages leave out cancelled bookings; the cancellation rate counts every booking.
+function renderInsights() {
+  const all = bookingsData;
+  const active = all.filter(b => b.status !== "Cancelled");
+  const pct = (part, whole) => (whole ? Math.round((part / whole) * 100) : 0);
+  const tile = (label, value, sub) => `
+    <div class="bg-gray-50 border border-gray-100 rounded-xl p-3">
+      <div class="text-[10px] font-bold uppercase tracking-wide text-gray-500">${label}</div>
+      <div class="text-base font-black text-gray-900 mt-0.5 leading-tight">${value}</div>
+      <div class="text-[11px] text-gray-500 font-semibold mt-0.5">${sub}</div>
+    </div>`;
+  const bar = (label, value, share, color) => `
+    <div>
+      <div class="flex justify-between text-[11px] font-bold text-gray-700 mb-1">
+        <span>${label}</span><span>${value} <span class="text-gray-400 font-semibold">&middot; ${share}%</span></span>
+      </div>
+      <div class="h-2 rounded-full bg-gray-100 overflow-hidden"><div class="h-full rounded-full" style="width:${share}%;background:${color}"></div></div>
+    </div>`;
+
+  // ---- Add-on insights ----
+  const items = window.GogoInventory ? window.GogoInventory.ITEMS : [];
+  const itemStats = items.map(item => {
+    let units = 0, revenue = 0;
+    active.forEach(b => (b.addons || []).forEach(a => {
+      if (a.name === item.name) {
+        units += a.qty || 1;
+        revenue += a.total || (a.qty || 1) * (a.unitPrice || item.price);
+      }
+    }));
+    return { name: item.name, units, revenue };
+  });
+  const addonRevenue = itemStats.reduce((s, i) => s + i.revenue, 0);
+  const totalRevenue = active.reduce((s, b) => s + (b.grandTotal || 0), 0);
+  const withAddons = active.filter(b => (b.addons || []).length > 0);
+  const top = [...itemStats].sort((a, b) => b.units - a.units)[0];
+  const addonColors = ["#164e3f", "#0f766e", "#10b981", "#6ee7b7"];
+
+  const addonTiles = document.getElementById("addonInsightTiles");
+  if (addonTiles) {
+    addonTiles.innerHTML =
+      tile("Top seller", top && top.units ? top.name : "&ndash;", top && top.units ? `${top.units} units rented` : "No add-ons yet") +
+      tile("Attach rate", `${pct(withAddons.length, active.length)}%`, `${withAddons.length} of ${active.length} bookings`) +
+      tile("Avg add-on spend", formatINR(withAddons.length ? Math.round(addonRevenue / withAddons.length) : 0), "per booking with add-ons") +
+      tile("Share of revenue", `${pct(addonRevenue, totalRevenue)}%`, `${formatINR(addonRevenue)} from add-ons`);
+  }
+  const addonBars = document.getElementById("addonRevenueBars");
+  if (addonBars) {
+    addonBars.innerHTML = [...itemStats]
+      .sort((a, b) => b.revenue - a.revenue)
+      .map((i, n) => bar(i.name, formatINR(i.revenue), pct(i.revenue, addonRevenue), addonColors[n % addonColors.length]))
+      .join("");
+  }
+
+  // ---- Booking insights ----
+  const campers = active.reduce((s, b) => s + (b.camperCount || 1), 0);
+  const cancelled = all.filter(b => b.status === "Cancelled").length;
+  const members = active.filter(b => b.isLoggedInUser !== false).length;
+
+  const bookingTiles = document.getElementById("bookingInsightTiles");
+  if (bookingTiles) {
+    bookingTiles.innerHTML =
+      tile("Avg booking value", formatINR(active.length ? Math.round(totalRevenue / active.length) : 0), `${active.length} paid bookings`) +
+      tile("Avg group size", `${active.length ? (campers / active.length).toFixed(1) : 0} campers`, `${campers} campers in total`) +
+      tile("Cancellation rate", `${pct(cancelled, all.length)}%`, `${cancelled} of ${all.length} bookings`) +
+      tile("Member bookings", `${pct(members, active.length)}%`, `${active.length - members} guest bookings`);
+  }
+  const methodColors = { "Card / ATM": "#164e3f", "UPI / GPay": "#0284c7", "QR Code Pay": "#8b5cf6", "Net Banking": "#f59e0b" };
+  const byMethod = {};
+  active.forEach(b => {
+    const m = b.paymentMethod || "Card / ATM";
+    byMethod[m] = byMethod[m] || { count: 0, revenue: 0 };
+    byMethod[m].count++;
+    byMethod[m].revenue += b.grandTotal || 0;
+  });
+  const paymentBars = document.getElementById("paymentRevenueBars");
+  if (paymentBars) {
+    paymentBars.innerHTML = Object.entries(byMethod)
+      .sort((a, b) => b[1].revenue - a[1].revenue)
+      .map(([m, v]) => bar(`${m} <span class="text-gray-400 font-semibold">(${v.count})</span>`, formatINR(v.revenue), pct(v.revenue, totalRevenue), methodColors[m] || "#6b7280"))
+      .join("") || `<p class="text-xs text-gray-400">No paid bookings yet</p>`;
+  }
+
+  initLucideIcons();
+}
+
 // Render Add-on Accessories Inventory Table
 function renderAddonInventory() {
   const inventoryContainer = document.getElementById("addonInventoryGrid");
   if (!inventoryContainer) return;
 
-  const addonsList = [
-    { id: "chair", name: "Camping Chair", price: 1200, image: "../chair.jpg", stock: 45 },
-    { id: "sleeping_bag", name: "Sleeping Bag", price: 1500, image: "../sleeping_bag.jpg", stock: 30 },
-    { id: "lantern", name: "LED Lantern", price: 800, image: "../lantern.jpg", stock: 60 },
-    { id: "rope", name: "Rope Set", price: 600, image: "../rope.jpg", stock: 80 }
-  ];
+  const inventory = window.GogoInventory;
+  const stock = inventory.getStock();
+  // Product images live in the rental folder: "../" from cms/index.html, "" from cms.html
+  const imageBase = location.pathname.includes("/cms/") ? "../" : "";
+  let outOfStockCount = 0;
 
   inventoryContainer.innerHTML = "";
 
-  addonsList.forEach(item => {
+  inventory.ITEMS.forEach(item => {
     let unitsSold = 0;
     let itemRevenue = 0;
 
     bookingsData.forEach(b => {
+      // Cancelled bookings never took the gear, so they are not counted as rented
+      if (b.status === "Cancelled") return;
       if (Array.isArray(b.addons)) {
         b.addons.forEach(a => {
           if (a.name === item.name) {
@@ -494,26 +671,82 @@ function renderAddonInventory() {
       }
     });
 
+    const inUse = inventory.inUse(item.id, bookingsData);
+    const available = Math.max(0, stock[item.id] - inUse);
+    const isOut = available === 0;
+    const isLow = !isOut && available <= inventory.LOW_STOCK;
+    if (isOut) outOfStockCount++;
+
+    const badge = isOut
+      ? `<span class="text-[10px] font-black uppercase text-red-700 bg-red-100 px-2 py-0.5 rounded">Out of stock</span>`
+      : isLow
+        ? `<span class="text-[10px] font-black uppercase text-amber-800 bg-amber-100 px-2 py-0.5 rounded">Low stock</span>`
+        : `<span class="text-[10px] font-black uppercase text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">In stock</span>`;
+
     const card = document.createElement("div");
-    card.className = "bg-white p-4 rounded-2xl border border-gray-200 shadow-2xs flex items-center justify-between gap-4";
+    card.className = `p-4 rounded-2xl border shadow-2xs space-y-3 ${isOut ? "bg-red-50/60 border-red-200" : "bg-white border-gray-200"}`;
     card.innerHTML = `
-      <div class="flex items-center gap-3">
-        <img src="${item.image}" alt="${item.name}" class="w-12 h-12 rounded-xl object-cover border border-gray-200 shadow-2xs">
-        <div>
-          <h4 class="text-sm font-extrabold text-gray-900">${item.name}</h4>
-          <span class="text-xs text-gray-500 font-semibold">${formatINR(item.price)} / unit</span>
+      <div class="flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <img src="${imageBase}${item.image}" alt="${item.name}" class="w-12 h-12 rounded-xl object-cover border border-gray-200 shadow-2xs ${isOut ? "grayscale opacity-60" : ""}">
+          <div>
+            <h4 class="text-sm font-extrabold text-gray-900 flex items-center gap-2">${item.name} ${badge}</h4>
+            <span class="text-xs text-gray-500 font-semibold">${formatINR(item.price)} / unit</span>
+          </div>
+        </div>
+
+        <div class="text-right">
+          <div class="text-sm font-black text-[#164e3f]">${unitsSold} Rented</div>
+          ${unitsSold > inUse ? `<div class="text-[11px] font-semibold text-gray-500">${inUse} out now &middot; ${unitsSold - inUse} returned</div>` : ""}
+          <div class="text-xs font-bold text-gray-500">${formatINR(itemRevenue)} total</div>
         </div>
       </div>
 
-      <div class="text-right">
-        <div class="text-sm font-black text-[#164e3f]">${unitsSold} Rented</div>
-        <div class="text-xs font-bold text-gray-500">${formatINR(itemRevenue)} total</div>
+      <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-gray-100">
+        <label class="flex items-center gap-2 text-xs font-bold text-gray-600">
+          Stock
+          <span class="flex items-center gap-1 bg-gray-100 px-1.5 py-1 rounded-lg border border-gray-200">
+            <button type="button" class="stock-step w-6 h-6 rounded bg-white border border-gray-300 font-extrabold text-gray-800 hover:bg-gray-200" data-id="${item.id}" data-step="-1" title="Decrease stock">-</button>
+            <input type="number" min="0" value="${stock[item.id]}" class="stock-input w-14 text-center text-sm font-black text-gray-900 bg-transparent focus:outline-none" data-id="${item.id}" aria-label="${item.name} stock">
+            <button type="button" class="stock-step w-6 h-6 rounded bg-[#164e3f] text-white font-extrabold hover:bg-[#0f382d]" data-id="${item.id}" data-step="1" title="Increase stock">+</button>
+          </span>
+        </label>
+        <div class="text-xs font-bold text-gray-500">
+          In use: <span class="text-gray-900">${inUse}</span>
+          <span class="mx-1.5 text-gray-300">|</span>
+          Available: <span class="${isOut ? "text-red-600" : isLow ? "text-amber-700" : "text-[#164e3f]"} font-black">${isOut ? "0 &middot; Out of stock" : available}</span>
+        </div>
       </div>
     `;
 
     inventoryContainer.appendChild(card);
   });
+
+  // Header badge: overall stock state
+  const statusBadge = document.getElementById("inventoryStatusBadge");
+  if (statusBadge) {
+    statusBadge.textContent = outOfStockCount ? `${outOfStockCount} out of stock` : "In stock";
+    statusBadge.className = outOfStockCount
+      ? "text-[10px] font-black uppercase text-red-700 bg-red-100 px-2 py-0.5 rounded"
+      : "text-[10px] font-black uppercase text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded";
+  }
 }
+
+// Admin sets the stock for each gear item (− / + buttons or typing a number)
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest(".stock-step");
+  if (!btn) return;
+  const id = btn.dataset.id;
+  window.GogoInventory.setStock(id, window.GogoInventory.getStock()[id] + Number(btn.dataset.step));
+  renderAddonInventory();
+});
+
+document.addEventListener("change", (e) => {
+  const input = e.target.closest(".stock-input");
+  if (!input) return;
+  window.GogoInventory.setStock(input.dataset.id, input.value);
+  renderAddonInventory();
+});
 
 // View Details Modal Popup
 window.viewBookingDetails = function(index) {
@@ -567,13 +800,11 @@ window.viewBookingDetails = function(index) {
   initLucideIcons();
 };
 
-// Toggle Booking Status (Confirmed -> Completed -> Cancelled -> Confirmed)
-window.toggleBookingStatus = function(id) {
+// Set Booking Status from the status dropdown (Confirmed / Completed / Cancelled)
+window.setBookingStatus = function(id, status) {
   const b = bookingsData.find(item => item.id === id);
-  if (b) {
-    if (b.status === "Confirmed") b.status = "Completed";
-    else if (b.status === "Completed") b.status = "Cancelled";
-    else b.status = "Confirmed";
+  if (b && b.status !== status) {
+    b.status = status;
 
     saveBookings(bookingsData);
     filterAndRender();
@@ -616,6 +847,21 @@ function filterAndRender() {
   renderBookingsTable();
   renderCharts();
   renderAddonInventory();
+  renderInsights();
+
+  // "Logged-in Members" tab shows the members table instead of the bookings table
+  const showMembers = currentFilterStatus === "loggedin";
+  document.getElementById("bookingsTableWrap")?.classList.toggle("hidden", showMembers);
+  document.getElementById("membersTableWrap")?.classList.toggle("hidden", !showMembers);
+  if (showMembers) {
+    const members = getMembers().filter(m => !searchTerm ||
+      (m.name || "").toLowerCase().includes(searchTerm) ||
+      (m.phone || "").includes(searchTerm) ||
+      (m.email || "").toLowerCase().includes(searchTerm));
+    renderMembersTable(members);
+    const countBadge = document.getElementById("tableBookingCount");
+    if (countBadge) countBadge.textContent = `${members.length} Member${members.length !== 1 ? "s" : ""}`;
+  }
 }
 
 // Setup Event Listeners
@@ -658,8 +904,44 @@ function setupEventListeners() {
   const closeAddBookingModalBtn = document.getElementById("closeAddBookingModalBtn");
   const addBookingForm = document.getElementById("addBookingForm");
 
+  // Package -> camper count: fixed packages set the count, "Custom / Group" lets the admin type 5 or more
+  const pkgSelect = document.getElementById("newCamperPkg");
+  const qtyInput = document.getElementById("newCamperQty");
+  const qtyHint = document.getElementById("newCamperQtyHint");
+  const totalEl = document.getElementById("newBookingTotal");
+  // enforceMin: false while the admin is typing, so "12" can be typed (it passes through "" and "1")
+  function syncAddBookingForm(enforceMin = true) {
+    if (!pkgSelect || !qtyInput) return;
+    const isCustom = pkgSelect.value === "custom";
+    if (isCustom) {
+      qtyInput.readOnly = false;
+      qtyInput.min = 5;
+      if (enforceMin && !(parseInt(qtyInput.value, 10) >= 5)) qtyInput.value = 5;
+      if (qtyHint) qtyHint.textContent = "(5 or more)";
+    } else {
+      qtyInput.readOnly = true;
+      qtyInput.min = 1;
+      qtyInput.value = pkgSelect.selectedOptions[0].dataset.persons;
+      if (qtyHint) qtyHint.textContent = "(set by package)";
+    }
+    const campers = parseInt(qtyInput.value, 10) || 0;
+    if (!totalEl) return;
+    totalEl.textContent = isCustom && campers < 5
+      ? "Enter 5 or more campers"
+      : `${formatINR(campers * 2399)}${isCustom ? ` (${campers} × ₹2,399)` : ""}`;
+  }
+  if (pkgSelect) pkgSelect.addEventListener("change", () => syncAddBookingForm());
+  if (qtyInput) {
+    qtyInput.addEventListener("input", () => syncAddBookingForm(false));
+    qtyInput.addEventListener("change", () => syncAddBookingForm());
+  }
+  syncAddBookingForm();
+
   if (addBookingBtn && addBookingModal) {
-    addBookingBtn.addEventListener("click", () => addBookingModal.classList.remove("hidden"));
+    addBookingBtn.addEventListener("click", () => {
+      syncAddBookingForm();
+      addBookingModal.classList.remove("hidden");
+    });
   }
   if (closeAddBookingModalBtn && addBookingModal) {
     closeAddBookingModalBtn.addEventListener("click", () => addBookingModal.classList.add("hidden"));
@@ -671,8 +953,14 @@ function setupEventListeners() {
       const name = document.getElementById("newCamperName")?.value || "Camper Guest";
       const phone = document.getElementById("newCamperPhone")?.value || "9876543210";
       const email = document.getElementById("newCamperEmail")?.value || "guest@gogocamping.in";
-      const pkg = document.getElementById("newCamperPkg")?.value || "1 Person Camping Tent";
-      const campers = parseInt(document.getElementById("newCamperQty")?.value || "1", 10);
+      const pkgValue = document.getElementById("newCamperPkg")?.value || "1 Person Camping Tent";
+      const campers = Math.max(1, parseInt(document.getElementById("newCamperQty")?.value || "1", 10) || 1);
+      if (pkgValue === "custom" && campers < 5) {
+        showToast("Custom / Group booking needs 5 or more campers");
+        return;
+      }
+      // Same package name the rental page uses for group bookings, e.g. "6 Person Camping Tent"
+      const pkg = pkgValue === "custom" ? `${campers} Person Camping Tent` : pkgValue;
       const paymentMethod = document.getElementById("newCamperPay")?.value || "Card / ATM";
 
       const newRecord = {
@@ -698,6 +986,7 @@ function setupEventListeners() {
       filterAndRender();
       if (addBookingModal) addBookingModal.classList.add("hidden");
       addBookingForm.reset();
+      syncAddBookingForm();
       showToast(`✓ New offline booking added for ${name}`);
     });
   }
