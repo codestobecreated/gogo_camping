@@ -874,14 +874,26 @@ function setupEventListeners() {
 
   // Filter Status Buttons
   const filterBtns = document.querySelectorAll(".table-filter-btn");
+  // Remember each tab's own colours (e.g. red Cancelled, purple Members) so they come back when not selected
+  filterBtns.forEach(btn => {
+    if (!btn.dataset.baseClass) {
+      const base = btn.className.split(/\s+/).filter(c => !["bg-[#164e3f]", "text-white", "shadow-2xs"].includes(c));
+      // the tab that starts selected ("All Bookings") has no colours of its own yet
+      if (!base.some(c => /^text-/.test(c))) base.push("text-gray-600", "hover:bg-gray-200");
+      btn.dataset.baseClass = base.join(" ");
+    }
+  });
   filterBtns.forEach(btn => {
     btn.addEventListener("click", () => {
       filterBtns.forEach(b => {
-        b.classList.remove("bg-[#164e3f]", "text-white", "shadow-2xs");
-        b.classList.add("text-gray-600", "hover:bg-gray-200");
+        b.className = b.dataset.baseClass;
       });
-      btn.classList.remove("text-gray-600", "hover:bg-gray-200");
-      btn.classList.add("bg-[#164e3f]", "text-white", "shadow-2xs");
+      // Selected tab: drop its own text / hover colours so the white text stays readable
+      btn.className = btn.dataset.baseClass
+        .split(/\s+/)
+        .filter(c => !/^(text-(gray|red|purple)-\d+|hover:bg-\S+)$/.test(c))
+        .concat(["bg-[#164e3f]", "text-white", "shadow-2xs"])
+        .join(" ");
 
       currentFilterStatus = btn.getAttribute("data-status");
       filterAndRender();
