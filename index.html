@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="tablet-zoom.js?v=2"></script>
+  <script src="tablet-zoom.js?v=3"></script>
   <title>GOGO Camping &mdash; Jawadhu Hills | Where the Wi-Fi gets weak and the stories get good</title>
   <meta name="description" content="A small-footprint camp in the Jawadhu highlands (Eastern Ghats). Starry nights, campfires, kayaking, trekking, and astro-camping." />
 
@@ -910,13 +910,16 @@
       const card = document.getElementById('ggGlassCard');
       const photos = document.getElementById('ggGlassPhotos');
       const lastPhoto = photos.lastElementChild;
+      // rects are in screen px; divide by the page zoom (tablet-zoom.js) to get CSS px
+      const z = (lastPhoto.getBoundingClientRect().height / lastPhoto.offsetHeight) || 1;
       const top = section.getBoundingClientRect().top;
-      const split = lastPhoto.getBoundingClientRect().bottom - top - lastPhoto.offsetHeight * 0.3;
+      const split = (lastPhoto.getBoundingClientRect().bottom - top) / z - lastPhoto.offsetHeight * 0.3;
       section.style.setProperty('--gg-split', split + 'px');
-      card.style.setProperty('--gg-split-card', (split - (card.getBoundingClientRect().top - top)) + 'px');
+      card.style.setProperty('--gg-split-card', (split - (card.getBoundingClientRect().top - top) / z) + 'px');
     }
     window.addEventListener('load', placeGlassSplit);
     window.addEventListener('resize', placeGlassSplit);
+    window.addEventListener('gg-zoom-change', placeGlassSplit);
     placeGlassSplit();
   </script>
   <script src="scroll-lock.js"></script>
