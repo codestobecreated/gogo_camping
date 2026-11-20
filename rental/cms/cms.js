@@ -168,12 +168,147 @@ let addonsChartInstance = null;
 let paymentChartInstance = null;
 
 // Currency Formatter
+// ===== Pricing & GST panel (saved via rental/pricing.js -> booking page updates live) =====
+function renderPricingPanel() {
+  const P = window.GogoPricing;
+  const wrap = document.getElementById("pricingTierInputs");
+  if (!P || !wrap) return;
+  const cfg = P.get();
+  const field = (label, sub, id, value, prefix) => `
+    <label class="block bg-gray-50 border border-gray-200 rounded-xl p-3">
+      <span class="block text-[11px] font-extrabold text-gray-800">${label}</span>
+      <span class="block text-[10px] text-gray-500 mb-1.5">${sub}</span>
+      <span class="flex items-center gap-1 bg-white border border-gray-300 rounded-lg px-2 focus-within:border-[#164e3f]">
+        <span class="text-xs font-bold text-gray-500">${prefix}</span>
+        <input type="number" min="1" step="1" id="${id}" value="${value}" class="pricing-input w-full py-1.5 text-sm font-black text-[#164e3f] focus:outline-none bg-transparent">
+      </span>
+    </label>`;
+  wrap.innerHTML = cfg.tiers.map((t, i) => {
+    const disc = i > 0 && cfg.tiers[0].rate > t.rate ? `${Math.round((1 - t.rate / cfg.tiers[0].rate) * 100)}% off` : "base rate";
+    return field(P.tierLabel(t), `per person + GST · ${disc}`, `tierRate${i}`, t.rate, "₹");
+  }).join("") + field("GST", "added at checkout", "gstPctInput", cfg.gstPct, "%");
+  wrap.querySelectorAll(".pricing-input").forEach((inp) => inp.addEventListener("input", updatePricingPreview));
+  const badge = document.getElementById("pricingUpdatedBadge");
+  if (badge) badge.textContent = cfg.updatedAt ? `Updated ${new Date(cfg.updatedAt).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}` : "Default prices";
+  updatePricingPreview();
+  syncPackageOptionLabels();
+}
+
+function readPricingInputs() {
+  const cfg = window.GogoPricing.get();
+  cfg.tiers.forEach((t, i) => { t.rate = Math.round(Number(document.getElementById(`tierRate${i}`)?.value)); });
+  cfg.gstPct = Number(document.getElementById("gstPctInput")?.value);
+  return cfg;
+}
+
+function updatePricingPreview() {
+  const el = document.getElementById("pricingPreview");
+  if (!el) return;
+  const cfg = readPricingInputs();
+  const r = cfg.tiers[0].rate, g = Math.round(r * cfg.gstPct / 100);
+  el.innerHTML = Number.isFinite(r) && r > 0 && Number.isFinite(g)
+    ? `Example: 1 person = <b>${formatINR(r)}</b> + ${formatINR(g)} GST (${cfg.gstPct}%) = <b>${formatINR(r + g)}</b>`
+    : `<span class="text-red-600 font-bold">Enter valid prices</span>`;
+}
+
+function syncPackageOptionLabels() {
+  const sel = document.getElementById("newCamperPkg");
+  if (!sel || !window.GogoPricing) return;
+  [...sel.options].forEach((o) => {
+    const n = parseInt(o.dataset.persons, 10);
+    if (n) o.textContent = `${n} Person Camping Tent (${formatINR(window.GogoPricing.quote(n).subtotal)} + GST)`;
+  });
+}
+
+document.addEventListener("click", (e) => {
+  if (e.target.closest("#savePricingBtn")) {
+    try {
+      window.GogoPricing.save(readPricingInputs());
+      renderPricingPanel();
+      showToast("✓ Pricing saved – booking page updated");
+    } catch (err) {
+      showToast("Please enter valid prices (GST 0–50%)");
+    }
+  }
+  if (e.target.closest("#resetPricingBtn")) {
+    window.GogoPricing.reset();
+    renderPricingPanel();
+    showToast("Pricing reset to default");
+  }
+});
+if (window.GogoPricing) window.GogoPricing.onChange(() => renderPricingPanel());
+
+// ID verification: team leader ID at booking; every other camper gets a WhatsApp link
+// (24h before check-in) to upload their Aadhaar photo on rental/id-upload.html
+const ID_UPLOADS_KEY = "gogo_id_uploads";
+function getIdUploads() {
+  try { return JSON.parse(localStorage.getItem(ID_UPLOADS_KEY) || "{}"); } catch (e) { return {}; }
+}
+function idUploadLink(b, camper) {
+  const u = new URL("/rental/id-upload.html", location.origin);
+  u.searchParams.set("b", b.id);
+  u.searchParams.set("c", camper.no);
+  if (camper.name) u.searchParams.set("n", camper.name);
+  if (b.tripDate) u.searchParams.set("d", b.tripDate);
+  return u.toString();
+}
+function camperIdMessage(b, camper) {
+  return `Hi ${camper.name || "Camper"}, this is GOGOCamping. You are camping with ${b.leadName} on ${b.tripDate} (booking ${b.id}). ` +
+    `Aadhaar is mandatory for campsite entry – please upload a photo of your Aadhaar card here: ${idUploadLink(b, camper)}`;
+}
+function bookingCampersWithStatus(b) {
+  const uploads = getIdUploads();
+  const list = Array.isArray(b.campers) && b.campers.length
+    ? b.campers
+    : Array.from({ length: b.otherCampersIdPending || 0 }, (_, i) => ({ no: i + 2, name: "", age: "", phone: "" }));
+  return list.map((cp) => {
+    const up = uploads[`${b.id}|${cp.no}`];
+    return Object.assign({}, cp, { upload: up || null, idStatus: up ? "Uploaded" : (cp.reminderSentAt ? "Link sent" : "Pending") });
+  });
+}
+function idStatusBadge(b) {
+  if (!b.leadIdProof && !b.idReminderStatus) return "";
+  const lead = b.leadIdProof
+    ? `<span class="px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200">Leader ID ✓</span>`
+    : `<span class="px-1.5 py-0.5 rounded bg-red-50 text-red-700 border border-red-200">Leader ID missing</span>`;
+  const campers = bookingCampersWithStatus(b);
+  let rest = "";
+  if (campers.length) {
+    const done = campers.filter(x => x.upload).length;
+    const due = b.idReminderAt ? new Date(b.idReminderAt) : null;
+    const when = done === campers.length ? "all uploaded" : due && due <= new Date() ? "WhatsApp due now" : `WhatsApp ${due ? due.toLocaleString("en-IN", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" }) : "24h before"}`;
+    rest = `<span class="px-1.5 py-0.5 rounded border ${done === campers.length ? "bg-emerald-50 text-emerald-800 border-emerald-200" : "bg-amber-50 text-amber-800 border-amber-200"}">${done}/${campers.length} camper IDs · ${when}</span>`;
+  }
+  return `<div class="flex flex-wrap gap-1 mt-1 text-[10px] font-bold">${lead}${rest}</div>`;
+}
+
+window.markCamperLinkSent = function (bookingId, no) {
+  const rec = bookingsData.find(x => x.id === bookingId);
+  if (!rec) return;
+  if (!Array.isArray(rec.campers) || !rec.campers.length) rec.campers = bookingCampersWithStatus(rec).map(({ upload, idStatus, ...cp }) => cp);
+  const cp = rec.campers.find(x => x.no === no);
+  if (cp) cp.reminderSentAt = new Date().toISOString();
+  if (rec.campers.every(x => x.reminderSentAt)) { rec.idReminderStatus = "Sent"; rec.idReminderSentAt = new Date().toISOString(); }
+  saveBookings(bookingsData);
+  filterAndRender();
+  const idx = filteredBookings.findIndex(x => x.id === bookingId);
+  if (idx >= 0) viewBookingDetails(idx);
+};
+
+window.openIdImage = function (key) {
+  const up = getIdUploads()[key];
+  if (!up) return;
+  const w = window.open("", "_blank");
+  if (w) { w.document.title = up.fileName || "Aadhaar"; w.document.body.style.margin = "0"; w.document.body.innerHTML = `<img src="${up.dataUrl}" style="max-width:100%;display:block;margin:auto">`; }
+};
+
 function formatINR(amount) {
   return "₹" + Number(amount || 0).toLocaleString("en-IN");
 }
 
 // Initialize Dashboard
 document.addEventListener("DOMContentLoaded", () => {
+  renderPricingPanel();
   bookingsData = getBookings();
   filteredBookings = [...bookingsData];
   
@@ -257,9 +392,10 @@ function renderBookingsTable() {
     const tr = document.createElement("tr");
     tr.className = "hover:bg-slate-50/80 transition duration-150 text-xs border-b border-gray-100";
 
-    const addonsText = Array.isArray(b.addons) && b.addons.length > 0
+    const kidsBadge = b.kidsUnder4 ? `<span class='inline-block mr-1 px-1.5 py-0.5 rounded text-[10px] font-extrabold bg-amber-100 text-amber-800'>+${b.kidsUnder4} kid${b.kidsUnder4 > 1 ? "s" : ""} &lt;4</span>` : "";
+    const addonsText = kidsBadge + `${b.food ? `<span class='inline-block mr-1 px-1.5 py-0.5 rounded text-[10px] font-extrabold ${b.food === 'Veg' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}'>${b.food}</span>` : ''}` + (Array.isArray(b.addons) && b.addons.length > 0
       ? b.addons.map(a => `${a.name} (${a.qty}×)`).join(", ")
-      : "<span class='text-gray-400'>None</span>";
+      : (b.food ? "" : "<span class='text-gray-400'>None</span>"));
 
     // Status dropdown, coloured like the old badge (green / blue / red)
     const statusColors = {
@@ -287,11 +423,13 @@ function renderBookingsTable() {
           <span class="font-extrabold text-gray-900">${b.leadName}</span>
           ${userBadge}
         </div>
-        <div class="text-[11px] text-gray-500 font-medium mt-0.5">📱 +91 ${b.phone} | ✉️ ${b.email}</div>
+        <div class="text-[11px] text-gray-500 font-medium mt-0.5">📱 +91 ${b.phone}${b.altPhone ? ` / ${b.altPhone}` : ""} | ✉️ ${b.email}</div>
+        ${idStatusBadge(b)}
       </td>
       <td class="py-3.5 px-4">
-        <div class="font-bold text-gray-800">${b.packageName}</div>
+        <div class="font-bold text-gray-800">${b.type === "event" ? `<span class="inline-block mr-1 px-1.5 py-0.5 rounded bg-purple-100 text-purple-800 text-[10px] font-extrabold align-middle">EVENT</span>` : ""}${b.packageName}</div>
         <div class="text-[11px] text-emerald-800 font-extrabold">${b.camperCount} Camper${b.camperCount > 1 ? 's' : ''}</div>
+        ${(b.events || []).length || (b.activities || []).length ? `<div class="flex flex-wrap gap-1 mt-1">${(b.events || []).map(ev => `<span class="px-1.5 py-0.5 rounded bg-purple-100 text-purple-800 text-[10px] font-extrabold">✨ ${ev.name}</span>`).join("")}${(b.activities || []).map(a => `<span class="px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 text-[10px] font-extrabold">${a.name}</span>`).join("")}</div>` : ""}
       </td>
       <td class="py-3.5 px-4 text-gray-700 font-medium max-w-[180px] truncate">${addonsText}</td>
       <td class="py-3.5 px-4 font-black text-[#164e3f] text-sm">${formatINR(b.grandTotal)}</td>
@@ -407,42 +545,27 @@ function renderCharts() {
     });
   }
 
-  // Chart 3: Add-on Accessories Performance (Bar)
+  // Chart 3: Food preference (campers per Veg / Non-Veg)
   const ctxAddons = document.getElementById("chartAddons")?.getContext("2d");
   if (ctxAddons) {
     if (addonsChartInstance) addonsChartInstance.destroy();
-
-    const addonSales = { "Camping Chair": 0, "Sleeping Bag": 0, "LED Lantern": 0, "Rope Set": 0 };
+    const food = { "Veg": 0, "Non-Veg": 0, "Not recorded": 0 };
     bookingsData.forEach(b => {
-      if (b.status === "Cancelled") return; // cancelled bookings never took the gear
-      if (Array.isArray(b.addons)) {
-        b.addons.forEach(item => {
-          if (addonSales.hasOwnProperty(item.name)) {
-            addonSales[item.name] += item.qty || 1;
-          }
-        });
-      }
+      if (b.status === "Cancelled") return;
+      const key = b.food === "Veg" || b.food === "Non-Veg" ? b.food : "Not recorded";
+      food[key] += b.camperCount || 1;
     });
-
     addonsChartInstance = new Chart(ctxAddons, {
-      type: "bar",
+      type: "doughnut",
       data: {
-        labels: Object.keys(addonSales),
-        datasets: [{
-          label: "Units Sold",
-          data: Object.values(addonSales),
-          backgroundColor: ["#164e3f", "#0d7a57", "#10b981", "#34d399"],
-          borderRadius: 8
-        }]
+        labels: Object.keys(food),
+        datasets: [{ data: Object.values(food), backgroundColor: ["#16a34a", "#b91c1c", "#d1d5db"], borderWidth: 2 }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-          y: { beginAtZero: true, grid: { color: "#f1f5f9" } },
-          x: { grid: { display: false } }
-        }
+        plugins: { legend: { position: "bottom", labels: { font: { size: 11 } } } },
+        cutout: "68%"
       }
     });
   }
@@ -575,38 +698,27 @@ function renderInsights() {
       <div class="h-2 rounded-full bg-gray-100 overflow-hidden"><div class="h-full rounded-full" style="width:${share}%;background:${color}"></div></div>
     </div>`;
 
-  // ---- Add-on insights ----
-  const items = window.GogoInventory ? window.GogoInventory.ITEMS : [];
-  const itemStats = items.map(item => {
-    let units = 0, revenue = 0;
-    active.forEach(b => (b.addons || []).forEach(a => {
-      if (a.name === item.name) {
-        units += a.qty || 1;
-        revenue += a.total || (a.qty || 1) * (a.unitPrice || item.price);
-      }
-    }));
-    return { name: item.name, units, revenue };
-  });
-  const addonRevenue = itemStats.reduce((s, i) => s + i.revenue, 0);
+  // ---- Guest insights (food + children under 4) ----
   const totalRevenue = active.reduce((s, b) => s + (b.grandTotal || 0), 0);
-  const withAddons = active.filter(b => (b.addons || []).length > 0);
-  const top = [...itemStats].sort((a, b) => b.units - a.units)[0];
-  const addonColors = ["#164e3f", "#0f766e", "#10b981", "#6ee7b7"];
-
+  const campersOf = (f) => active.filter(b => b.food === f).reduce((s, b) => s + (b.camperCount || 1), 0);
+  const veg = campersOf("Veg"), nonVeg = campersOf("Non-Veg");
+  const recorded = veg + nonVeg;
+  const kids = active.reduce((s, b) => s + (b.kidsUnder4 || 0), 0);
+  const withKids = active.filter(b => (b.kidsUnder4 || 0) > 0).length;
+  const gstCollected = active.reduce((s, b) => s + (b.gstAmount || 0), 0);
   const addonTiles = document.getElementById("addonInsightTiles");
   if (addonTiles) {
     addonTiles.innerHTML =
-      tile("Top seller", top && top.units ? top.name : "&ndash;", top && top.units ? `${top.units} units rented` : "No add-ons yet") +
-      tile("Attach rate", `${pct(withAddons.length, active.length)}%`, `${withAddons.length} of ${active.length} bookings`) +
-      tile("Avg add-on spend", formatINR(withAddons.length ? Math.round(addonRevenue / withAddons.length) : 0), "per booking with add-ons") +
-      tile("Share of revenue", `${pct(addonRevenue, totalRevenue)}%`, `${formatINR(addonRevenue)} from add-ons`);
+      tile("Veg campers", `${pct(veg, recorded)}%`, `${veg} of ${recorded} campers`) +
+      tile("Non-Veg campers", `${pct(nonVeg, recorded)}%`, `${nonVeg} of ${recorded} campers`) +
+      tile("Children under 4", `${kids}`, `free · in ${withKids} booking${withKids === 1 ? "" : "s"}`) +
+      tile("GST collected", formatINR(gstCollected), "from online bookings");
   }
   const addonBars = document.getElementById("addonRevenueBars");
   if (addonBars) {
-    addonBars.innerHTML = [...itemStats]
-      .sort((a, b) => b.revenue - a.revenue)
-      .map((i, n) => bar(i.name, formatINR(i.revenue), pct(i.revenue, addonRevenue), addonColors[n % addonColors.length]))
-      .join("");
+    addonBars.innerHTML = recorded
+      ? bar("Veg", `${veg} campers`, pct(veg, recorded), "#16a34a") + bar("Non-Veg", `${nonVeg} campers`, pct(nonVeg, recorded), "#b91c1c")
+      : `<p class="text-xs text-gray-400">No food choices recorded yet</p>`;
   }
 
   // ---- Booking insights ----
@@ -781,13 +893,45 @@ window.viewBookingDetails = function(index) {
         <div class="flex justify-between"><span class="text-gray-500 font-medium">Trip Date:</span><span class="font-bold text-emerald-800">${b.tripDate || '2026-10-05'}</span></div>
       </div>
 
+      ${(b.leadIdProof || b.idReminderStatus) ? `
+      <div class="bg-white p-3.5 rounded-xl border border-gray-200 space-y-2 text-xs">
+        <h4 class="text-xs font-black text-gray-900 uppercase">Campers &amp; ID Verification</h4>
+        <div class="flex justify-between"><span class="text-gray-500 font-medium">Alternate number:</span><span class="font-bold text-gray-900">${b.altPhone ? "+91 " + b.altPhone : "–"}</span></div>
+        <div class="flex justify-between"><span class="text-gray-500 font-medium">Team leader camping:</span><span class="font-bold text-gray-900">${b.leaderIsCamper === false ? "No – booked for others" : "Yes"}</span></div>
+        <div class="flex justify-between"><span class="text-gray-500 font-medium">Team leader ID:</span><span class="font-bold text-gray-900">${b.leadIdProof ? (b.leadIdProof.type === "Aadhaar" ? "Aadhaar " + b.leadIdProof.masked : "Uploaded: " + b.leadIdProof.fileName) : "Not given"}</span></div>
+        ${bookingCampersWithStatus(b).length ? `
+        <div class="flex justify-between"><span class="text-gray-500 font-medium">WhatsApp upload links:</span><span class="font-bold text-amber-700">${b.idReminderAt ? "Due " + new Date(b.idReminderAt).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" }) : "24h before check-in"}</span></div>
+        <div class="divide-y divide-gray-100 border border-gray-100 rounded-lg">
+          ${bookingCampersWithStatus(b).map(cp => `
+          <div class="p-2.5 flex flex-wrap items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-[#f7f3e8] text-[#164e3f] flex items-center justify-center text-[11px] font-black">${cp.no}</span>
+            <div class="flex-1 min-w-[140px]">
+              <div class="font-bold text-gray-900">${cp.name || "Camper " + cp.no}${cp.age ? `<span class="text-gray-500 font-medium"> · ${cp.age} yrs</span>` : ""}</div>
+              <div class="text-[11px] text-gray-500">${cp.phone ? "📱 +91 " + cp.phone : "No phone given"}</div>
+            </div>
+            ${cp.upload
+              ? `<button type="button" onclick="openIdImage('${b.id}|${cp.no}')" class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 font-bold"><img src="${cp.upload.dataUrl}" class="w-8 h-6 object-cover rounded"> Aadhaar ✓</button>`
+              : `<span class="px-2 py-0.5 rounded-full font-bold ${cp.idStatus === "Link sent" ? "bg-sky-50 text-sky-700" : "bg-amber-50 text-amber-800"}">${cp.idStatus}</span>
+                 ${cp.phone ? `<a href="https://wa.me/91${cp.phone}?text=${encodeURIComponent(camperIdMessage(b, cp))}" target="_blank" rel="noopener" onclick="setTimeout(() => markCamperLinkSent('${b.id}', ${cp.no}), 300)" class="px-2.5 py-1 rounded-lg bg-[#25D366] hover:bg-[#1ebe5b] text-white font-extrabold">Send link</a>` : ""}
+                 <button type="button" onclick="navigator.clipboard && navigator.clipboard.writeText('${idUploadLink(b, cp)}'); showToast('Upload link copied')" class="px-2 py-1 rounded-lg border border-gray-300 font-bold text-gray-700 hover:bg-gray-50">Copy link</button>`}
+          </div>`).join("")}
+        </div>` : `<div class="text-gray-500">Solo booking – no other camper IDs needed.</div>`}
+      </div>` : ""}
+
       <div class="bg-white p-3.5 rounded-xl border border-gray-200 space-y-2">
         <h4 class="text-xs font-black text-gray-900 uppercase">Itemized Pricing Summary</h4>
         <div class="flex justify-between text-xs py-1 border-b border-gray-100">
           <span class="font-bold text-gray-800">${b.packageName} (${b.camperCount} Campers)</span>
           <span class="font-extrabold text-[#164e3f]">${formatINR(b.camperSubtotal || b.camperCount * 2399)}</span>
         </div>
-        <div>${addonsListHTML}</div>
+        ${b.gstAmount ? `<div class="flex justify-between text-xs py-1 border-b border-gray-100"><span class="font-bold text-gray-800">GST (${b.gstRate}%)</span><span class="font-extrabold text-gray-900">${formatINR(b.gstAmount)}</span></div>` : ''}
+        ${b.food ? `<div class="flex justify-between text-xs py-1 border-b border-gray-100"><span class="font-bold text-gray-800">Food: ${b.food}</span><span class="font-extrabold text-emerald-700">Included</span></div>` : ''}
+        ${b.kidsUnder4 ? `<div class="flex justify-between text-xs py-1 border-b border-gray-100"><span class="font-bold text-gray-800">Children under 4: ${b.kidsUnder4}</span><span class="font-extrabold text-emerald-700">Free</span></div>` : ''}
+        ${Array.isArray(b.events) && b.events.length ? b.events.map(ev => `<div class="flex justify-between text-xs py-1 border-b border-gray-100"><span class="font-bold text-purple-800">Event: ${ev.name}</span><span class="font-extrabold text-emerald-700">Included</span></div>`).join("") : ''}
+        ${Array.isArray(b.activities) && b.activities.length ? `<div class="flex justify-between gap-3 text-xs py-1 border-b border-gray-100"><span class="font-bold text-amber-800">Activities: ${b.activities.map(a => a.name).join(", ")}</span><span class="font-extrabold text-emerald-700 shrink-0">Included</span></div>` : ''}
+        <div>${(b.food && !(b.addons || []).length) ? '' : addonsListHTML}</div>
+        ${b.policyAcceptedAt ? `<div class="flex justify-between text-[11px] py-1 border-b border-gray-100"><span class="font-bold text-gray-600">Policy accepted</span><span class="font-bold text-gray-700">${new Date(b.policyAcceptedAt).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}</span></div>` : ''}
+        <div class="text-[11px] font-extrabold text-red-700 py-1">No refund on cancellation (100% deduction)</div>
         <div class="flex justify-between text-sm pt-2 border-t border-gray-200 font-black">
           <span>Total Paid (${b.paymentMethod || 'Card / ATM'}):</span>
           <span class="text-[#164e3f]">${formatINR(b.grandTotal)}</span>
@@ -938,9 +1082,10 @@ function setupEventListeners() {
     }
     const campers = parseInt(qtyInput.value, 10) || 0;
     if (!totalEl) return;
+    const q = window.GogoPricing.quote(Math.max(1, campers));
     totalEl.textContent = isCustom && campers < 5
       ? "Enter 5 or more campers"
-      : `${formatINR(campers * 2399)}${isCustom ? ` (${campers} × ₹2,399)` : ""}`;
+      : `${formatINR(q.subtotal)} + ${formatINR(q.gst)} GST = ${formatINR(q.total)}${isCustom ? ` (${campers} × ${formatINR(q.rate)})` : ""}`;
   }
   if (pkgSelect) pkgSelect.addEventListener("change", () => syncAddBookingForm());
   if (qtyInput) {
@@ -983,10 +1128,15 @@ function setupEventListeners() {
         isLoggedInUser: true,
         packageName: pkg,
         camperCount: campers,
+        food: document.getElementById("newCamperFood")?.value || "Veg",
+        kidsUnder4: Math.max(0, Math.min(10, parseInt(document.getElementById("newCamperKids")?.value || "0", 10) || 0)),
         addons: [],
-        camperSubtotal: campers * 2399,
+        camperSubtotal: window.GogoPricing.quote(campers).subtotal,
         addonsSubtotal: 0,
-        grandTotal: campers * 2399,
+        ratePerPerson: window.GogoPricing.quote(campers).rate,
+        gstRate: window.GogoPricing.quote(campers).gstPct,
+        gstAmount: window.GogoPricing.quote(campers).gst,
+        grandTotal: window.GogoPricing.quote(campers).total,
         paymentMethod: paymentMethod,
         status: "Confirmed",
         date: new Date().toISOString().split("T")[0],

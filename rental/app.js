@@ -104,6 +104,45 @@ function formatCurrency(amount) {
   return "₹" + amount.toLocaleString("en-IN");
 }
 
+// ===== Pricing (rental/pricing.js): group tiers per person, + GST at checkout =====
+function priceQuote(n) { return window.GogoPricing.quote(n); }
+function packageFor(persons) {
+  const base = PACKAGES[persons] || {
+    persons: persons,
+    name: `${persons} Person Camping Tent`,
+    desc: `Spacious, weather-resistant custom camping tent package for ${persons} people with full amenities & support.`
+  };
+  const q = priceQuote(persons);
+  return Object.assign({}, base, { persons: persons, price: q.subtotal, original: q.baseSubtotal, rate: q.rate });
+}
+// Static prices on the page (package cards, tier list, GST %) – re-run when the CMS changes pricing
+function renderPricingUI() {
+  const cfg = window.GogoPricing.get();
+  document.querySelectorAll(".gst-pct").forEach((el) => { el.textContent = cfg.gstPct; });
+  document.querySelectorAll(".pkg-card").forEach((card) => {
+    const n = parseInt(card.getAttribute("data-persons"), 10);
+    if (!n) return;
+    const q = priceQuote(n);
+    const priceEl = card.querySelector(".pkg-price");
+    const origEl = card.querySelector(".pkg-orig");
+    if (priceEl) priceEl.textContent = formatCurrency(q.subtotal);
+    if (origEl) { origEl.textContent = formatCurrency(q.baseSubtotal); origEl.classList.toggle("hidden", q.baseSubtotal <= q.subtotal); }
+    card.setAttribute("data-price", q.subtotal);
+    card.setAttribute("data-original", q.baseSubtotal);
+  });
+  const tierList = document.getElementById("tierList");
+  if (tierList) {
+    const current = window.GogoPricing.tierFor(camperCount, cfg);
+    tierList.innerHTML = cfg.tiers.map((t) => {
+      const on = camperCount >= 4 && current.min === t.min;
+      return `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full border ${on ? "bg-[#164e3f] text-white border-[#164e3f]" : "bg-white text-gray-700 border-gray-200"}">${window.GogoPricing.tierLabel(t)}: ${formatCurrency(t.rate)}</span>`;
+    }).join("");
+  }
+  const maxDiscount = priceQuote(cfg.tiers[cfg.tiers.length - 1].min).discountPct;
+  const badge = document.getElementById("pricingBadge");
+  if (badge) badge.textContent = `+ ${cfg.gstPct}% GST${maxDiscount > 0 ? ` · Group discounts up to ${maxDiscount}%` : ""}`;
+}
+
 // Add-on Quantity Helper Functions
 function getAddonsTotalSum() {
   let sum = 0;
@@ -210,7 +249,7 @@ function updateAddonCardsUI() {
 // Update Total Price
 function updatePrice() {
   const addonsSum = getAddonsTotalSum();
-  const camperSubtotal = camperCount * 2399;
+  const camperSubtotal = priceQuote(camperCount).subtotal;
   const grandTotal = camperSubtotal + addonsSum;
   if (totalPriceDisplay) totalPriceDisplay.textContent = formatCurrency(grandTotal);
 
@@ -226,24 +265,14 @@ function updatePrice() {
 function selectPackageByPersons(persons, triggerToast = false) {
   persons = Math.max(1, parseInt(persons, 10) || 1);
 
-  if (PACKAGES[persons]) {
-    selectedPackage = PACKAGES[persons];
-  } else {
-    selectedPackage = {
-      persons: persons,
-      name: `${persons} Person Camping Tent`,
-      desc: `Spacious, weather-resistant custom camping tent package for ${persons} people with full amenities & support.`,
-      original: persons * 3199,
-      price: persons * 2399
-    };
-  }
+  selectedPackage = packageFor(persons);
   camperCount = selectedPackage.persons;
 
   // Toggle Custom Person Dropdown Container visibility & update select value
   const customPersonContainer = document.getElementById("customPersonContainer");
   const customPersonSelect = document.getElementById("customPersonSelect");
   
-  const isCustomPackageSelected = persons > 4 || !PACKAGES[persons];
+  const isCustomPackageSelected = persons >= 4 || !PACKAGES[persons];
 
   if (customPersonContainer) {
     if (isCustomPackageSelected) {
@@ -253,18 +282,21 @@ function selectPackageByPersons(persons, triggerToast = false) {
     }
   }
 
-  if (customPersonSelect) {
-    if (isCustomPackageSelected) {
-      customPersonSelect.value = persons.toString();
-      // If select doesn't have this value, fallback or append option
-      if (customPersonSelect.value !== persons.toString()) {
-        const newOpt = document.createElement("option");
-        newOpt.value = persons.toString();
-        newOpt.textContent = `${persons} Persons (${formatCurrency(persons * 2399)})`;
-        customPersonSelect.appendChild(newOpt);
-        customPersonSelect.value = persons.toString();
-      }
-    }
+  if (customPersonSelect && isCustomPackageSelected && customPersonSelect.value !== persons.toString()) {
+    customPersonSelect.value = persons.toString();
+  }
+  const customPersonTotal = document.getElementById("customPersonTotal");
+  if (customPersonTotal && isCustomPackageSelected) {
+    customPersonTotal.textContent = `= ${formatCurrency(selectedPackage.price)}`;
+  }
+  {
+    const q = priceQuote(isCustomPackageSelected ? persons : 4);
+    const rateEl = document.getElementById("customCardRate");
+    const origEl = document.getElementById("customCardOrig");
+    const saveEl = document.getElementById("customSaveBadge");
+    if (rateEl) rateEl.textContent = formatCurrency(q.rate);
+    if (origEl) { origEl.textContent = formatCurrency(q.baseRate); origEl.classList.toggle("hidden", q.savePerPerson <= 0); }
+    if (saveEl) { saveEl.textContent = `Save ${formatCurrency(q.savePerPerson)} / person (${q.discountPct}% off)`; saveEl.classList.toggle("hidden", q.savePerPerson <= 0); }
   }
 
   // Update active package card styling
@@ -309,7 +341,11 @@ function selectPackageByPersons(persons, triggerToast = false) {
   // Update text & prices on page
   if (productTitle) productTitle.textContent = selectedPackage.name;
   if (productDesc) productDesc.textContent = selectedPackage.desc;
-  if (originalPriceDisplay) originalPriceDisplay.textContent = formatCurrency(selectedPackage.original);
+  if (originalPriceDisplay) {
+    originalPriceDisplay.textContent = formatCurrency(selectedPackage.original);
+    originalPriceDisplay.classList.toggle("hidden", selectedPackage.original <= selectedPackage.price);
+    originalPriceDisplay.classList.toggle("block", selectedPackage.original > selectedPackage.price);
+  }
   if (currentPriceDisplay) currentPriceDisplay.textContent = formatCurrency(selectedPackage.price);
   capacitySpecTexts.forEach((el) => {
     el.textContent = `${selectedPackage.persons} Person${selectedPackage.persons > 1 ? 's' : ''}`;
@@ -317,10 +353,18 @@ function selectPackageByPersons(persons, triggerToast = false) {
 
   renderCampers();
   updatePrice();
+  renderPricingUI();
+  if (typeof renderBookingCalendar === "function") {
+    const d = selectedTripDate();
+    if (d && !window.GogoCalendar.dayStatus(d, camperCount).bookable) {
+      calMessage(`${formatTripDate(d)}: ${window.GogoCalendar.dayStatus(d, camperCount).reason}. Please pick another date.`);
+      setTripDate("");
+    } else renderBookingCalendar();
+  }
   if (typeof renderPaymentModalUI === "function") renderPaymentModalUI();
   if (typeof renderCartDrawerUI === "function") renderCartDrawerUI();
   if (triggerToast) {
-    showToast(`Selected ${selectedPackage.name} (${formatCurrency(selectedPackage.price)}, 25% OFF)`);
+    showToast(`Selected ${selectedPackage.name} (${formatCurrency(selectedPackage.price)} + GST)`);
   }
 }
 
@@ -332,7 +376,7 @@ pkgCardsList.forEach((card) => {
     if (cardPersonsAttr === "custom") {
       const customPersonSelect = document.getElementById("customPersonSelect");
       let selectedVal = customPersonSelect ? parseInt(customPersonSelect.value, 10) : 5;
-      if (isNaN(selectedVal) || selectedVal < 5) selectedVal = 5;
+      if (isNaN(selectedVal) || selectedVal < 4) selectedVal = 4;
       selectPackageByPersons(selectedVal, true);
     } else {
       const persons = parseInt(cardPersonsAttr, 10);
@@ -341,15 +385,29 @@ pkgCardsList.forEach((card) => {
   });
 });
 
-// Custom Person Dropdown Listener
+// Custom group size: typed number box with − / + buttons (min 4)
+const CUSTOM_MIN = 4, CUSTOM_MAX = 500;
 const customPersonSelect = document.getElementById("customPersonSelect");
+function setCustomPersons(val, toast) {
+  val = Math.min(CUSTOM_MAX, Math.max(CUSTOM_MIN, parseInt(val, 10) || CUSTOM_MIN));
+  customPersonSelect.value = val;
+  selectPackageByPersons(val, toast);
+}
 if (customPersonSelect) {
-  customPersonSelect.addEventListener("change", () => {
+  // While typing: update price as soon as the number is valid, without forcing the value
+  customPersonSelect.addEventListener("input", () => {
     const val = parseInt(customPersonSelect.value, 10);
-    if (!isNaN(val) && val >= 1) {
-      selectPackageByPersons(val, true);
-    }
+    if (!isNaN(val) && val >= CUSTOM_MIN && val <= CUSTOM_MAX) selectPackageByPersons(val, false);
   });
+  // When done typing (blur / Enter): fix out-of-range values
+  customPersonSelect.addEventListener("change", () => setCustomPersons(customPersonSelect.value, true));
+  customPersonSelect.addEventListener("keydown", (e) => { if (e.key === "Enter") customPersonSelect.blur(); });
+  // Clicks inside the box must not re-trigger the card click
+  ["click", "mousedown"].forEach((ev) => customPersonSelect.addEventListener(ev, (e) => e.stopPropagation()));
+  const minus = document.getElementById("customPersonMinus");
+  const plus = document.getElementById("customPersonPlus");
+  if (minus) minus.addEventListener("click", () => setCustomPersons((parseInt(customPersonSelect.value, 10) || CUSTOM_MIN) - 1, false));
+  if (plus) plus.addEventListener("click", () => setCustomPersons((parseInt(customPersonSelect.value, 10) || CUSTOM_MIN) + 1, false));
 }
 
 // Gallery Image Switcher
@@ -551,8 +609,9 @@ let camperCount = selectedPackage.persons;
 
 function updateBookingModalTotal() {
   const addonsSum = getAddonsTotalSum();
-  const camperSubtotal = camperCount * 2399;
-  const grandTotal = camperSubtotal + addonsSum;
+  const q = priceQuote(camperCount);
+  const camperSubtotal = q.subtotal;
+  const grandTotal = q.total + addonsSum;
 
   if (modalTentLabel) {
     modalTentLabel.textContent = selectedPackage.name;
@@ -572,83 +631,372 @@ function updateBookingModalTotal() {
   }
 }
 
+// ===== Team leader details + ID (only the primary booker; others share ID on WhatsApp 24h before check-in) =====
+function onlyDigits(v) { return String(v || "").replace(/\D/g, ""); }
+// Aadhaar check digit (Verhoeff)
+function isValidAadhaar(num) {
+  const d = [[0,1,2,3,4,5,6,7,8,9],[1,2,3,4,0,6,7,8,9,5],[2,3,4,0,1,7,8,9,5,6],[3,4,0,1,2,8,9,5,6,7],[4,0,1,2,3,9,5,6,7,8],[5,9,8,7,6,0,4,3,2,1],[6,5,9,8,7,1,0,4,3,2],[7,6,5,9,8,2,1,0,4,3],[8,7,6,5,9,3,2,1,0,4],[9,8,7,6,5,4,3,2,1,0]];
+  const pT = [[0,1,2,3,4,5,6,7,8,9],[1,5,7,6,2,8,3,0,9,4],[5,8,0,3,7,9,6,1,4,2],[8,9,1,6,0,4,3,5,2,7],[9,4,5,3,1,2,7,6,8,0],[4,2,8,6,5,7,3,9,0,1],[2,7,9,3,8,0,6,4,1,5],[7,0,4,6,9,1,3,2,5,8]];
+  if (!/^[2-9]\d{11}$/.test(num)) return false;
+  let c = 0;
+  num.split("").reverse().forEach((ch, i) => { c = d[c][pT[i % 8][parseInt(ch, 10)]]; });
+  return c === 0;
+}
+function tomorrowISO() {
+  const t = new Date(); t.setDate(t.getDate() + 1);
+  return t.toISOString().split("T")[0];
+}
+// WhatsApp reminder goes out 24 hours before check-in (check-in time 12:00 noon)
+function idReminderTime(tripDate) {
+  const checkIn = new Date(`${tripDate}T12:00:00`);
+  return new Date(checkIn.getTime() - 24 * 60 * 60 * 1000);
+}
+
 function renderCampers() {
-  if (!passengersList) return;
-  passengersList.innerHTML = "";
-
-  for (let i = 1; i <= camperCount; i++) {
-    if (i > 1) {
-      const divider = document.createElement("div");
-      divider.className = "border-t border-dashed border-gray-200 my-3";
-      passengersList.appendChild(divider);
-    }
-
-    const card = document.createElement("div");
-    card.className = "passenger-card space-y-3";
-    const isLead = i === 1;
-    const slotLabel = isLead 
-      ? `Lead Camper (Slot 1, ${selectedPackage.name})` 
-      : `Slot ${i}, ${selectedPackage.name}`;
-
-    card.innerHTML = `
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2.5">
-          <div class="w-7 h-7 rounded-full bg-[#f7f3e8] text-[#164e3f] border border-[#164e3f]/20 flex items-center justify-center text-xs font-bold">
-            <i data-lucide="user" class="w-4 h-4"></i>
-          </div>
-          <div>
-            <span class="text-sm font-bold text-gray-900">Camper ${i}</span>
-            <span class="text-[11px] text-gray-500 block leading-tight">${slotLabel}</span>
-          </div>
-        </div>
-        ${isLead ? '<i data-lucide="chevron-up" class="w-4 h-4 text-gray-500"></i>' : ''}
-      </div>
-
-      <div>
-        <div class="rounded-xl border border-gray-300 px-3.5 py-2 bg-white focus-within:border-[#164e3f]">
-          <input 
-            type="text" 
-            placeholder="Name *" 
-            class="w-full text-sm font-medium text-gray-900 focus:outline-none placeholder-gray-400"
-            ${isLead && currentUser ? `value="${currentUser.name}"` : ''}
-          >
-        </div>
-        ${isLead ? '<span class="text-[11px] text-gray-400 font-medium mt-1 block">Enter full name in English</span>' : ''}
-      </div>
-
-      <div>
-        <div class="rounded-xl border border-gray-300 px-3.5 py-2 bg-white focus-within:border-[#164e3f]">
-          <input 
-            type="number" 
-            placeholder="Age *" 
-            class="w-full text-sm font-medium text-gray-900 focus:outline-none placeholder-gray-400"
-          >
-        </div>
-        ${isLead ? '<span class="text-[11px] text-gray-400 font-medium mt-1 block">Please enter valid Age</span>' : ''}
-      </div>
-
-      <div>
-        <span class="text-xs font-medium text-gray-600 block mb-1">Gender *</span>
-        <div class="grid grid-cols-2 gap-3">
-          <label class="gender-pill flex items-center justify-between px-4 py-2 border border-gray-300 rounded-full cursor-pointer hover:border-[#164e3f] transition select-none">
-            <span class="text-xs font-semibold text-gray-800">Male</span>
-            <input type="radio" name="gender-p${i}" value="Male" class="w-4 h-4 text-[#164e3f] accent-[#164e3f]" ${isLead ? 'checked' : ''}>
-          </label>
-          <label class="gender-pill flex items-center justify-between px-4 py-2 border border-gray-300 rounded-full cursor-pointer hover:border-[#164e3f] transition select-none">
-            <span class="text-xs font-semibold text-gray-800">Female</span>
-            <input type="radio" name="gender-p${i}" value="Female" class="w-4 h-4 text-[#164e3f] accent-[#164e3f]">
-          </label>
-        </div>
-      </div>
-    `;
-
-    passengersList.appendChild(card);
+  const nameEl = document.getElementById("camper1NameInput");
+  const phoneEl = document.getElementById("contactPhone");
+  const emailEl = document.getElementById("contactEmail");
+  const dateEl = document.getElementById("tripDate");
+  if (currentUser && currentUser.isLoggedIn) {
+    if (nameEl && !nameEl.value) nameEl.value = currentUser.name || "";
+    if (phoneEl && !phoneEl.value) phoneEl.value = currentUser.phone || "";
+    if (emailEl && !emailEl.value) emailEl.value = currentUser.email || "";
   }
-
+  const dateText = document.getElementById("modalTripDateText");
+  if (dateText) dateText.textContent = dateEl && dateEl.value ? formatTripDate(dateEl.value) : "Not selected";
+  renderOtherCampers(dateEl && dateEl.value);
   updateBookingModalTotal();
 }
 
+// ===== Team leader camping or not: decides how many "other camper" rows are needed =====
+let leaderCamping = true;
+function otherCamperCount() { return Math.max(0, camperCount - (leaderCamping ? 1 : 0)); }
+function renderLeaderChoice() {
+  document.querySelectorAll("#leaderCampingChoice .leader-opt").forEach((btn) => {
+    const on = (btn.dataset.leader === "yes") === leaderCamping;
+    btn.classList.toggle("border-[#164e3f]", on);
+    btn.classList.toggle("bg-emerald-50", on);
+    btn.classList.toggle("border-gray-200", !on);
+    btn.classList.toggle("bg-white", !on);
+  });
+  const subs = document.querySelectorAll("#leaderCampingChoice .leader-sub");
+  if (subs[0]) subs[0].textContent = `I'm 1 of the ${camperCount} camper${camperCount > 1 ? "s" : ""}`;
+  if (subs[1]) subs[1].textContent = `Enter all ${camperCount} camper${camperCount > 1 ? "s" : ""} below`;
+}
+document.getElementById("leaderCampingChoice")?.addEventListener("click", (e) => {
+  const btn = e.target.closest(".leader-opt");
+  if (!btn) return;
+  captureOtherCampers();
+  leaderCamping = btn.dataset.leader === "yes";
+  renderLeaderChoice();
+  renderOtherCampers(document.getElementById("tripDate")?.value);
+});
+
+// ===== Other campers: name, age, phone – kept while the form re-renders =====
+let otherCampers = [];
+function captureOtherCampers() {
+  document.querySelectorAll("#otherCampersList .other-camper").forEach((row) => {
+    const i = parseInt(row.dataset.index, 10);
+    otherCampers[i] = {
+      name: row.querySelector(".oc-name").value.trim(),
+      age: row.querySelector(".oc-age").value.trim(),
+      phone: onlyDigits(row.querySelector(".oc-phone").value).slice(0, 10)
+    };
+  });
+}
+function renderOtherCampers(tripDate) {
+  const list = document.getElementById("otherCampersList");
+  const section = document.getElementById("otherCampersSection");
+  if (!list || !section) return;
+  captureOtherCampers();
+  renderLeaderChoice();
+  const others = otherCamperCount();
+  const first = leaderCamping ? 2 : 1;
+  section.classList.toggle("hidden", others === 0);
+  const titleEl = document.getElementById("otherCampersTitle");
+  if (titleEl) titleEl.textContent = leaderCamping ? "Other campers" : "Campers";
+  const subEl = document.getElementById("otherCampersSub");
+  if (subEl) subEl.textContent = leaderCamping ? "Name, age and WhatsApp number of everyone else in your group." : "Name, age and WhatsApp number of every camper (the team leader is not camping).";
+  const countEl = document.getElementById("otherCampersCount");
+  if (countEl) countEl.textContent = `${others} camper${others === 1 ? "" : "s"}`;
+  const field = "rounded-xl border border-gray-300 px-3 py-1.5 bg-white focus-within:border-[#164e3f]";
+  const input = "w-full text-sm font-medium text-gray-900 focus:outline-none placeholder-gray-400 bg-transparent";
+  let html = "";
+  for (let i = 0; i < others; i++) {
+    const v = otherCampers[i] || { name: "", age: "", phone: "" };
+    const esc = (s) => String(s).replace(/"/g, "&quot;");
+    html += `
+      <div class="other-camper rounded-xl border border-gray-200 bg-gray-50/50 p-3" data-index="${i}">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="w-6 h-6 rounded-full bg-[#f7f3e8] text-[#164e3f] border border-[#164e3f]/20 flex items-center justify-center text-[11px] font-black">${i + first}</span>
+          <span class="text-xs font-extrabold text-gray-800">Camper ${i + first}</span>
+        </div>
+        <div class="grid grid-cols-12 gap-2">
+          <label class="col-span-12 sm:col-span-5 ${field}"><span class="text-[10px] text-gray-500 font-medium block leading-tight">Name</span><input type="text" class="oc-name ${input}" placeholder="Full name" value="${esc(v.name)}"></label>
+          <label class="col-span-4 sm:col-span-2 ${field}"><span class="text-[10px] text-gray-500 font-medium block leading-tight">Age</span><input type="number" min="0" max="120" class="oc-age ${input}" placeholder="Age" value="${esc(v.age)}"></label>
+          <label class="col-span-8 sm:col-span-5 ${field}"><span class="text-[10px] text-gray-500 font-medium block leading-tight">WhatsApp number (+91)</span><input type="tel" inputmode="numeric" maxlength="10" class="oc-phone ${input}" placeholder="10-digit mobile" value="${esc(v.phone)}"></label>
+        </div>
+      </div>`;
+  }
+  list.innerHTML = html;
+  list.querySelectorAll(".oc-phone").forEach((el) => el.addEventListener("input", () => { el.value = onlyDigits(el.value).slice(0, 10); }));
+  const note = document.getElementById("otherCampersNote");
+  if (note && tripDate) {
+    const due = idReminderTime(tripDate);
+    const when = due <= new Date() ? "right after booking" : "on " + due.toLocaleString("en-IN", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" });
+    note.innerHTML = `Each camper gets a WhatsApp message <b>${when}</b> (24 hours before check-in) with a link to upload their <b>Aadhaar card photo</b>.`;
+  }
+}
+function readOtherCampers() {
+  captureOtherCampers();
+  const others = otherCamperCount();
+  const first = leaderCamping ? 2 : 1;
+  const out = [];
+  for (let i = 0; i < others; i++) {
+    const v = otherCampers[i] || {};
+    out.push({ no: i + first, name: v.name || "", age: v.age || "", phone: v.phone || "", idStatus: "Pending" });
+  }
+  return out;
+}
+
+// Read the team leader form (no validation – whatever is filled in is saved with the booking)
+function readLeadDetails() {
+  const name = (document.getElementById("camper1NameInput")?.value || "").trim();
+  const phone = onlyDigits(document.getElementById("contactPhone")?.value);
+  const alt = onlyDigits(document.getElementById("altPhone")?.value);
+  const email = (document.getElementById("contactEmail")?.value || "").trim();
+  const tripDate = document.getElementById("tripDate")?.value || "";
+  const aadhaar = onlyDigits(document.getElementById("aadhaarInput")?.value);
+  const file = document.getElementById("idUpload")?.files?.[0] || null;
+  return {
+    name, phone, alt, email, tripDate,
+    idProof: aadhaar
+      ? { type: "Aadhaar", masked: `XXXX XXXX ${aadhaar.slice(-4)}` }
+      : file ? { type: "ID upload", fileName: file.name } : null
+  };
+}
+
+// Aadhaar input: digits only, shown as "1234 5678 9012"
+document.getElementById("aadhaarInput")?.addEventListener("input", (e) => {
+  const d = onlyDigits(e.target.value).slice(0, 12);
+  e.target.value = d.replace(/(\d{4})(?=\d)/g, "$1 ");
+});
+["contactPhone", "altPhone"].forEach((id) => document.getElementById(id)?.addEventListener("input", (e) => {
+  e.target.value = onlyDigits(e.target.value).slice(0, 10);
+}));
+document.getElementById("idUpload")?.addEventListener("change", (e) => {
+  const f = e.target.files && e.target.files[0];
+  const label = document.getElementById("idUploadLabel");
+  if (label) label.textContent = f ? `✓ ${f.name}` : "Upload Aadhaar / ID";
+});
+document.getElementById("tripDate")?.addEventListener("change", () => renderCampers());
+
+let leadDetails = null;
+
+// ===== Booking calendar (rental/calendar.js): 25 campers/day, weekday rule, dates opened/closed by Gopal =====
+let calMonth = (() => { const d = new Date(); return new Date(d.getFullYear(), d.getMonth(), 1); })();
+function formatTripDate(iso) {
+  return window.GogoCalendar.parse(iso).toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short", year: "numeric" });
+}
+function selectedTripDate() { return document.getElementById("tripDate")?.value || ""; }
+function setTripDate(iso) {
+  const el = document.getElementById("tripDate");
+  if (el) el.value = iso || "";
+  const pill = document.getElementById("calSelectedPill");
+  if (pill) { pill.textContent = iso ? formatTripDate(iso) : ""; pill.classList.toggle("hidden", !iso); }
+  const text = document.getElementById("modalTripDateText");
+  if (text) text.textContent = iso ? formatTripDate(iso) : "Not selected";
+  renderBookingCalendar();
+  if (typeof renderOtherCampers === "function") renderOtherCampers(iso);
+}
+function calMessage(msg) {
+  const el = document.getElementById("calMessage");
+  if (!el) return;
+  el.textContent = msg || "";
+  el.classList.toggle("hidden", !msg);
+}
+function renderBookingCalendar() {
+  const C = window.GogoCalendar;
+  const grid = document.getElementById("calGrid");
+  if (!C || !grid) return;
+  const cfg = C.getSettings();
+  const all = JSON.parse(localStorage.getItem("gogo_bookings_db") || "[]");
+  const capText = document.getElementById("calCapacityText");
+  if (capText) capText.textContent = cfg.dailyCapacity;
+  const label = document.getElementById("calMonthLabel");
+  if (label) label.textContent = calMonth.toLocaleDateString("en-IN", { month: "long", year: "numeric" });
+  const now = new Date();
+  const prev = document.getElementById("calPrev");
+  if (prev) prev.disabled = calMonth.getFullYear() === now.getFullYear() && calMonth.getMonth() === now.getMonth();
+  const first = new Date(calMonth.getFullYear(), calMonth.getMonth(), 1);
+  const days = new Date(calMonth.getFullYear(), calMonth.getMonth() + 1, 0).getDate();
+  const lead = (first.getDay() + 6) % 7; // Monday first
+  const sel = selectedTripDate();
+  let html = "";
+  for (let i = 0; i < lead; i++) html += "<span></span>";
+  for (let d = 1; d <= days; d++) {
+    const iso = C.iso(new Date(calMonth.getFullYear(), calMonth.getMonth(), d));
+    const st = C.dayStatus(iso, camperCount, cfg, all);
+    let cls, sub;
+    if (st.state === "past") { cls = "bg-gray-50 text-gray-300 cursor-not-allowed"; sub = ""; }
+    else if (st.state === "blocked" || st.state === "full") { cls = "bg-red-50 text-red-700 border-red-200 cursor-not-allowed"; sub = "Closed"; }
+    else if (!st.bookable) { cls = "bg-amber-50 text-amber-800 border-amber-200 cursor-not-allowed"; sub = st.left + " left" + (st.minGroup > 1 && camperCount < st.minGroup ? "<span class='block text-[8px] font-extrabold opacity-80'>" + st.minGroup + "+ only</span>" : ""); }
+    else { cls = "bg-emerald-50 text-emerald-900 border-emerald-200 hover:border-[#164e3f] hover:bg-emerald-100"; sub = st.label; }
+    if (iso === sel) cls = "bg-[#164e3f] text-white border-[#164e3f] ring-2 ring-[#164e3f]/30";
+    html += `<button type="button" class="cal-day rounded-lg border border-transparent py-1.5 leading-tight transition ${cls}" data-date="${iso}" ${st.bookable ? "" : "aria-disabled=\"true\""} title="${st.reason}">
+      <span class="block text-sm font-extrabold">${d}</span>
+      <span class="block text-[9px] font-bold truncate px-0.5">${iso === sel ? "Selected" : sub}</span>
+    </button>`;
+  }
+  grid.innerHTML = html;
+}
+document.getElementById("calGrid")?.addEventListener("click", (e) => {
+  const btn = e.target.closest(".cal-day");
+  if (!btn) return;
+  const st = window.GogoCalendar.dayStatus(btn.dataset.date, camperCount);
+  if (!st.bookable) { calMessage(`${formatTripDate(btn.dataset.date)}: ${st.reason}.`); return; }
+  calMessage("");
+  setTripDate(btn.dataset.date);
+});
+document.getElementById("calPrev")?.addEventListener("click", () => { calMonth = new Date(calMonth.getFullYear(), calMonth.getMonth() - 1, 1); renderBookingCalendar(); });
+document.getElementById("calNext")?.addEventListener("click", () => { calMonth = new Date(calMonth.getFullYear(), calMonth.getMonth() + 1, 1); renderBookingCalendar(); });
+document.getElementById("changeDateBtn")?.addEventListener("click", () => {
+  bookingModal.classList.add("hidden");
+  document.getElementById("bookingCalendarCard")?.scrollIntoView({ behavior: "smooth", block: "center" });
+});
+// The chosen date must still fit the group (group size changed / someone else booked / Gopal closed the day)
+function requireTripDate() {
+  const iso = selectedTripDate();
+  const card = document.getElementById("bookingCalendarCard");
+  if (!iso) {
+    calMessage("Please choose a check-in date.");
+    card?.scrollIntoView({ behavior: "smooth", block: "center" });
+    showToast("📅 Please choose your check-in date");
+    return false;
+  }
+  const st = window.GogoCalendar.dayStatus(iso, camperCount);
+  if (!st.bookable) {
+    calMessage(`${formatTripDate(iso)}: ${st.reason}. Please pick another date.`);
+    setTripDate("");
+    card?.scrollIntoView({ behavior: "smooth", block: "center" });
+    showToast(`📅 ${st.reason}`);
+    return false;
+  }
+  return true;
+}
+window.GogoCalendar && window.GogoCalendar.onChange(() => renderBookingCalendar());
+
+// ===== Events picked on the Events page: added to this booking (no price change) =====
+// Regular camping and Events are separate: picks are used only when the visitor came from the Events page
+const FROM_EVENTS = new URLSearchParams(location.search).get("from") === "events";
+if (!FROM_EVENTS && window.GogoEvents) {
+  try { localStorage.removeItem("gogo_selected_events"); localStorage.removeItem("gogo_selected_activities"); } catch (e) {}
+}
+function pickedEvents() { return FROM_EVENTS && window.GogoEvents ? window.GogoEvents.getPicked() : []; }
+function pickedActivities() { return FROM_EVENTS && window.GogoEvents && window.GogoEvents.getPickedActivities ? window.GogoEvents.getPickedActivities() : []; }
+function pickedNames() { return pickedEvents().map((e) => e.name).concat(pickedActivities().map((a) => a.name)); }
+function renderPickedEvents() {
+  const list = pickedEvents();
+  const acts = pickedActivities();
+  const any = list.length + acts.length > 0;
+  const card = document.getElementById("pickedEventsCard");
+  if (card) card.classList.toggle("hidden", !any);
+  const box = document.getElementById("pickedEventsList");
+  if (box) {
+    box.innerHTML = acts.map((a) => `
+      <span class="inline-flex items-center gap-1.5 bg-white border border-amber-200 rounded-full pl-2.5 pr-1 py-1">
+        <i data-lucide="${a.icon || "star"}" class="w-3.5 h-3.5 text-amber-700"></i>
+        <span class="text-xs font-extrabold text-gray-900">${a.name.replace(/</g, "&lt;")}</span>
+        <button type="button" class="remove-picked-activity w-5 h-5 rounded-full text-gray-400 hover:text-red-600 hover:bg-red-50 flex items-center justify-center text-[11px]" data-id="${a.id}" aria-label="Remove activity">✕</button>
+      </span>`).join("") + list.map((ev) => `
+      <span class="inline-flex items-center gap-2 bg-white border border-purple-200 rounded-xl pl-2 pr-1 py-1">
+        <img src="${window.GogoEvents.img(ev, "../")}" class="w-8 h-8 rounded-lg object-cover" alt="">
+        <span class="leading-tight">
+          <span class="block text-xs font-extrabold text-gray-900">${ev.name.replace(/</g, "&lt;")}</span>
+          <span class="block text-[10px] text-gray-500">${window.GogoEvents.dateRange(ev)}</span>
+        </span>
+        <button type="button" class="remove-picked-event w-6 h-6 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 flex items-center justify-center" data-id="${ev.id}" aria-label="Remove event">✕</button>
+      </span>`).join("");
+  }
+  const names = pickedNames().join(", ");
+  const set = (id, text, rowId) => {
+    const el = document.getElementById(id); if (el) el.textContent = text;
+    const row = document.getElementById(rowId || id); if (row) row.classList.toggle("hidden", !any);
+  };
+  if (window.lucide) lucide.createIcons();
+  set("payModalEvents", names, "payModalEventsRow");
+  set("cartEvents", names, "cartEventsBox");
+}
+document.getElementById("pickedEventsList")?.addEventListener("click", (e) => {
+  const btn = e.target.closest(".remove-picked-event");
+  if (btn) window.GogoEvents.togglePicked(btn.dataset.id);
+  const act = e.target.closest(".remove-picked-activity");
+  if (act) window.GogoEvents.togglePickedActivity(act.dataset.id);
+});
+window.GogoEvents && window.GogoEvents.onChange(() => renderPickedEvents());
+document.addEventListener("DOMContentLoaded", () => {
+  renderPickedEvents();
+  const n = pickedNames().length;
+  if (n && new URLSearchParams(location.search).get("from") === "events") {
+    setTimeout(() => document.getElementById("pickedEventsCard")?.scrollIntoView({ behavior: "smooth", block: "center" }), 400);
+    showToast(`✨ ${n} item${n > 1 ? "s" : ""} added – now choose your package & date`);
+  }
+});
+
+// ===== Food preference (Veg / Non-Veg, included in the package price) =====
+let selectedFood = null;
+const foodCards = document.querySelectorAll(".food-card");
+function setFood(food) {
+  selectedFood = food;
+  foodCards.forEach((card) => {
+    const on = card.getAttribute("data-food") === food;
+    card.classList.toggle("border-2", on);
+    card.classList.toggle("border-[#164e3f]", on);
+    card.classList.toggle("bg-emerald-50/50", on);
+    card.classList.toggle("border-gray-200", !on);
+    card.classList.toggle("bg-white", !on);
+    const r = card.querySelector(".food-radio");
+    if (r) {
+      r.innerHTML = on ? "✓" : "";
+      r.className = on
+        ? "food-radio w-4 h-4 rounded-full bg-[#164e3f] flex items-center justify-center text-white text-[10px] shrink-0"
+        : "food-radio w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center text-white text-[10px] shrink-0";
+    }
+  });
+  const hint = document.getElementById("foodHint");
+  if (hint && food) hint.classList.add("hidden");
+  const label = food || "Not selected";
+  ["payModalFood", "cartFoodDisplay"].forEach((id) => { const el = document.getElementById(id); if (el) el.textContent = label; });
+  const footer = document.getElementById("cartFoodFooter");
+  if (footer) footer.textContent = food || "—";
+}
+foodCards.forEach((card) => card.addEventListener("click", () => setFood(card.getAttribute("data-food"))));
+// ===== Children under 4: free, not part of the headcount price =====
+let kidsUnder4 = 0;
+const KIDS_MAX = 10;
+function setKids(n) {
+  kidsUnder4 = Math.max(0, Math.min(KIDS_MAX, n));
+  ["kidsCount", "payModalKids", "cartKidsDisplay"].forEach((id) => { const el = document.getElementById(id); if (el) el.textContent = kidsUnder4; });
+  const dec = document.getElementById("kidsDecBtn");
+  if (dec) dec.disabled = kidsUnder4 <= 0;
+}
+document.getElementById("kidsDecBtn")?.addEventListener("click", () => setKids(kidsUnder4 - 1));
+document.getElementById("kidsIncBtn")?.addEventListener("click", () => setKids(kidsUnder4 + 1));
+
+function requireFood() {
+  if (selectedFood) return true;
+  const hint = document.getElementById("foodHint");
+  if (hint) hint.classList.remove("hidden");
+  const sec = document.getElementById("foodSection");
+  if (sec) sec.scrollIntoView({ behavior: "smooth", block: "center" });
+  showToast("🍽 Please choose Veg or Non-Veg food");
+  return false;
+}
+
 bookNowBtn.addEventListener("click", () => {
+  if (!requirePolicy()) return;
+  if (!requireTripDate()) return;
+  if (!requireFood()) return;
   if (!currentUser.isLoggedIn) {
     pendingAction = "booking";
     openLoginModal();
@@ -658,22 +1006,11 @@ bookNowBtn.addEventListener("click", () => {
 
   renderCampers();
 
-  // Populate Add-ons in booking modal
-  modalAddonsContainer.innerHTML = "";
-  if (selectedAddons.size > 0) {
-    modalAddonsContainer.classList.remove("hidden");
-    selectedAddons.forEach((item, id) => {
-      const row = document.createElement("div");
-      row.className = "flex justify-between items-center text-xs text-gray-700 py-0.5";
-      row.innerHTML = `
-        <span class="font-bold text-gray-800">+ ${item.name} (${item.qty} × ${formatCurrency(item.unitPrice)})</span>
-        <span class="font-extrabold text-[#164e3f]">${formatCurrency(item.qty * item.unitPrice)}</span>
-      `;
-      modalAddonsContainer.appendChild(row);
-    });
-  } else {
-    modalAddonsContainer.classList.add("hidden");
-  }
+  // Food choice (+ picked events) in booking modal summary
+  modalAddonsContainer.classList.remove("hidden");
+  const evNames = pickedNames().join(", ");
+  modalAddonsContainer.innerHTML = `<span class="text-gray-500 block text-xs">Food</span><span class="font-bold text-gray-900">${selectedFood}</span> <span class="text-emerald-700 font-bold">· included</span>` +
+    (evNames ? `<span class="text-gray-500 block text-xs mt-1">Events &amp; activities</span><span class="font-bold text-purple-800">${evNames.replace(/</g, "&lt;")}</span>` : "");
 
   updateBookingModalTotal();
   bookingModal.classList.remove("hidden");
@@ -759,10 +1096,51 @@ const downloadPassBtn = document.getElementById("downloadPassBtn");
 const doneSuccessBtn = document.getElementById("doneSuccessBtn");
 
 // Render Payment Modal Order Summary
+// Payment summary: has the team leader's Aadhaar / ID been added? (number or uploaded image)
+let idThumbUrl = null;
+function renderIdVerification() {
+  const row = document.getElementById("payModalIdRow");
+  if (!row) return;
+  const aadhaar = onlyDigits(document.getElementById("aadhaarInput")?.value);
+  const file = document.getElementById("idUpload")?.files?.[0] || null;
+  const icon = document.getElementById("payModalIdIcon");
+  const text = document.getElementById("payModalIdText");
+  const thumb = document.getElementById("payModalIdThumb");
+  const add = document.getElementById("payModalIdAdd");
+  const ok = !!(file || aadhaar.length === 12);
+  row.className = "flex items-center justify-between gap-3 p-3 rounded-xl border shadow-2xs " + (ok ? "bg-emerald-50 border-emerald-200" : "bg-amber-50 border-amber-200");
+  icon.className = "w-7 h-7 rounded-full flex items-center justify-center shrink-0 text-white text-sm font-black " + (ok ? "bg-emerald-600" : "bg-amber-500");
+  icon.textContent = ok ? "✓" : "!";
+  if (file) text.textContent = "Verified ✓ · image uploaded (" + file.name + ")";
+  else if (aadhaar.length === 12) text.textContent = "Verified ✓ · Aadhaar XXXX XXXX " + aadhaar.slice(-4);
+  else text.textContent = "Not added yet – needed at the campsite";
+  if (idThumbUrl) { URL.revokeObjectURL(idThumbUrl); idThumbUrl = null; }
+  if (file && /^image\//.test(file.type)) { idThumbUrl = URL.createObjectURL(file); thumb.src = idThumbUrl; thumb.classList.remove("hidden"); }
+  else thumb.classList.add("hidden");
+  add.classList.toggle("hidden", ok);
+}
+document.getElementById("payModalIdAdd")?.addEventListener("click", () => {
+  paymentModal.classList.add("hidden");
+  bookingModal.classList.remove("hidden");
+  setTimeout(() => {
+    // scroll only the form body (never the popup panel itself)
+    const el = document.getElementById("aadhaarInput");
+    const body = el?.closest(".overflow-y-auto");
+    if (el && body) body.scrollTo({ top: el.getBoundingClientRect().top - body.getBoundingClientRect().top + body.scrollTop - 120, behavior: "smooth" });
+    el?.focus({ preventScroll: true });
+  }, 100);
+});
+
 function renderPaymentModalUI() {
+  renderIdVerification();
   const addonsSum = getAddonsTotalSum();
-  const camperSubtotal = camperCount * 2399;
-  const grandTotal = camperSubtotal + addonsSum;
+  const q = priceQuote(camperCount);
+  const camperSubtotal = q.subtotal;
+  const grandTotal = q.total + addonsSum;
+  const setText = (id, t) => { const el = document.getElementById(id); if (el) el.textContent = t; };
+  setText("payModalRate", `${formatCurrency(q.rate)} per person + GST (${q.tierLabel})`);
+  setText("payModalSubtotalEx", formatCurrency(camperSubtotal));
+  setText("payModalGst", formatCurrency(q.gst));
 
   if (payModalPackageName) payModalPackageName.textContent = selectedPackage.name;
   if (payModalPackageSubtotal) payModalPackageSubtotal.textContent = formatCurrency(camperSubtotal);
@@ -878,24 +1256,14 @@ window.changePayModalCampers = function(delta) {
   }
 
   // Synchronize selectedPackage based on camperCount
-  if (PACKAGES[camperCount]) {
-    selectedPackage = PACKAGES[camperCount];
-  } else {
-    selectedPackage = {
-      persons: camperCount,
-      name: `${camperCount} Person Camping Tent`,
-      desc: `${camperCount} Person Camping Tent Package`,
-      original: camperCount * 3199,
-      price: camperCount * 2399
-    };
-  }
+  selectedPackage = packageFor(camperCount);
 
   renderCampers();
   updateBookingModalTotal();
   renderPaymentModalUI();
   if (typeof renderCartDrawerUI === "function") renderCartDrawerUI();
   updatePrice();
-  showToast(delta === 1 ? `Added Camper (${camperCount} Persons, ${formatCurrency(camperCount * 2399)})` : `Reduced Campers to ${camperCount}`);
+  showToast(delta === 1 ? `Added Camper (${camperCount} Persons, ${formatCurrency(priceQuote(camperCount).subtotal)} + GST)` : `Reduced Campers to ${camperCount}`);
 };
 
 // Explicit Click Listeners for Camper Stepper Buttons
@@ -913,7 +1281,11 @@ if (payModalCamperInc) {
 }
 
 // Payment Tabs Switcher
+// Chosen payment method (QR / UPI or Card) – saved on the booking and printed on the ticket
+let selectedPayMethod = "Card / ATM";
+const PAY_METHOD_BY_TAB = { tabPayQr: "UPI QR Code", tabPayUpi: "UPI App", tabPayCard: "Card / ATM" };
 function switchPayTab(activeTab, activeView) {
+  if (activeTab && PAY_METHOD_BY_TAB[activeTab.id]) selectedPayMethod = PAY_METHOD_BY_TAB[activeTab.id];
   const allTabs = [tabPayQr, tabPayUpi, tabPayCard, tabPayNet];
   const allViews = [payViewQr, payViewUpi, payViewCard, payViewNet];
 
@@ -958,6 +1330,8 @@ if (closePaymentModalBtn && paymentModal) {
 
 // Open Payment Modal from Confirm Booking button
 confirmRedirectBtn.addEventListener("click", () => {
+  leadDetails = readLeadDetails();
+  if (!requireTripDate()) { bookingModal.classList.add("hidden"); return; }
   if (!currentUser.isLoggedIn) {
     pendingAction = "confirm_pay";
     if (bookingModal) bookingModal.classList.add("hidden");
@@ -1019,20 +1393,28 @@ if (payNowBtn) {
       paymentModal.classList.add("hidden");
       payNowBtn.disabled = false;
 
-      const camperSubtotal = camperCount * 2399;
+      if (!window.GogoCalendar.dayStatus(selectedTripDate(), camperCount).bookable) {
+        payNowBtn.disabled = false;
+        if (paymentModal) paymentModal.classList.add("hidden");
+        requireTripDate();
+        return;
+      }
+      const payQuote = priceQuote(camperCount);
+      const camperSubtotal = payQuote.subtotal;
       const totalAddonsSum = getAddonsTotalSum();
       let addonsNames = [];
       selectedAddons.forEach((item) => {
         addonsNames.push(`${item.name} (${item.qty}×)`);
       });
 
-      const grandTotal = camperSubtotal + totalAddonsSum;
+      const grandTotal = payQuote.total + totalAddonsSum;
 
       // Extract User Contact Data
       const randomOrderId = `#GOGO-2026-${Math.floor(10000 + Math.random() * 90000)}`;
-      const leadName = currentUser.isLoggedIn ? currentUser.name : "Vijay Kumar";
-      const leadPhone = currentUser.isLoggedIn && currentUser.phone ? currentUser.phone : "9876543210";
-      const leadEmail = currentUser.isLoggedIn && currentUser.email ? currentUser.email : "vijay.camper@gmail.com";
+      const lead = leadDetails || readLeadDetails() || {};
+      const leadName = lead.name || (currentUser.isLoggedIn ? currentUser.name : "Guest");
+      const leadPhone = lead.phone || (currentUser.isLoggedIn && currentUser.phone ? currentUser.phone : "");
+      const leadEmail = lead.email || (currentUser.isLoggedIn && currentUser.email ? currentUser.email : "");
 
       // Populate Success Modal Data
       const successOrderId = document.getElementById("successOrderId");
@@ -1055,9 +1437,19 @@ if (payNowBtn) {
       if (successPackageName) successPackageName.textContent = selectedPackage.name;
       if (successCamperCount) successCamperCount.textContent = `${camperCount} Person`;
       if (successAddonsText) {
-        successAddonsText.textContent = addonsNames.length > 0 ? addonsNames.join(", ") : "None";
+        successAddonsText.textContent = `${selectedFood || "—"} (included)`;
       }
+      const evPicked = pickedNames();
+      const successEvents = document.getElementById("successEvents");
+      if (successEvents) successEvents.textContent = evPicked.join(", ");
+      document.getElementById("successEventsRow")?.classList.toggle("hidden", !evPicked.length);
+      const successKids = document.getElementById("successKids");
+      if (successKids) successKids.textContent = `${kidsUnder4} (free)`;
       if (successTotalPaid) successTotalPaid.textContent = formatCurrency(grandTotal);
+      const setS = (id, t) => { const el = document.getElementById(id); if (el) el.textContent = t; };
+      setS("successSubtotal", formatCurrency(camperSubtotal) + "  (" + formatCurrency(payQuote.rate) + " × " + camperCount + ")");
+      setS("successGst", formatCurrency(payQuote.gst));
+      setS("successGstPct", payQuote.gstPct);
 
       // Save booking record to localStorage for CMS Admin Dashboard
       try {
@@ -1078,11 +1470,27 @@ if (payNowBtn) {
           email: leadEmail,
           packageName: selectedPackage.name,
           camperCount: camperCount,
+          food: selectedFood,
+          events: pickedEvents().map((ev) => ({ id: ev.id, slug: ev.slug, name: ev.name, startDate: ev.startDate, endDate: ev.endDate })),
+          activities: pickedActivities().map((a) => ({ id: a.id, name: a.name })),
+          altPhone: lead.alt || "",
+          leadIdProof: lead.idProof || null,
+          campers: readOtherCampers(),
+          leaderIsCamper: leaderCamping,
+          otherCampersIdPending: otherCamperCount(),
+          idReminderAt: lead.tripDate && otherCamperCount() > 0 ? idReminderTime(lead.tripDate).toISOString() : null,
+          idReminderStatus: otherCamperCount() > 0 ? "Scheduled" : "Not needed",
+          kidsUnder4: kidsUnder4,
           addons: addonsFormatted,
           camperSubtotal: camperSubtotal,
           addonsSubtotal: totalAddonsSum,
+          ratePerPerson: payQuote.rate,
+          gstRate: payQuote.gstPct,
+          gstAmount: payQuote.gst,
           grandTotal: grandTotal,
-          paymentMethod: "Card / ATM",
+          paymentMethod: selectedPayMethod,
+          policyAcceptedAt: policyAcceptedAt(),
+          cancellationPolicy: "No refund on cancellation – 100% of the amount is deducted.",
           status: "Confirmed",
           date: new Date().toISOString().split("T")[0],
           tripDate: (tripDateInput && tripDateInput.value) ? tripDateInput.value : "2026-10-05"
@@ -1091,6 +1499,11 @@ if (payNowBtn) {
         const existingBookings = JSON.parse(localStorage.getItem("gogo_bookings_db") || "[]");
         existingBookings.unshift(newBookingRecord);
         localStorage.setItem("gogo_bookings_db", JSON.stringify(existingBookings));
+        if (window.GogoEvents) { window.GogoEvents.setPicked([]); window.GogoEvents.setPickedActivities([]); } // now part of this booking
+        lastBooking = newBookingRecord;
+        const pm = document.getElementById("successPayMethod");
+        if (pm) pm.textContent = newBookingRecord.paymentMethod;
+        try { sessionStorage.removeItem(POLICY_KEY); } catch (e) {} // next booking: show the policy again
       } catch (err) {
         console.error("Error saving booking to CMS database:", err);
       }
@@ -1130,11 +1543,123 @@ if (resendSmsBtn) {
   });
 }
 
-// Download Pass Button
+// ===== Ticket / receipt (PDF download, WhatsApp, Email) =====
+let lastBooking = null;
+function ticketLines(bk) {
+  const rs = (n) => "Rs. " + Number(n || 0).toLocaleString("en-IN");
+  const extras = (bk.events || []).map((e) => e.name).concat((bk.activities || []).map((a) => a.name));
+  return [
+    ["Booking ID", bk.id],
+    ["Team leader", (bk.leadName || "-") + (bk.leaderIsCamper === false ? " (booking for others, not camping)" : " (camping)")],
+    ["Phone", bk.phone ? "+91 " + bk.phone + (bk.altPhone ? " / " + bk.altPhone : "") : "-"],
+    ["Email", bk.email || "-"],
+    ["Check-in date", bk.tripDate ? formatTripDate(bk.tripDate) + " (12:00 noon)" : "-"],
+    ["Package", bk.packageName],
+    ["Campers", String(bk.camperCount) + (bk.kidsUnder4 ? " + " + bk.kidsUnder4 + " child(ren) under 4 (free)" : "")],
+    ["Food", (bk.food || "-") + " (included)"],
+    ["Events & activities", extras.length ? extras.join(", ") : "-"],
+    ["Subtotal (excl. GST)", rs(bk.camperSubtotal)],
+    ["GST (" + (bk.gstRate || 18) + "%)", rs(bk.gstAmount)],
+    ["Total paid", rs(bk.grandTotal)],
+    ["Paid by", bk.paymentMethod],
+    ["Booked on", new Date().toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })]
+  ];
+}
+function downloadTicketPdf(bk) {
+  const JsPDF = window.jspdf && window.jspdf.jsPDF;
+  if (!JsPDF) { showToast("PDF tool did not load – please check your internet and try again"); return; }
+  const doc = new JsPDF({ unit: "mm", format: "a5" });
+  const W = doc.internal.pageSize.getWidth();
+  doc.setFillColor(22, 78, 63); doc.rect(0, 0, W, 26, "F");
+  doc.setTextColor(255, 255, 255); doc.setFont("helvetica", "bold"); doc.setFontSize(16);
+  doc.text("GOGOCamping", 10, 12);
+  doc.setFontSize(9); doc.setFont("helvetica", "normal");
+  doc.text("Camping ticket / receipt  ·  Jawadhu Hills", 10, 19);
+  doc.setFont("helvetica", "bold"); doc.setFontSize(10);
+  doc.text("CONFIRMED", W - 10, 12, { align: "right" });
+  doc.setTextColor(30, 30, 30);
+  let y = 36;
+  ticketLines(bk).forEach(([k, v]) => {
+    doc.setFont("helvetica", "normal"); doc.setFontSize(9); doc.setTextColor(110, 110, 110);
+    doc.text(k, 10, y);
+    doc.setFont("helvetica", "bold"); doc.setTextColor(30, 30, 30);
+    const lines = doc.splitTextToSize(String(v), W - 62);
+    doc.text(lines, 55, y);
+    y += 6 * Math.max(1, lines.length);
+  });
+  // cancellation caution – clearly on the ticket
+  y += 3;
+  doc.setDrawColor(220, 38, 38); doc.setFillColor(254, 242, 242);
+  doc.roundedRect(8, y, W - 16, 20, 2, 2, "FD");
+  doc.setTextColor(185, 28, 28); doc.setFont("helvetica", "bold"); doc.setFontSize(10);
+  doc.text("CANCELLATION POLICY: NO REFUND", 12, y + 7);
+  doc.setFont("helvetica", "normal"); doc.setFontSize(8.5);
+  doc.text("100% of the amount is deducted on cancellation. This booking cannot be refunded.", 12, y + 13, { maxWidth: W - 24 });
+  y += 28;
+  doc.setTextColor(110, 110, 110); doc.setFontSize(8);
+  doc.text("Show this ticket at the campsite entry with a valid Aadhaar / government ID for every camper.", 10, y, { maxWidth: W - 20 });
+  doc.save(`GOGOCamping-ticket-${String(bk.id).replace(/[^A-Za-z0-9-]/g, "")}.pdf`);
+  showToast("⬇ Ticket downloaded (PDF)");
+}
+function ticketText(bk) {
+  return "GOGOCamping ticket / receipt\n" + ticketLines(bk).map(([k, v]) => `${k}: ${v}`).join("\n") +
+    "\n\nCANCELLATION POLICY: No refund – 100% deduction on cancellation.";
+}
 if (downloadPassBtn) {
   downloadPassBtn.addEventListener("click", () => {
-    showToast("⬇ Downloading Campsite Access Pass (PDF)...");
+    if (!lastBooking) { showToast("No booking found yet"); return; }
+    downloadTicketPdf(lastBooking);
   });
+}
+document.getElementById("resendSmsBtn")?.addEventListener("click", () => {
+  if (!lastBooking) return;
+  window.open(`https://wa.me/91${lastBooking.phone}?text=${encodeURIComponent(ticketText(lastBooking))}`, "_blank", "noopener");
+});
+document.getElementById("resendEmailBtn")?.addEventListener("click", () => {
+  if (!lastBooking) return;
+  location.href = `mailto:${encodeURIComponent(lastBooking.email || "")}?subject=${encodeURIComponent("GOGOCamping ticket " + lastBooking.id)}&body=${encodeURIComponent(ticketText(lastBooking))}`;
+});
+
+// ===== Booking policy: read to the end, tick agree, submit – then the booking starts =====
+const POLICY_KEY = "gogo_policy_accepted";
+function policyAcceptedAt() { try { return sessionStorage.getItem(POLICY_KEY); } catch (e) { return null; } }
+function openPolicy() {
+  const m = document.getElementById("policyModal");
+  if (!m) return;
+  m.classList.remove("hidden");
+  const sc = document.getElementById("policyScroll");
+  if (sc) sc.scrollTop = 0;
+  checkPolicyScroll();
+}
+function checkPolicyScroll() {
+  const sc = document.getElementById("policyScroll");
+  if (!sc) return;
+  const atEnd = sc.scrollTop + sc.clientHeight >= sc.scrollHeight - 8;
+  const box = document.getElementById("policyAgree");
+  const label = document.getElementById("policyAgreeLabel");
+  if (atEnd && box && box.disabled) {
+    box.disabled = false;
+    label?.classList.remove("cursor-not-allowed", "opacity-50");
+    label?.classList.add("cursor-pointer");
+    document.getElementById("policyScrollHint")?.classList.add("hidden");
+  }
+}
+document.getElementById("policyScroll")?.addEventListener("scroll", checkPolicyScroll);
+document.getElementById("policyAgree")?.addEventListener("change", (e) => {
+  document.getElementById("policySubmit").disabled = !e.target.checked;
+});
+document.getElementById("policySubmit")?.addEventListener("click", () => {
+  if (!document.getElementById("policyAgree")?.checked) return;
+  try { sessionStorage.setItem(POLICY_KEY, new Date().toISOString()); } catch (e) {}
+  document.getElementById("policyModal")?.classList.add("hidden");
+  showToast("✓ Policy accepted – let's start your booking");
+});
+document.addEventListener("DOMContentLoaded", () => { if (!policyAcceptedAt()) openPolicy(); });
+// safety net: never start a booking without an accepted policy
+function requirePolicy() {
+  if (policyAcceptedAt()) return true;
+  openPolicy();
+  return false;
 }
 
 // Done Success Button
@@ -1294,7 +1819,7 @@ function updateNavbarUI() {
             <i data-lucide="user-check" class="w-4 h-4 text-emerald-600"></i>
             Logged in as ${currentUser.name}
           </span>
-          <span class="bg-[#164e3f] text-white text-[10px] px-2.5 py-0.5 rounded-full uppercase tracking-wider font-extrabold">Active Member</span>
+          <span class="bg-[#164e3f] text-white text-[10px] px-2.5 py-0.5 rounded-full uppercase tracking-wider font-extrabold">Logged in</span>
         </div>
       `;
     }
@@ -1324,7 +1849,7 @@ function updateNavbarUI() {
     // Reset Member Login Banner in booking
     if (memberLoginBanner) {
       memberLoginBanner.innerHTML = `
-        GOGOCamping Member? Click to Login &amp; view saved campers list
+        Have an account? Click to Login &amp; fill your details
       `;
     }
   }
@@ -1582,9 +2107,9 @@ function renderBookingHistory(filter = 'all') {
     const card = document.createElement("div");
     card.className = "p-4 rounded-2xl border border-gray-200 bg-white shadow-2xs hover:border-[#164e3f]/40 transition space-y-3";
 
-    let addonsText = b.addons && b.addons.length > 0 
+    let addonsText = b.food ? `Food: ${b.food} (included)${b.kidsUnder4 ? ` · ${b.kidsUnder4} child${b.kidsUnder4 > 1 ? "ren" : ""} under 4 (free)` : ""}` : (b.addons && b.addons.length > 0 
       ? b.addons.map(a => `${a.name} (${a.qty}×)`).join(", ") 
-      : "No Extra Gear";
+      : "No Extra Gear");
 
     card.innerHTML = `
       <div class="flex items-center justify-between">
@@ -1817,7 +2342,12 @@ function renderCartDrawerUI() {
   if (cartBadgeMobile) cartBadgeMobile.textContent = totalItemCount;
   if (cartDrawerItemCount) cartDrawerItemCount.textContent = `${totalItemCount} Item${totalItemCount > 1 ? 's' : ''}`;
 
-  const camperSubtotal = camperCount * 2399;
+  const cartQuote = priceQuote(camperCount);
+  const camperSubtotal = cartQuote.subtotal;
+  const cartRateEl = document.getElementById("cartPkgRate");
+  if (cartRateEl) cartRateEl.textContent = `${formatCurrency(cartQuote.rate)} per person + GST`;
+  const cartGstEl = document.getElementById("cartDrawerGst");
+  if (cartGstEl) cartGstEl.textContent = formatCurrency(cartQuote.gst);
 
   if (cartPkgTitle) cartPkgTitle.textContent = selectedPackage.name;
   if (cartPkgSubtotal) cartPkgSubtotal.textContent = formatCurrency(camperSubtotal);
@@ -1896,7 +2426,7 @@ function renderCartDrawerUI() {
     });
   }
 
-  const grandTotal = camperSubtotal + totalAddonsSum;
+  const grandTotal = cartQuote.total + totalAddonsSum;
   if (cartDrawerPkgTotal) cartDrawerPkgTotal.textContent = formatCurrency(camperSubtotal);
   if (cartDrawerAddonsTotal) cartDrawerAddonsTotal.textContent = formatCurrency(totalAddonsSum);
   if (cartDrawerGrandTotal) cartDrawerGrandTotal.textContent = formatCurrency(grandTotal);
@@ -1958,11 +2488,16 @@ if (cartDrawer) {
 if (cartCheckoutBtn) {
   cartCheckoutBtn.addEventListener("click", () => {
     if (cartDrawer) cartDrawer.classList.add("hidden");
-    if (bookingModal) bookingModal.classList.remove("hidden");
-    renderCampers();
-    showToast("✓ Opening Camper & Guest Details...");
+    // Same path as "Book Now": needs a food choice (and login) first
+    bookNowBtn.click();
   });
 }
+
+// Pricing changed in the CMS -> refresh every price on this page
+window.GogoPricing.onChange(() => {
+  selectPackageByPersons(camperCount, false);
+  updateBookingModalTotal();
+});
 
 // Initialize page state
 document.addEventListener("DOMContentLoaded", () => {

@@ -39,6 +39,7 @@
   
   <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -124,7 +125,7 @@
             <div class="py-1 space-y-1">
               <div class="flex items-center gap-2 px-3 py-1.5 text-[11px] text-emerald-800 font-bold bg-emerald-50 rounded-xl mb-1.5">
                 <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
-                <span>GOGOCamping VIP Member</span>
+                <span>GOGOCamping Account</span>
               </div>
               
               <button id="dropdownEditProfileBtn" class="w-full flex items-center gap-2.5 text-left px-3 py-2 text-xs font-bold text-gray-700 hover:bg-gray-100 rounded-xl transition cursor-pointer">
@@ -363,6 +364,104 @@
           </div>
         </div>
 
+
+        <!-- Explore Categories (Desktop: fills the space under the video in the left column) -->
+        <section class="hidden lg:block mt-2 bg-white p-4 rounded-2xl border border-gray-200/80 shadow-xs">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h2 class="text-base font-bold text-gray-900">Explore Outdoor Categories</h2>
+              <p class="text-xs text-gray-500 mt-0.5">Find camping gear, campfire kits, safety apparel, and outdoor party essentials</p>
+            </div>
+            <a href="#" class="hidden sm:inline-flex items-center gap-1 text-xs font-bold text-brand-700 hover:text-brand-800 transition">
+              <span>View All</span>
+              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </a>
+          </div>
+      
+          <div class="grid grid-cols-2 gap-3">
+        
+            <!-- Category 1: Camping -->
+            <a href="#" class="flex items-center justify-between p-3.5 bg-white border border-gray-200/80 rounded-2xl shadow-xs card-hover group">
+              <div class="flex items-center gap-3 min-w-0">
+                <div class="w-14 h-14 rounded-xl overflow-hidden bg-gray-100 shrink-0">
+                  <img src="cat_camping.jpg" alt="Camping" class="w-full h-full object-cover group-hover:scale-105 transition">
+                </div>
+                <div class="min-w-0">
+                  <h3 class="text-sm font-bold text-gray-900 truncate group-hover:text-brand-700 transition">Camping</h3>
+                  <p class="text-[11px] text-gray-500 truncate">Tents, Sleeping Bags, Gear</p>
+                </div>
+              </div>
+              <div class="w-8 h-8 rounded-full bg-brand-700 text-white flex items-center justify-center shrink-0 ml-2 group-hover:scale-110 group-hover:bg-brand-800 transition">
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </div>
+            </a>
+
+            <!-- Category 2: Fire -->
+            <a href="#" class="flex items-center justify-between p-3.5 bg-white border border-gray-200/80 rounded-2xl shadow-xs card-hover group">
+              <div class="flex items-center gap-3 min-w-0">
+                <div class="w-14 h-14 rounded-xl overflow-hidden bg-gray-100 shrink-0">
+                  <img src="cat_fire.jpg" alt="Fire" class="w-full h-full object-cover group-hover:scale-105 transition">
+                </div>
+                <div class="min-w-0">
+                  <h3 class="text-sm font-bold text-gray-900 truncate group-hover:text-brand-700 transition">Fire</h3>
+                  <p class="text-[11px] text-gray-500 truncate">Stoves, Firewood, Accessories</p>
+                </div>
+              </div>
+              <div class="w-8 h-8 rounded-full bg-brand-700 text-white flex items-center justify-center shrink-0 ml-2 group-hover:scale-110 group-hover:bg-brand-800 transition">
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </div>
+            </a>
+
+            <!-- Category 3: Party -->
+            <a href="#" class="flex items-center justify-between p-3.5 bg-white border border-gray-200/80 rounded-2xl shadow-xs card-hover group">
+              <div class="flex items-center gap-3 min-w-0">
+                <div class="w-14 h-14 rounded-xl overflow-hidden bg-gray-100 shrink-0">
+                  <img src="cat_party.jpg" alt="Party" class="w-full h-full object-cover group-hover:scale-105 transition">
+                </div>
+                <div class="min-w-0">
+                  <h3 class="text-sm font-bold text-gray-900 truncate group-hover:text-brand-700 transition">Party</h3>
+                  <p class="text-[11px] text-gray-500 truncate">Lighting, Games, Decor</p>
+                </div>
+              </div>
+              <div class="w-8 h-8 rounded-full bg-brand-700 text-white flex items-center justify-center shrink-0 ml-2 group-hover:scale-110 group-hover:bg-brand-800 transition">
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </div>
+            </a>
+
+            <!-- Category 4: Safety Jackets -->
+            <a href="#" class="flex items-center justify-between p-3.5 bg-white border border-gray-200/80 rounded-2xl shadow-xs card-hover group">
+              <div class="flex items-center gap-3 min-w-0">
+                <div class="w-14 h-14 rounded-xl overflow-hidden bg-gray-100 shrink-0">
+                  <img src="cat_safety.jpg" alt="Safety Jackets" class="w-full h-full object-cover group-hover:scale-105 transition">
+                </div>
+                <div class="min-w-0">
+                  <h3 class="text-sm font-bold text-gray-900 truncate group-hover:text-brand-700 transition">Safety Jackets</h3>
+                  <p class="text-[11px] text-gray-500 truncate">Reflective, Riding, Industrial</p>
+                </div>
+              </div>
+              <div class="w-8 h-8 rounded-full bg-brand-700 text-white flex items-center justify-center shrink-0 ml-2 group-hover:scale-110 group-hover:bg-brand-800 transition">
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </div>
+            </a>
+
+            <!-- Category 5: Others -->
+            <a href="#" class="col-span-2 flex items-center justify-between p-3.5 bg-white border border-gray-200/80 rounded-2xl shadow-xs card-hover group">
+              <div class="flex items-center gap-3 min-w-0">
+                <div class="w-14 h-14 rounded-xl overflow-hidden bg-gray-100 shrink-0">
+                  <img src="cat_others.jpg" alt="Others" class="w-full h-full object-cover group-hover:scale-105 transition">
+                </div>
+                <div class="min-w-0">
+                  <h3 class="text-sm font-bold text-gray-900 truncate group-hover:text-brand-700 transition">Others</h3>
+                  <p class="text-[11px] text-gray-500 truncate">Tools, Accessories, More</p>
+                </div>
+              </div>
+              <div class="w-8 h-8 rounded-full bg-brand-700 text-white flex items-center justify-center shrink-0 ml-2 group-hover:scale-110 group-hover:bg-brand-800 transition">
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </div>
+            </a>
+
+          </div>
+        </section>
       </div>
 
       <!-- ================= RIGHT COLUMN: PRODUCT INFO & ADD-ONS ================= -->
@@ -391,7 +490,8 @@
               <span id="currentPriceDisplay"
                 class="block text-3xl sm:text-4xl font-extrabold text-[#164e3f] tracking-tight">₹2,399</span>
               <span id="originalPriceDisplay"
-                class="block text-sm sm:text-base font-semibold text-gray-400 line-through mt-0.5">₹3,199</span>
+                class="hidden text-sm sm:text-base font-semibold text-gray-400 line-through mt-0.5">₹2,499</span>
+              <span class="block text-xs sm:text-sm font-bold text-gray-500 mt-0.5">+ GST <span class="gst-pct">18</span>%</span>
             </div>
           </div>
 
@@ -469,7 +569,7 @@
               </label>
               <span
                 class="text-[11px] font-black text-[#164e3f] bg-[#f7f3e8] border border-[#164e3f]/30 px-3 py-0.5 rounded-full flex items-center gap-1">
-                <span>⚡ 25% OFF APPLIED</span>
+                <span id="pricingBadge">+ 18% GST · Group discounts</span>
               </span>
             </div>
             
@@ -489,9 +589,10 @@
                   <span class="w-4 h-4 rounded-full bg-[#164e3f] flex items-center justify-center text-white text-[10px] pkg-radio">✓</span>
                 </div>
                 <div class="text-sm font-black text-gray-900">1 Person</div>
-                <div class="mt-1.5 flex items-baseline gap-1.5">
-                  <span class="text-sm font-extrabold text-[#164e3f]">₹2,399</span>
-                  <span class="text-[11px] text-gray-400 line-through">₹3,199</span>
+                <div class="mt-1.5 flex items-baseline gap-1.5 flex-wrap">
+                  <span class="pkg-price text-sm font-extrabold text-[#164e3f]">₹0</span>
+                  <span class="pkg-orig hidden text-[11px] text-gray-400 line-through">₹0</span>
+                  <span class="text-[10px] font-semibold text-gray-500 whitespace-nowrap">+ GST</span>
                 </div>
               </button>
 
@@ -510,9 +611,10 @@
                   <span class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center text-white text-[10px] pkg-radio"></span>
                 </div>
                 <div class="text-sm font-black text-gray-900">2 Person</div>
-                <div class="mt-1.5 flex items-baseline gap-1.5">
-                  <span class="text-sm font-extrabold text-[#164e3f]">₹4,798</span>
-                  <span class="text-[11px] text-gray-400 line-through">₹6,398</span>
+                <div class="mt-1.5 flex items-baseline gap-1.5 flex-wrap">
+                  <span class="pkg-price text-sm font-extrabold text-[#164e3f]">₹0</span>
+                  <span class="pkg-orig hidden text-[11px] text-gray-400 line-through">₹0</span>
+                  <span class="text-[10px] font-semibold text-gray-500 whitespace-nowrap">+ GST</span>
                 </div>
               </button>
 
@@ -531,9 +633,10 @@
                   <span class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center text-white text-[10px] pkg-radio"></span>
                 </div>
                 <div class="text-sm font-black text-gray-900">3 Person</div>
-                <div class="mt-1.5 flex items-baseline gap-1.5">
-                  <span class="text-sm font-extrabold text-[#164e3f]">₹7,197</span>
-                  <span class="text-[11px] text-gray-400 line-through">₹9,597</span>
+                <div class="mt-1.5 flex items-baseline gap-1.5 flex-wrap">
+                  <span class="pkg-price text-sm font-extrabold text-[#164e3f]">₹0</span>
+                  <span class="pkg-orig hidden text-[11px] text-gray-400 line-through">₹0</span>
+                  <span class="text-[10px] font-semibold text-gray-500 whitespace-nowrap">+ GST</span>
                 </div>
               </button>
 
@@ -552,9 +655,10 @@
                   <span class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center text-white text-[10px] pkg-radio"></span>
                 </div>
                 <div class="text-sm font-black text-gray-900">4 Person</div>
-                <div class="mt-1.5 flex items-baseline gap-1.5">
-                  <span class="text-sm font-extrabold text-[#164e3f]">₹9,596</span>
-                  <span class="text-[11px] text-gray-400 line-through">₹12,796</span>
+                <div class="mt-1.5 flex items-baseline gap-1.5 flex-wrap">
+                  <span class="pkg-price text-sm font-extrabold text-[#164e3f]">₹0</span>
+                  <span class="pkg-orig hidden text-[11px] text-gray-400 line-through">₹0</span>
+                  <span class="text-[10px] font-semibold text-gray-500 whitespace-nowrap">+ GST</span>
                 </div>
               </button> -->
 
@@ -573,9 +677,10 @@
                 <div class="text-sm font-black text-gray-900 flex items-center gap-1">
                   <span id="customCardLabel">Custom</span>
                 </div>
-                <div class="mt-1.5 flex items-baseline gap-1.5">
-                  <span class="text-xs font-extrabold text-[#164e3f]">₹2,399<span class="text-[10px] font-normal text-gray-500">/pp</span></span>
-                  <span class="text-[10px] text-gray-400 line-through">₹3,199</span>
+                <div class="mt-1.5 flex flex-wrap items-baseline gap-x-1.5 gap-y-0 min-w-0">
+                  <span class="text-xs font-extrabold text-[#164e3f]"><span id="customCardRate">₹2,499</span><span class="text-[10px] font-normal text-gray-500">/pp</span></span>
+                  <span id="customCardOrig" class="hidden text-[10px] text-gray-400 line-through">₹2,499</span>
+                  <span class="text-[10px] font-semibold text-gray-500 whitespace-nowrap">+ GST</span>
                 </div>
               </button>
             </div>
@@ -588,45 +693,28 @@
                 </div>
                 <div>
                   <div class="flex items-center gap-2">
-                    <span class="text-xs font-extrabold text-gray-900 leading-tight">Custom Group Size</span>
-                    <span class="text-[10px] font-extrabold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full">Save ₹800 / person</span>
+                    <span class="text-xs font-extrabold text-gray-900 leading-tight">Group Size</span>
+                    <span id="customSaveBadge" class="hidden text-[10px] font-extrabold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full">Save ₹0 / person</span>
                   </div>
-                  <span class="text-[11px] text-gray-600 block mt-0.5">Select number of people (Starts from 4+ people @
-                    ₹2,399/person)</span>
+                  <span class="text-[11px] text-gray-600 block mt-0.5">Type the number of people (4+). Price per person drops for bigger groups:</span>
+                  <span id="tierList" class="flex flex-wrap gap-1 mt-1.5"></span>
                 </div>
               </div>
 
               <div class="flex items-center gap-2 shrink-0">
-                <label for="customPersonSelect" class="text-xs font-extrabold text-[#164e3f]">Select People:</label>
-                <div class="relative">
-                  <select 
-                    id="customPersonSelect" 
-                    class="appearance-none bg-white text-[#164e3f] font-black text-sm px-4 py-2 pr-9 rounded-xl border-2 border-[#164e3f] focus:outline-none focus:ring-2 focus:ring-[#164e3f] shadow-xs cursor-pointer"
-                  >
-                    <option value="4">4 Persons (₹9,596)</option>
-                    <option value="5" selected>5 Persons (₹11,995)</option>
-                    <option value="6">6 Persons (₹14,394)</option>
-                    <option value="7">7 Persons (₹16,793)</option>
-                    <option value="8">8 Persons (₹19,192)</option>
-                    <option value="9">9 Persons (₹21,591)</option>
-                    <option value="10">10 Persons (₹23,990)</option>
-                    <option value="11">11 Persons (₹26,389)</option>
-                    <option value="12">12 Persons (₹28,788)</option>
-                    <option value="13">13 Persons (₹31,187)</option>
-                    <option value="14">14 Persons (₹33,586)</option>
-                    <option value="15">15 Persons (₹35,985)</option>
-                    <option value="16">16 Persons (₹38,384)</option>
-                    <option value="17">17 Persons (₹40,783)</option>
-                    <option value="18">18 Persons (₹43,182)</option>
-                    <option value="19">19 Persons (₹45,581)</option>
-                    <option value="20">20 Persons (₹47,980)</option>
-                    <option value="25">25 Persons (₹59,975)</option>
-                    <option value="30">30 Persons (₹71,970)</option>
-                  </select>
-                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-[#164e3f]">
-                    <i data-lucide="chevron-down" class="w-4 h-4"></i>
-                  </div>
+                <label for="customPersonSelect" class="text-xs font-extrabold text-[#164e3f]">People:</label>
+                <div class="flex items-center bg-white rounded-xl border-2 border-[#164e3f] shadow-xs overflow-hidden">
+                  <button type="button" id="customPersonMinus" class="w-8 h-9 flex items-center justify-center text-[#164e3f] font-black text-lg hover:bg-emerald-50" aria-label="Fewer people">−</button>
+                  <input
+                    id="customPersonSelect"
+                    type="number" inputmode="numeric" min="4" max="500" step="1" value="4"
+                    class="w-14 h-9 text-center bg-white text-[#164e3f] font-black text-sm focus:outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                    aria-label="Number of people"
+                  />
+                  <button type="button" id="customPersonPlus" class="w-8 h-9 flex items-center justify-center text-[#164e3f] font-black text-lg hover:bg-emerald-50" aria-label="More people">+</button>
                 </div>
+                <span id="customPersonTotal" class="text-sm font-black text-[#164e3f] whitespace-nowrap">= ₹9,996</span>
+                <span class="text-[11px] font-bold text-gray-500 whitespace-nowrap">+ GST</span>
               </div>
             </div>
           </div>
@@ -684,203 +772,116 @@
             <span>Available In Stock &amp; Ready for Booking</span>
           </div> -->
 
-          <!-- Add-ons Section -->
-          <div class="mb-5 sm:mb-6 bg-white sm:bg-transparent p-3.5 sm:p-0 rounded-2xl border border-gray-200/90 sm:border-0 shadow-2xs sm:shadow-none">
-            <div class="flex items-center justify-between mb-3">
-              <div>
-                <h3 class="text-sm sm:text-base font-bold text-gray-900 leading-tight">Add-on Accessories</h3>
-                <p class="text-[11px] sm:text-xs text-gray-500">Enhance your camping trip with essential gear</p>
+          <!-- Events picked on the Events page (added to this booking, no price change) -->
+          <div id="pickedEventsCard" class="hidden mb-5 sm:mb-6 rounded-2xl border-2 border-purple-200 bg-purple-50/60 p-4">
+            <div class="flex items-center justify-between gap-2 mb-2.5">
+              <div class="flex items-center gap-2">
+                <span class="w-8 h-8 rounded-lg bg-purple-600 text-white flex items-center justify-center shrink-0"><i data-lucide="sparkles" class="w-4 h-4"></i></span>
+                <div>
+                  <h3 class="text-sm sm:text-base font-extrabold text-gray-900 leading-tight">Your events &amp; activities</h3>
+                  <p class="text-[11px] text-gray-600">Added to this booking · no extra charge</p>
+                </div>
               </div>
-              <span class="text-[10px] sm:text-[11px] font-bold text-[#164e3f] bg-[#f7f3e8] border border-[#164e3f]/20 px-2.5 py-0.5 rounded-full shrink-0">
-                Optional
-              </span>
+              <a href="../events/" class="text-xs font-bold text-purple-700 underline shrink-0">+ Add more</a>
+            </div>
+            <div id="pickedEventsList" class="flex flex-wrap gap-2"></div>
+          </div>
+
+          <!-- Booking calendar: pick a check-in date (Open / Closed per day) -->
+          <div id="bookingCalendarCard" class="mb-5 sm:mb-6 rounded-2xl border border-gray-200 bg-white shadow-2xs overflow-hidden scroll-mt-28">
+            <div class="px-4 py-3 bg-[#f7f3e8]/80 border-b border-gray-100 flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2">
+                <span class="w-8 h-8 rounded-lg bg-[#164e3f] text-white flex items-center justify-center shrink-0"><i data-lucide="calendar-days" class="w-4 h-4"></i></span>
+                <div>
+                  <h3 class="text-sm sm:text-base font-extrabold text-gray-900 leading-tight">Choose your check-in date</h3>
+                  <p class="text-[11px] text-gray-500"><span id="calCapacityText">25</span> campers per day · availability updates live</p>
+                </div>
+              </div>
+              <span id="calSelectedPill" class="hidden text-[11px] font-extrabold text-white bg-[#164e3f] px-2.5 py-1 rounded-full shrink-0"></span>
+            </div>
+            <div class="p-4">
+              <div class="flex items-center justify-between mb-3">
+                <button type="button" id="calPrev" class="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50 disabled:opacity-30" aria-label="Previous month"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                <span id="calMonthLabel" class="text-sm font-extrabold text-gray-900">Month</span>
+                <button type="button" id="calNext" class="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50" aria-label="Next month"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+              </div>
+              <div class="grid grid-cols-7 gap-1 text-center text-[10px] font-extrabold uppercase text-gray-400 mb-1">
+                <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+              </div>
+              <div id="calGrid" class="grid grid-cols-7 gap-1"></div>
+              <div class="flex flex-wrap gap-x-3 gap-y-1 mt-3 text-[10px] font-bold text-gray-600">
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-500"></span>Open</span>
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-amber-400"></span>Not for your group size</span>
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-red-400"></span>Closed</span>
+              </div>
+              <p id="calMessage" class="hidden mt-2 text-xs font-bold text-red-600"></p>
+            </div>
+          </div>
+
+          <!-- Meals & guests: food preference (included) + children under 4 (free) -->
+          <div id="foodSection" class="mb-5 sm:mb-6 rounded-2xl border border-gray-200 bg-white shadow-2xs overflow-hidden scroll-mt-28">
+            <div class="px-4 py-3 bg-[#f7f3e8]/80 border-b border-gray-100 flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2">
+                <span class="w-8 h-8 rounded-lg bg-[#164e3f] text-white flex items-center justify-center shrink-0"><i data-lucide="utensils" class="w-4 h-4"></i></span>
+                <div>
+                  <h3 class="text-sm sm:text-base font-extrabold text-gray-900 leading-tight">Meals &amp; Guests</h3>
+                  <p class="text-[11px] text-gray-500">Food is included in your package price</p>
+                </div>
+              </div>
+              <span class="text-[10px] font-extrabold uppercase tracking-wide text-emerald-800 bg-emerald-100 px-2.5 py-1 rounded-full shrink-0">₹0 extra</span>
             </div>
 
-            <!-- 4 Add-on Selection Cards Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-4 gap-2.5 sm:gap-3">
-              
-              <!-- Add-on 1: Chair -->
-              <div 
-                class="addon-card relative p-3 rounded-2xl border border-gray-200 bg-white hover:border-[#164e3f]/60 transition card-hover select-none group flex flex-col justify-between"
-                data-id="chair" 
-                data-name="Camping Chair" 
-                data-price="1200"
-              >
-                <!-- Checkbox / Badge (Top Right) -->
-                <div class="absolute top-2.5 right-2.5 z-10">
-                  <input 
-                    type="checkbox" 
-                    id="check-chair" 
-                    class="addon-checkbox w-4 h-4 text-[#164e3f] rounded border-gray-300 focus:ring-[#164e3f] cursor-pointer accent-[#164e3f]"
-                  >
+            <div class="p-4 space-y-4">
+              <div>
+                <div class="flex items-baseline justify-between mb-2">
+                  <span class="text-[11px] font-extrabold uppercase tracking-wider text-gray-800">Food preference <span class="text-red-600">*</span></span>
+                  <span class="text-[11px] text-gray-500">Choose one for your group</span>
                 </div>
-
-                <div>
-                  <div class="w-full aspect-square rounded-xl overflow-hidden bg-gray-50 flex items-center justify-center p-2 shrink-0 border border-gray-100 mb-2 group-hover:scale-105 transition duration-200">
-                    <img src="chair.jpg" alt="Camping Chair" class="w-full h-full object-contain">
-                  </div>
-                  <div>
-                    <div class="text-xs font-bold text-gray-900 truncate group-hover:text-[#164e3f] transition">Camping Chair</div>
-                    <div class="text-xs font-black text-[#164e3f] mt-0.5">+₹1,200</div>
-                  </div>
+                <div class="grid grid-cols-2 gap-2.5">
+                  <button type="button" data-food="Veg" class="food-card p-3 rounded-xl border border-gray-200 bg-white text-left hover:border-[#164e3f]/60 hover:shadow-xs transition select-none flex items-center gap-3 focus:outline-none">
+                    <span class="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center shrink-0">
+                      <span class="w-5 h-5 border-2 border-green-600 rounded-[3px] flex items-center justify-center"><span class="w-2.5 h-2.5 rounded-full bg-green-600"></span></span>
+                    </span>
+                    <span class="flex-1 min-w-0">
+                      <span class="block text-sm font-extrabold text-gray-900">Veg</span>
+                      <span class="block text-[11px] text-gray-500 truncate">Vegetarian meals</span>
+                    </span>
+                    <span class="food-radio w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center text-white text-[10px] shrink-0"></span>
+                  </button>
+                  <button type="button" data-food="Non-Veg" class="food-card p-3 rounded-xl border border-gray-200 bg-white text-left hover:border-[#164e3f]/60 hover:shadow-xs transition select-none flex items-center gap-3 focus:outline-none">
+                    <span class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center shrink-0">
+                      <span class="w-5 h-5 border-2 border-red-700 rounded-[3px] flex items-center justify-center"><span class="w-0 h-0 border-l-[5px] border-r-[5px] border-b-[8px] border-l-transparent border-r-transparent border-b-red-700"></span></span>
+                    </span>
+                    <span class="flex-1 min-w-0">
+                      <span class="block text-sm font-extrabold text-gray-900">Non-Veg</span>
+                      <span class="block text-[11px] text-gray-500 truncate">Non-vegetarian meals</span>
+                    </span>
+                    <span class="food-radio w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center text-white text-[10px] shrink-0"></span>
+                  </button>
                 </div>
-
-                <!-- Quantity Stepper Controls (- Qty +) -->
-                <div class="mt-2.5 pt-2 border-t border-gray-100 flex items-center justify-between">
-                  <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Qty</span>
-                  <div class="flex items-center gap-1.5 bg-gray-100 px-1.5 py-0.5 rounded-lg border border-gray-200">
-                    <button 
-                      type="button" 
-                      class="addon-qty-dec w-5 h-5 rounded bg-white hover:bg-gray-200 active:scale-95 text-gray-800 font-extrabold text-xs flex items-center justify-center transition border border-gray-300 disabled:opacity-40 select-none cursor-pointer"
-                      data-id="chair"
-                      title="Decrease Quantity"
-                    >-</button>
-                    <span class="addon-qty-val text-xs font-black text-[#164e3f] min-w-[18px] text-center select-none">0</span>
-                    <button 
-                      type="button" 
-                      class="addon-qty-inc w-5 h-5 rounded bg-[#164e3f] hover:bg-[#0f382d] active:scale-95 text-white font-extrabold text-xs flex items-center justify-center transition shadow-2xs select-none cursor-pointer"
-                      data-id="chair"
-                      title="Increase Quantity"
-                    >+</button>
-                  </div>
-                </div>
+                <p id="foodHint" class="hidden mt-2 text-xs font-bold text-red-600 flex items-center gap-1"><i data-lucide="alert-circle" class="w-3.5 h-3.5"></i> Please choose Veg or Non-Veg to continue.</p>
               </div>
 
-              <!-- Add-on 2: Sleeping Bag -->
-              <div 
-                class="addon-card relative p-3 rounded-2xl border border-gray-200 bg-white hover:border-[#164e3f]/60 transition card-hover select-none group flex flex-col justify-between"
-                data-id="sleeping_bag" 
-                data-name="Sleeping Bag" 
-                data-price="1500"
-              >
-                <div class="absolute top-2.5 right-2.5 z-10">
-                  <input 
-                    type="checkbox" 
-                    id="check-sleeping_bag" 
-                    class="addon-checkbox w-4 h-4 text-[#164e3f] rounded border-gray-300 focus:ring-[#164e3f] cursor-pointer accent-[#164e3f]"
-                  >
-                </div>
+              <div class="border-t border-dashed border-gray-200"></div>
 
-                <div>
-                  <div class="w-full aspect-square rounded-xl overflow-hidden bg-gray-50 flex items-center justify-center p-2 shrink-0 border border-gray-100 mb-2 group-hover:scale-105 transition duration-200">
-                    <img src="sleeping_bag.jpg" alt="Sleeping Bag" class="w-full h-full object-contain">
-                  </div>
-                  <div>
-                    <div class="text-xs font-bold text-gray-900 truncate group-hover:text-[#164e3f] transition">Sleeping Bag</div>
-                    <div class="text-xs font-black text-[#164e3f] mt-0.5">+₹1,500</div>
-                  </div>
+              <!-- Children under 4 (free, not counted in the headcount price) -->
+              <div class="flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3 min-w-0">
+                  <span class="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center shrink-0"><i data-lucide="baby" class="w-5 h-5"></i></span>
+                  <span class="min-w-0">
+                    <span class="flex items-center gap-1.5">
+                      <span class="text-sm font-extrabold text-gray-900">Children under 4</span>
+                      <span class="text-[10px] font-extrabold uppercase text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded">Free</span>
+                    </span>
+                    <span class="block text-[11px] text-gray-500">Not counted in the package headcount</span>
+                  </span>
                 </div>
-
-                <div class="mt-2.5 pt-2 border-t border-gray-100 flex items-center justify-between">
-                  <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Qty</span>
-                  <div class="flex items-center gap-1.5 bg-gray-100 px-1.5 py-0.5 rounded-lg border border-gray-200">
-                    <button 
-                      type="button" 
-                      class="addon-qty-dec w-5 h-5 rounded bg-white hover:bg-gray-200 active:scale-95 text-gray-800 font-extrabold text-xs flex items-center justify-center transition border border-gray-300 disabled:opacity-40 select-none cursor-pointer"
-                      data-id="sleeping_bag"
-                      title="Decrease Quantity"
-                    >-</button>
-                    <span class="addon-qty-val text-xs font-black text-[#164e3f] min-w-[18px] text-center select-none">0</span>
-                    <button 
-                      type="button" 
-                      class="addon-qty-inc w-5 h-5 rounded bg-[#164e3f] hover:bg-[#0f382d] active:scale-95 text-white font-extrabold text-xs flex items-center justify-center transition shadow-2xs select-none cursor-pointer"
-                      data-id="sleeping_bag"
-                      title="Increase Quantity"
-                    >+</button>
-                  </div>
+                <div class="flex items-center gap-1 bg-gray-50 rounded-full border border-gray-200 p-1 shrink-0">
+                  <button type="button" id="kidsDecBtn" class="w-7 h-7 rounded-full bg-white border border-gray-200 flex items-center justify-center text-[#164e3f] font-black hover:bg-emerald-50 disabled:opacity-40 disabled:cursor-not-allowed" aria-label="Fewer children">−</button>
+                  <span id="kidsCount" class="w-7 text-center text-sm font-black text-[#164e3f] select-none">0</span>
+                  <button type="button" id="kidsIncBtn" class="w-7 h-7 rounded-full bg-[#164e3f] text-white flex items-center justify-center font-black hover:bg-[#0f382d]" aria-label="More children">+</button>
                 </div>
               </div>
-
-              <!-- Add-on 3: Lantern -->
-              <div 
-                class="addon-card relative p-3 rounded-2xl border border-gray-200 bg-white hover:border-[#164e3f]/60 transition card-hover select-none group flex flex-col justify-between"
-                data-id="lantern" 
-                data-name="LED Lantern" 
-                data-price="800"
-              >
-                <div class="absolute top-2.5 right-2.5 z-10">
-                  <input 
-                    type="checkbox" 
-                    id="check-lantern" 
-                    class="addon-checkbox w-4 h-4 text-[#164e3f] rounded border-gray-300 focus:ring-[#164e3f] cursor-pointer accent-[#164e3f]"
-                  >
-                </div>
-
-                <div>
-                  <div class="w-full aspect-square rounded-xl overflow-hidden bg-gray-50 flex items-center justify-center p-2 shrink-0 border border-gray-100 mb-2 group-hover:scale-105 transition duration-200">
-                    <img src="lantern.jpg" alt="Lantern" class="w-full h-full object-contain">
-                  </div>
-                  <div>
-                    <div class="text-xs font-bold text-gray-900 truncate group-hover:text-[#164e3f] transition">LED Lantern</div>
-                    <div class="text-xs font-black text-[#164e3f] mt-0.5">+₹800</div>
-                  </div>
-                </div>
-
-                <div class="mt-2.5 pt-2 border-t border-gray-100 flex items-center justify-between">
-                  <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Qty</span>
-                  <div class="flex items-center gap-1.5 bg-gray-100 px-1.5 py-0.5 rounded-lg border border-gray-200">
-                    <button 
-                      type="button" 
-                      class="addon-qty-dec w-5 h-5 rounded bg-white hover:bg-gray-200 active:scale-95 text-gray-800 font-extrabold text-xs flex items-center justify-center transition border border-gray-300 disabled:opacity-40 select-none cursor-pointer"
-                      data-id="lantern"
-                      title="Decrease Quantity"
-                    >-</button>
-                    <span class="addon-qty-val text-xs font-black text-[#164e3f] min-w-[18px] text-center select-none">0</span>
-                    <button 
-                      type="button" 
-                      class="addon-qty-inc w-5 h-5 rounded bg-[#164e3f] hover:bg-[#0f382d] active:scale-95 text-white font-extrabold text-xs flex items-center justify-center transition shadow-2xs select-none cursor-pointer"
-                      data-id="lantern"
-                      title="Increase Quantity"
-                    >+</button>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Add-on 4: Rope Set -->
-              <div 
-                class="addon-card relative p-3 rounded-2xl border border-gray-200 bg-white hover:border-[#164e3f]/60 transition card-hover select-none group flex flex-col justify-between"
-                data-id="rope" 
-                data-name="Rope Set" 
-                data-price="600"
-              >
-                <div class="absolute top-2.5 right-2.5 z-10">
-                  <input 
-                    type="checkbox" 
-                    id="check-rope" 
-                    class="addon-checkbox w-4 h-4 text-[#164e3f] rounded border-gray-300 focus:ring-[#164e3f] cursor-pointer accent-[#164e3f]"
-                  >
-                </div>
-
-                <div>
-                  <div class="w-full aspect-square rounded-xl overflow-hidden bg-gray-50 flex items-center justify-center p-2 shrink-0 border border-gray-100 mb-2 group-hover:scale-105 transition duration-200">
-                    <img src="rope.jpg" alt="Rope Set" class="w-full h-full object-contain">
-                  </div>
-                  <div>
-                    <div class="text-xs font-bold text-gray-900 truncate group-hover:text-[#164e3f] transition">Rope Set</div>
-                    <div class="text-xs font-black text-[#164e3f] mt-0.5">+₹600</div>
-                  </div>
-                </div>
-
-                <div class="mt-2.5 pt-2 border-t border-gray-100 flex items-center justify-between">
-                  <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Qty</span>
-                  <div class="flex items-center gap-1.5 bg-gray-100 px-1.5 py-0.5 rounded-lg border border-gray-200">
-                    <button 
-                      type="button" 
-                      class="addon-qty-dec w-5 h-5 rounded bg-white hover:bg-gray-200 active:scale-95 text-gray-800 font-extrabold text-xs flex items-center justify-center transition border border-gray-300 disabled:opacity-40 select-none cursor-pointer"
-                      data-id="rope"
-                      title="Decrease Quantity"
-                    >-</button>
-                    <span class="addon-qty-val text-xs font-black text-[#164e3f] min-w-[18px] text-center select-none">0</span>
-                    <button 
-                      type="button" 
-                      class="addon-qty-inc w-5 h-5 rounded bg-[#164e3f] hover:bg-[#0f382d] active:scale-95 text-white font-extrabold text-xs flex items-center justify-center transition shadow-2xs select-none cursor-pointer"
-                      data-id="rope"
-                      title="Increase Quantity"
-                    >+</button>
-                  </div>
-                </div>
-              </div>
-
             </div>
           </div>
 
@@ -892,7 +893,7 @@
               </div>
               <div>
                 <span class="text-sm font-bold text-gray-900">Total Price</span>
-                <span class="text-xs text-brand-700 ml-1 font-medium">(with selected add-ons)</span>
+                <span class="block sm:inline text-[11px] sm:text-xs text-brand-700 sm:ml-1 font-medium">Food included · + <span class="gst-pct">18</span>% GST at checkout</span>
               </div>
             </div>
             <div class="text-right">
@@ -914,6 +915,36 @@
           <div class="flex items-center justify-center gap-1.5 text-xs text-gray-600 mt-2.5">
             <i data-lucide="shield-check" class="w-4 h-4 text-[#164e3f] shrink-0"></i>
             <span>Official direct booking secured by GOGOCamping</span>
+          </div>
+
+          <!-- Tailor-made packages: no online customisation, contact on WhatsApp -->
+          <div class="mt-5 rounded-2xl bg-gradient-to-br from-[#164e3f] to-[#0d7a57] text-white p-4 sm:p-5 shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+              <div class="min-w-0">
+                <span class="text-[10px] uppercase font-extrabold tracking-wider text-emerald-200">Special groups</span>
+                <h4 class="text-base font-extrabold leading-tight mt-0.5">For tailor-made packages, contact us</h4>
+                <p class="text-xs text-emerald-50/90 mt-1">We plan these personally with you on WhatsApp.</p>
+                <div class="flex flex-wrap gap-1.5 mt-2.5">
+                  <span class="text-[11px] font-bold bg-white/15 border border-white/20 px-2.5 py-0.5 rounded-full">100+ people</span>
+                  <span class="text-[11px] font-bold bg-white/15 border border-white/20 px-2.5 py-0.5 rounded-full">2+ days stay</span>
+                  <span class="text-[11px] font-bold bg-white/15 border border-white/20 px-2.5 py-0.5 rounded-full">25+ bikers</span>
+                </div>
+              </div>
+              <a id="tailorMadeWhatsApp" href="https://wa.me/919876543210?text=Hi%20GOGOCamping%2C%20I%27d%20like%20a%20tailor-made%20package%20for%20my%20group." target="_blank" rel="noopener"
+                 class="inline-flex items-center gap-2 bg-white text-[#128C4A] hover:bg-emerald-50 text-sm font-extrabold px-4 py-2.5 rounded-xl shadow-xs shrink-0">
+                <svg viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91A9.86 9.86 0 0 0 12.04 2zm5.8 14.13c-.24.68-1.42 1.32-1.96 1.36-.5.05-.97.23-3.27-.68-2.77-1.09-4.52-3.92-4.66-4.1-.13-.18-1.11-1.48-1.11-2.83s.71-2 .96-2.28c.25-.27.55-.34.73-.34h.52c.17 0 .4-.06.62.48.24.56.8 1.94.87 2.08.07.14.12.3.02.48-.09.18-.14.3-.27.46-.14.16-.29.36-.41.48-.14.14-.28.29-.12.56.16.27.71 1.17 1.52 1.9 1.05.93 1.93 1.22 2.2 1.36.27.14.43.11.59-.07.16-.18.68-.79.86-1.06.18-.27.36-.23.61-.14.25.09 1.58.75 1.85.88.27.14.45.2.52.32.06.11.06.66-.18 1.34z"/></svg> Chat on WhatsApp
+              </a>
+            </div>
+          </div>
+
+          <!-- Coming soon: Pet / Kennel -->
+          <div class="mt-3 px-4 py-3 rounded-2xl border border-dashed border-gray-300 bg-gray-50/60 flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-white border border-gray-200 text-gray-500 flex items-center justify-center shrink-0"><i data-lucide="paw-print" class="w-4.5 h-4.5"></i></span>
+            <span class="min-w-0 flex-1">
+              <span class="block text-sm font-bold text-gray-700">Pet / Kennel stay</span>
+              <span class="block text-[11px] text-gray-500">Bring your dog along – launching soon</span>
+            </span>
+            <span class="text-[10px] font-extrabold uppercase tracking-wide text-amber-800 bg-amber-100 px-2.5 py-1 rounded-full shrink-0">Coming soon</span>
           </div>
 
           <!-- Video Guide Section (Mobile Only: Appears directly after Book Now) -->
@@ -954,7 +985,7 @@
     </section>
 
     <!-- ================= EXPLORE CATEGORIES SECTION ================= -->
-    <section class="mt-8 mb-6">
+    <section class="mt-8 mb-6 lg:hidden">
       <div class="flex items-center justify-between mb-4">
         <div>
           <h2 class="text-xl font-bold text-gray-900">Explore Outdoor Categories</h2>
@@ -1069,7 +1100,7 @@
 
   <!-- ================= GOGOCAMPING BOOKING MODAL ================= -->
   <div id="bookingModal" class="fixed inset-0 z-50 bg-black/65 backdrop-blur-xs hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-    <div class="bg-[#f4f5f8] rounded-3xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl relative border border-gray-200 overflow-hidden animate-fade-in my-auto">
+    <div class="bg-[#f4f5f8] rounded-3xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl relative border border-gray-200 overflow-hidden [overflow:clip] animate-fade-in my-auto">
       
       <!-- Modal Sticky Header -->
       <div class="bg-white px-6 py-4 border-b border-gray-200 flex items-center justify-between shrink-0">
@@ -1102,47 +1133,74 @@
             <!-- Dynamically populated selected add-ons -->
           </div>
           <div class="text-right">
-            <span class="text-gray-500 block text-xs">Total Amount</span>
+            <span class="text-gray-500 block text-xs">Total (incl. <span class="gst-pct">18</span>% GST)</span>
             <span id="modalGrandTotal" class="text-base font-extrabold text-[#164e3f]">₹4,799</span>
           </div>
         </div>
 
-        <!-- ================= SECTION 1: CONTACT DETAILS ================= -->
+        <!-- ================= SECTION 1: TEAM LEADER DETAILS (only the primary booker) ================= -->
         <div class="bg-white rounded-2xl p-5 border border-gray-200 shadow-2xs space-y-3.5">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <h4 class="text-base font-bold text-gray-900">Team leader details</h4>
+              <p class="text-xs text-gray-500">Only the primary booker's details are needed now. Confirmation &amp; entry pass are sent here.</p>
+            </div>
+            <span class="text-[10px] font-extrabold uppercase text-[#164e3f] bg-[#f7f3e8] border border-[#164e3f]/20 px-2 py-0.5 rounded-full shrink-0">Step 1 of 2</span>
+          </div>
+
+          <div id="memberLoginBanner" class="bg-[#f7f3e8] border border-[#164e3f]/20 text-[#164e3f] text-xs font-semibold py-2.5 px-4 rounded-xl text-center cursor-pointer hover:bg-[#efe8d6] transition">
+            Have an account? Click to Login &amp; fill your details
+          </div>
+
+          <!-- Is the team leader one of the campers? -->
           <div>
-            <h4 class="text-base font-bold text-gray-900">Contact details</h4>
-            <p class="text-xs text-gray-500">Booking confirmation &amp; campsite access pass will be sent to</p>
+            <span class="text-[11px] font-extrabold uppercase tracking-wider text-gray-700 block mb-1.5">Is the team leader camping too?</span>
+            <div class="grid grid-cols-2 gap-2" id="leaderCampingChoice">
+              <button type="button" data-leader="yes" class="leader-opt p-2.5 rounded-xl border-2 text-left transition">
+                <span class="block text-sm font-extrabold text-gray-900">Yes, I'm camping</span>
+                <span class="leader-sub block text-[11px] text-gray-500">I'm 1 of the campers</span>
+              </button>
+              <button type="button" data-leader="no" class="leader-opt p-2.5 rounded-xl border-2 text-left transition">
+                <span class="block text-sm font-extrabold text-gray-900">No, booking for others</span>
+                <span class="leader-sub block text-[11px] text-gray-500">Not counted as a camper</span>
+              </button>
+            </div>
           </div>
 
-          <!-- Phone Row -->
-          <div class="grid grid-cols-12 rounded-xl border border-gray-300 overflow-hidden focus-within:border-[#164e3f] bg-white">
-            <div class="col-span-5 sm:col-span-4 border-r border-gray-200 bg-gray-50/60 flex flex-col justify-center px-3 py-2 cursor-pointer">
-              <span class="text-[10px] text-gray-500 font-medium leading-tight">Country Code</span>
-              <div class="flex items-center justify-between text-xs font-bold text-gray-800 mt-0.5">
-                <span>+91 (IND)</span>
-                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-500"></i>
+          <!-- Full name -->
+          <div>
+            <div class="rounded-xl border border-gray-300 px-3.5 py-2 bg-white focus-within:border-[#164e3f]">
+              <span class="text-[10px] text-gray-500 font-medium block leading-tight">Full name *</span>
+              <input type="text" id="camper1NameInput" autocomplete="name" placeholder="As on Aadhaar / ID" class="w-full text-sm font-medium text-gray-900 focus:outline-none placeholder-gray-400 bg-transparent mt-0.5">
+            </div>
+          </div>
+
+          <!-- Phone + alternate phone -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="rounded-xl border border-gray-300 px-3.5 py-2 bg-white focus-within:border-[#164e3f]">
+              <span class="text-[10px] text-gray-500 font-medium block leading-tight">Phone number * <span class="text-gray-400">(+91)</span></span>
+              <input type="tel" id="contactPhone" inputmode="numeric" maxlength="10" autocomplete="tel-national" placeholder="10-digit mobile" class="w-full text-sm font-medium text-gray-900 focus:outline-none placeholder-gray-400 bg-transparent mt-0.5">
+            </div>
+            <div class="rounded-xl border border-gray-300 px-3.5 py-2 bg-white focus-within:border-[#164e3f]">
+              <span class="text-[10px] text-gray-500 font-medium block leading-tight">Alternate number * <span class="text-gray-400">(+91)</span></span>
+              <input type="tel" id="altPhone" inputmode="numeric" maxlength="10" placeholder="Another 10-digit number" class="w-full text-sm font-medium text-gray-900 focus:outline-none placeholder-gray-400 bg-transparent mt-0.5">
+            </div>
+          </div>
+
+          <!-- Email + check-in date -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="rounded-xl border border-gray-300 px-3.5 py-2 bg-white focus-within:border-[#164e3f]">
+              <span class="text-[10px] text-gray-500 font-medium block leading-tight">Email (for tax invoice)</span>
+              <input type="email" id="contactEmail" autocomplete="email" placeholder="you@example.com" class="w-full text-sm font-medium text-gray-900 focus:outline-none placeholder-gray-400 bg-transparent mt-0.5">
+            </div>
+            <div class="rounded-xl border border-gray-300 px-3.5 py-2 bg-white focus-within:border-[#164e3f]">
+              <span class="text-[10px] text-gray-500 font-medium block leading-tight">Check-in date *</span>
+              <div class="flex items-center justify-between gap-2 mt-0.5">
+                <span id="modalTripDateText" class="text-sm font-bold text-gray-900">Not selected</span>
+                <button type="button" id="changeDateBtn" class="text-xs font-bold text-[#164e3f] underline">Change</button>
               </div>
+              <input type="hidden" id="tripDate">
             </div>
-            <div class="col-span-7 sm:col-span-8 flex flex-col justify-center px-3.5 py-2">
-              <input 
-                type="tel" 
-                id="contactPhone"
-                placeholder="Phone *" 
-                value="9876543210"
-                class="w-full text-sm font-medium text-gray-900 focus:outline-none placeholder-gray-400"
-              >
-            </div>
-          </div>
-
-          <!-- Email ID -->
-          <div class="rounded-xl border border-gray-300 px-3.5 py-2.5 bg-white focus-within:border-[#164e3f]">
-            <input 
-              type="email" 
-              id="contactEmail"
-              placeholder="Email ID" 
-              value="traveler@example.com"
-              class="w-full text-sm font-medium text-gray-900 focus:outline-none placeholder-gray-400"
-            >
           </div>
 
           <!-- State of Residence -->
@@ -1184,187 +1242,58 @@
           </div>
         </div>
 
-        <!-- ================= SECTION 2: CAMPER DETAILS ================= -->
-        <div class="bg-white rounded-2xl p-5 border border-gray-200 shadow-2xs space-y-4">
-          <h4 class="text-base font-bold text-gray-900">Camper details</h4>
-
-          <!-- Login banner -->
-          <div id="memberLoginBanner" class="bg-[#f7f3e8] border border-[#164e3f]/20 text-[#164e3f] text-xs font-semibold py-2.5 px-4 rounded-xl text-center cursor-pointer hover:bg-[#efe8d8] transition">
-            GOGOCamping Member? Click to Login & view saved campers list
+        <!-- ================= OTHER CAMPERS: name, age, phone (each gets a WhatsApp link to upload Aadhaar) ================= -->
+        <div id="otherCampersSection" class="bg-white rounded-2xl p-5 border border-gray-200 shadow-2xs space-y-3.5">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <h4 class="text-base font-bold text-gray-900 flex items-center gap-2"><i data-lucide="users" class="w-4.5 h-4.5 text-[#164e3f]"></i> <span id="otherCampersTitle">Other campers</span></h4>
+              <p id="otherCampersSub" class="text-xs text-gray-500">Name, age and WhatsApp number of everyone else in your group.</p>
+            </div>
+            <span id="otherCampersCount" class="text-[10px] font-extrabold uppercase text-[#164e3f] bg-[#f7f3e8] border border-[#164e3f]/20 px-2 py-0.5 rounded-full shrink-0">0 campers</span>
           </div>
-
-          <div id="passengersList" class="space-y-4">
-
-            <!-- Camper 1 -->
-            <div class="passenger-card space-y-3">
-              <div class="flex items-center justify-between cursor-pointer">
-                <div class="flex items-center gap-2.5">
-                  <div class="w-7 h-7 rounded-full bg-[#f7f3e8] text-[#164e3f] border border-[#164e3f]/20 flex items-center justify-center text-xs font-bold">
-                    <i data-lucide="user" class="w-4 h-4"></i>
-                  </div>
-                  <div>
-                    <span class="text-sm font-bold text-gray-900">Camper 1</span>
-                    <span class="text-[11px] text-gray-500 block leading-tight">Lead Camper (Slot 1, 4-Person Dome)</span>
-                  </div>
-                </div>
-                <i data-lucide="chevron-up" class="w-4 h-4 text-gray-500"></i>
-              </div>
-
-              <!-- Name Field -->
-              <div>
-                <div class="rounded-xl border border-gray-300 px-3.5 py-2 bg-white focus-within:border-[#164e3f]">
-                  <input 
-                    type="text" 
-                    id="camper1NameInput"
-                    placeholder="Name *" 
-                    class="w-full text-sm font-medium text-gray-900 focus:outline-none placeholder-gray-400"
-                  >
-                </div>
-                <span class="text-[11px] text-gray-400 font-medium mt-1 block">Enter full name in English</span>
-              </div>
-
-              <!-- Age Field -->
-              <div>
-                <div class="rounded-xl border border-gray-300 px-3.5 py-2 bg-white focus-within:border-[#164e3f]">
-                  <input 
-                    type="number" 
-                    placeholder="Age *" 
-                    class="w-full text-sm font-medium text-gray-900 focus:outline-none placeholder-gray-400"
-                  >
-                </div>
-                <span class="text-[11px] text-gray-400 font-medium mt-1 block">Please enter valid Age</span>
-              </div>
-
-              <!-- Gender -->
-              <div>
-                <span class="text-xs font-medium text-gray-600 block mb-1">Gender *</span>
-                <div class="grid grid-cols-2 gap-3">
-                  <label class="gender-pill flex items-center justify-between px-4 py-2 border border-gray-300 rounded-full cursor-pointer hover:border-[#164e3f] transition select-none">
-                    <span class="text-xs font-semibold text-gray-800">Male</span>
-                    <input type="radio" name="gender-p1" value="Male" class="w-4 h-4 text-[#164e3f] accent-[#164e3f]" checked>
-                  </label>
-                  <label class="gender-pill flex items-center justify-between px-4 py-2 border border-gray-300 rounded-full cursor-pointer hover:border-[#164e3f] transition select-none">
-                    <span class="text-xs font-semibold text-gray-800">Female</span>
-                    <input type="radio" name="gender-p1" value="Female" class="w-4 h-4 text-[#164e3f] accent-[#164e3f]">
-                  </label>
-                </div>
-              </div>
-            </div>
-
-            <div class="border-t border-dashed border-gray-200 my-3"></div>
-
-            <!-- Camper 2 -->
-            <div class="passenger-card space-y-3">
-              <div class="flex items-center justify-between cursor-pointer">
-                <div class="flex items-center gap-2.5">
-                  <div class="w-7 h-7 rounded-full bg-[#f7f3e8] text-[#164e3f] border border-[#164e3f]/20 flex items-center justify-center text-xs font-bold">
-                    <i data-lucide="user" class="w-4 h-4"></i>
-                  </div>
-                  <div>
-                    <span class="text-sm font-bold text-gray-900">Camper 2</span>
-                    <span class="text-[11px] text-gray-500 block leading-tight">Slot 2, 4-Person Dome</span>
-                  </div>
-                </div>
-                <i data-lucide="chevron-up" class="w-4 h-4 text-gray-500"></i>
-              </div>
-
-              <div>
-                <div class="rounded-xl border border-gray-300 px-3.5 py-2 bg-white focus-within:border-[#164e3f]">
-                  <input 
-                    type="text" 
-                    placeholder="Name *" 
-                    class="w-full text-sm font-medium text-gray-900 focus:outline-none placeholder-gray-400"
-                  >
-                </div>
-              </div>
-
-              <div>
-                <div class="rounded-xl border border-gray-300 px-3.5 py-2 bg-white focus-within:border-[#164e3f]">
-                  <input 
-                    type="number" 
-                    placeholder="Age *" 
-                    class="w-full text-sm font-medium text-gray-900 focus:outline-none placeholder-gray-400"
-                  >
-                </div>
-              </div>
-
-              <div>
-                <span class="text-xs font-medium text-gray-600 block mb-1">Gender *</span>
-                <div class="grid grid-cols-2 gap-3">
-                  <label class="gender-pill flex items-center justify-between px-4 py-2 border border-gray-300 rounded-full cursor-pointer hover:border-[#164e3f] transition select-none">
-                    <span class="text-xs font-semibold text-gray-800">Male</span>
-                    <input type="radio" name="gender-p2" value="Male" class="w-4 h-4 text-[#164e3f] accent-[#164e3f]">
-                  </label>
-                  <label class="gender-pill flex items-center justify-between px-4 py-2 border border-gray-300 rounded-full cursor-pointer hover:border-[#164e3f] transition select-none">
-                    <span class="text-xs font-semibold text-gray-800">Female</span>
-                    <input type="radio" name="gender-p2" value="Female" class="w-4 h-4 text-[#164e3f] accent-[#164e3f]">
-                  </label>
-                </div>
-              </div>
-            </div>
-
-            <div class="border-t border-dashed border-gray-200 my-3"></div>
-
-            <!-- Camper 3 -->
-            <div class="passenger-card space-y-3">
-              <div class="flex items-center justify-between cursor-pointer">
-                <div class="flex items-center gap-2.5">
-                  <div class="w-7 h-7 rounded-full bg-[#f7f3e8] text-[#164e3f] border border-[#164e3f]/20 flex items-center justify-center text-xs font-bold">
-                    <i data-lucide="user" class="w-4 h-4"></i>
-                  </div>
-                  <div>
-                    <span class="text-sm font-bold text-gray-900">Camper 3</span>
-                    <span class="text-[11px] text-gray-500 block leading-tight">Slot 3, 4-Person Dome</span>
-                  </div>
-                </div>
-                <i data-lucide="chevron-up" class="w-4 h-4 text-gray-500"></i>
-              </div>
-
-              <div>
-                <div class="rounded-xl border border-gray-300 px-3.5 py-2 bg-white focus-within:border-[#164e3f]">
-                  <input 
-                    type="text" 
-                    placeholder="Name *" 
-                    class="w-full text-sm font-medium text-gray-900 focus:outline-none placeholder-gray-400"
-                  >
-                </div>
-              </div>
-
-              <div>
-                <div class="rounded-xl border border-gray-300 px-3.5 py-2 bg-white focus-within:border-[#164e3f]">
-                  <input 
-                    type="number" 
-                    placeholder="Age *" 
-                    class="w-full text-sm font-medium text-gray-900 focus:outline-none placeholder-gray-400"
-                  >
-                </div>
-              </div>
-
-              <div>
-                <span class="text-xs font-medium text-gray-600 block mb-1">Gender *</span>
-                <div class="grid grid-cols-2 gap-3">
-                  <label class="gender-pill flex items-center justify-between px-4 py-2 border border-gray-300 rounded-full cursor-pointer hover:border-[#164e3f] transition select-none">
-                    <span class="text-xs font-semibold text-gray-800">Male</span>
-                    <input type="radio" name="gender-p3" value="Male" class="w-4 h-4 text-[#164e3f] accent-[#164e3f]">
-                  </label>
-                  <label class="gender-pill flex items-center justify-between px-4 py-2 border border-gray-300 rounded-full cursor-pointer hover:border-[#164e3f] transition select-none">
-                    <span class="text-xs font-semibold text-gray-800">Female</span>
-                    <input type="radio" name="gender-p3" value="Female" class="w-4 h-4 text-[#164e3f] accent-[#164e3f]">
-                  </label>
-                </div>
-              </div>
-            </div>
-
+          <div id="otherCampersList" class="space-y-3"></div>
+          <div class="flex items-start gap-3 p-3 rounded-xl bg-[#25D366]/10 border border-[#25D366]/30 text-xs text-gray-700">
+            <span class="w-7 h-7 rounded-full bg-[#25D366] text-white flex items-center justify-center shrink-0"><i data-lucide="message-circle" class="w-4 h-4"></i></span>
+            <span id="otherCampersNote">Each camper gets a WhatsApp message 24 hours before check-in with a link to upload their Aadhaar card photo.</span>
           </div>
-
         </div>
 
+        <!-- ================= SECTION 2: ID VERIFICATION ================= -->
+        <div class="bg-white rounded-2xl p-5 border border-gray-200 shadow-2xs space-y-3.5">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <h4 class="text-base font-bold text-gray-900 flex items-center gap-2"><i data-lucide="id-card" class="w-4.5 h-4.5 text-[#164e3f]"></i> Team leader ID</h4>
+              <p class="text-xs text-gray-500">Mandatory at the campsite. Enter your Aadhaar number <b>or</b> upload any government ID.</p>
+            </div>
+            <span class="text-[10px] font-extrabold uppercase text-[#164e3f] bg-[#f7f3e8] border border-[#164e3f]/20 px-2 py-0.5 rounded-full shrink-0">Step 2 of 2</span>
+          </div>
+
+          <div class="rounded-xl border border-gray-300 px-3.5 py-2 bg-white focus-within:border-[#164e3f]">
+            <span class="text-[10px] text-gray-500 font-medium block leading-tight">Aadhaar number</span>
+            <input type="text" id="aadhaarInput" inputmode="numeric" autocomplete="off" maxlength="14" placeholder="XXXX XXXX XXXX" class="w-full text-sm font-medium text-gray-900 focus:outline-none placeholder-gray-400 bg-transparent mt-0.5 tracking-widest">
+          </div>
+
+          <div class="flex items-center gap-3 text-[11px] font-bold text-gray-400 uppercase"><span class="h-px flex-1 bg-gray-200"></span>or<span class="h-px flex-1 bg-gray-200"></span></div>
+
+          <label for="idUpload" class="relative flex items-center gap-3 p-3 rounded-xl border-2 border-dashed border-gray-300 hover:border-[#164e3f] bg-gray-50/60 cursor-pointer transition">
+            <span class="w-9 h-9 rounded-lg bg-white border border-gray-200 text-[#164e3f] flex items-center justify-center shrink-0"><i data-lucide="upload" class="w-4 h-4"></i></span>
+            <span class="min-w-0 flex-1">
+              <span id="idUploadLabel" class="block text-sm font-bold text-gray-800 truncate">Upload Aadhaar / ID</span>
+              <span class="block text-[11px] text-gray-500">JPG, PNG or PDF · up to 5 MB</span>
+            </span>
+            <span class="text-xs font-extrabold text-[#164e3f] shrink-0">Browse</span>
+            <input type="file" id="idUpload" accept="image/jpeg,image/png,application/pdf" class="sr-only">
+          </label>
+
+          <p id="leadFormError" class="hidden text-xs font-bold text-red-600 flex items-center gap-1"></p>
+          <p class="text-[10px] text-gray-400">Your ID is used only for campsite entry verification. Only the last 4 digits of Aadhaar are stored with the booking.</p>
+        </div>
       </div>
 
       <!-- Modal Sticky Footer -->
       <div class="bg-white px-6 py-4 border-t border-gray-200 flex flex-wrap items-center justify-between gap-4 shrink-0">
         <div>
-          <span class="text-xs text-gray-500 block">Total Payable</span>
+          <span class="text-xs text-gray-500 block">Total Payable (incl. <span class="gst-pct">18</span>% GST)</span>
           <span id="modalBottomTotal" class="text-xl sm:text-2xl font-black text-[#164e3f]">₹4,799</span>
         </div>
         <button id="confirmRedirectBtn" class="bg-[#164e3f] hover:bg-[#0f382d] text-white font-bold py-3.5 px-8 rounded-xl flex items-center justify-center gap-2 shadow-md shadow-emerald-950/20 transition active:scale-95 text-sm sm:text-base">
@@ -1378,7 +1307,7 @@
 
   <!-- ================= GOGOCAMPING PAYMENT METHOD & CHECKOUT MODAL ================= -->
   <div id="paymentModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-    <div class="bg-white rounded-3xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl relative border border-gray-200 overflow-hidden animate-fade-in my-auto">
+    <div class="bg-white rounded-3xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl relative border border-gray-200 overflow-hidden [overflow:clip] animate-fade-in my-auto">
       
       <!-- Modal Header -->
       <div class="bg-[#164e3f] text-white px-6 py-4 flex items-center justify-between shrink-0 shadow-sm">
@@ -1417,7 +1346,7 @@
               <div>
                 <span class="text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">Selected Package</span>
                 <h5 id="payModalPackageName" class="text-base font-black text-gray-900 mt-1">1 Person Camping Tent</h5>
-                <p class="text-xs text-gray-500 mt-0.5">₹2,399 per person</p>
+                <p id="payModalRate" class="text-xs text-gray-500 mt-0.5">₹2,499 per person + GST</p>
               </div>
               <span id="payModalPackageSubtotal" class="text-lg font-black text-[#164e3f]">₹2,399</span>
             </div>
@@ -1428,43 +1357,49 @@
               <span id="payModalCamperCount" class="font-extrabold text-[#164e3f] bg-emerald-50 border border-emerald-200/80 px-3.5 py-1 rounded-lg text-xs tracking-wide select-none">1 Person</span>
             </div>
 
-            <!-- Selected Add-ons List -->
-            <div>
-              <span class="text-xs font-bold text-gray-800 block mb-2">Selected Add-ons:</span>
-              <div id="payModalAddonsList" class="space-y-2">
-                <!-- Dynamically populated selected add-ons with remove buttons -->
-              </div>
+            <!-- Food Preference (included) -->
+            <div class="flex items-center justify-between p-3 bg-white rounded-xl border border-gray-200 shadow-2xs">
+              <span class="text-xs font-bold text-gray-800">Food:</span>
+              <span class="text-xs"><span id="payModalFood" class="font-extrabold text-[#164e3f]">Not selected</span> <span class="text-gray-500">· included</span></span>
             </div>
 
-            <!-- Quick Add Extra Accessories Picker -->
-            <div class="pt-3 border-t border-[#164e3f]/15">
-              <span class="text-[11px] font-extrabold text-gray-700 block mb-2">+ Quick Add Extra Gear:</span>
-              <div id="payModalAddPicker" class="grid grid-cols-2 gap-2">
-                <!-- 4 Addon Quick Buttons -->
-                <button type="button" data-id="chair" class="pay-picker-btn text-left p-2 rounded-xl bg-white border border-gray-200 hover:border-[#164e3f] transition flex items-center justify-between text-xs group">
-                  <span class="truncate font-semibold text-gray-800">Chair</span>
-                  <span class="text-[#164e3f] font-extrabold shrink-0">+₹1,200</span>
-                </button>
-                <button type="button" data-id="sleeping_bag" class="pay-picker-btn text-left p-2 rounded-xl bg-white border border-gray-200 hover:border-[#164e3f] transition flex items-center justify-between text-xs group">
-                  <span class="truncate font-semibold text-gray-800">Sleeping Bag</span>
-                  <span class="text-[#164e3f] font-extrabold shrink-0">+₹1,500</span>
-                </button>
-                <button type="button" data-id="lantern" class="pay-picker-btn text-left p-2 rounded-xl bg-white border border-gray-200 hover:border-[#164e3f] transition flex items-center justify-between text-xs group">
-                  <span class="truncate font-semibold text-gray-800">LED Lantern</span>
-                  <span class="text-[#164e3f] font-extrabold shrink-0">+₹800</span>
-                </button>
-                <button type="button" data-id="rope" class="pay-picker-btn text-left p-2 rounded-xl bg-white border border-gray-200 hover:border-[#164e3f] transition flex items-center justify-between text-xs group">
-                  <span class="truncate font-semibold text-gray-800">Rope Set</span>
-                  <span class="text-[#164e3f] font-extrabold shrink-0">+₹600</span>
-                </button>
-              </div>
+            <div class="flex items-center justify-between p-3 bg-white rounded-xl border border-gray-200 shadow-2xs">
+              <span class="text-xs font-bold text-gray-800">Children under 4:</span>
+              <span class="text-xs"><span id="payModalKids" class="font-extrabold text-[#164e3f]">0</span> <span class="text-gray-500">· free</span></span>
+            </div>
+
+            <!-- Team leader Aadhaar / ID verification tick -->
+            <div id="payModalIdRow" class="flex items-center justify-between gap-3 p-3 rounded-xl border shadow-2xs">
+              <span class="flex items-center gap-2.5 min-w-0">
+                <span id="payModalIdIcon" class="w-7 h-7 rounded-full flex items-center justify-center shrink-0 text-white text-sm font-black">✓</span>
+                <span class="min-w-0">
+                  <span class="block text-xs font-bold text-gray-800">Team leader Aadhaar / ID</span>
+                  <span id="payModalIdText" class="block text-[11px] text-gray-500 truncate"></span>
+                </span>
+              </span>
+              <img id="payModalIdThumb" class="hidden w-12 h-9 rounded-md object-cover border border-gray-200 shrink-0" alt="Uploaded ID">
+              <button type="button" id="payModalIdAdd" class="hidden text-xs font-extrabold text-[#164e3f] underline shrink-0">Add now</button>
+            </div>
+
+            <div id="payModalEventsRow" class="hidden flex items-start justify-between gap-3 p-3 bg-purple-50 rounded-xl border border-purple-200 shadow-2xs">
+              <span class="text-xs font-bold text-gray-800 shrink-0">Events &amp; activities:</span>
+              <span id="payModalEvents" class="text-xs font-extrabold text-purple-800 text-right"></span>
+            </div>
+
+            <div id="payModalAddonsList" class="hidden"></div>
+            <div id="payModalAddPicker" class="hidden"></div>
+
+            <!-- Subtotal + GST -->
+            <div class="p-3 bg-white rounded-xl border border-gray-200 shadow-2xs space-y-1.5 text-xs">
+              <div class="flex justify-between"><span class="text-gray-600">Subtotal (excl. GST)</span><span id="payModalSubtotalEx" class="font-bold text-gray-900">₹0</span></div>
+              <div class="flex justify-between"><span class="text-gray-600">GST (<span class="gst-pct">18</span>%)</span><span id="payModalGst" class="font-bold text-gray-900">₹0</span></div>
             </div>
 
             <!-- Total Amount Row inside Summary -->
             <div class="pt-3 border-t border-[#164e3f]/15 flex items-center justify-between bg-white p-3 rounded-xl border border-emerald-200 shadow-2xs">
               <div>
                 <span class="text-xs font-bold text-gray-900 block">Total Payable</span>
-                <span class="text-[10px] text-gray-500">Taxes &amp; fees included</span>
+                <span class="text-[10px] text-gray-500">Incl. <span class="gst-pct">18</span>% GST</span>
               </div>
               <span id="payModalTotalAmount" class="text-2xl font-black text-[#164e3f]">₹2,399</span>
             </div>
@@ -1482,7 +1417,7 @@
           </h4>
 
           <!-- Payment Tabs Selector -->
-          <div class="grid grid-cols-2 gap-2 p-1.5 bg-gray-100 rounded-2xl border border-gray-200">
+          <div class="grid grid-cols-3 gap-2 p-1.5 bg-gray-100 rounded-2xl border border-gray-200">
             <button type="button" id="tabPayQr" class="pay-tab py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 text-gray-600 hover:text-gray-900">
               <i data-lucide="qr-code" class="w-4 h-4"></i>
               <span>UPI QR Code</span>
@@ -1494,10 +1429,6 @@
             <button type="button" id="tabPayCard" class="pay-tab active py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 bg-white text-[#164e3f] shadow-xs">
               <i data-lucide="credit-card" class="w-4 h-4"></i>
               <span>Card / ATM</span>
-            </button>
-            <button type="button" id="tabPayNet" class="pay-tab py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 text-gray-600 hover:text-gray-900">
-              <i data-lucide="building-2" class="w-4 h-4"></i>
-              <span>Net Banking</span>
             </button>
           </div>
 
@@ -1576,6 +1507,12 @@
             </select>
           </div>
 
+          <!-- Cancellation caution -->
+          <div class="flex items-start gap-2 p-3 rounded-xl bg-red-50 border border-red-200 text-xs text-red-800">
+            <i data-lucide="alert-triangle" class="w-4 h-4 shrink-0 mt-0.5"></i>
+            <span><b>No refund on cancellation – 100% of the amount is deducted.</b> By paying you agree to the booking policy.</span>
+          </div>
+
           <!-- Final Payment Action Button -->
           <button 
             type="button" 
@@ -1619,11 +1556,11 @@
       <div class="bg-emerald-50 border border-emerald-200/80 rounded-2xl p-3 mb-4 text-left space-y-1 text-[11px]">
         <div class="flex items-center gap-1.5 font-extrabold text-emerald-900">
           <i data-lucide="send" class="w-3.5 h-3.5 text-emerald-600 shrink-0"></i>
-          <span>Invoice &amp; Entry Pass Sent!</span>
+          <span>Ticket / receipt sent!</span>
         </div>
         <div class="text-emerald-800 pl-5 space-y-0.5 font-medium">
-          <p>📱 SMS &amp; WhatsApp: <span id="successSentPhone" class="font-bold text-emerald-950">+91 98765 43210</span></p>
-          <p>✉️ Tax Invoice PDF: <span id="successSentEmail" class="font-bold text-emerald-950">vijay.camper@gmail.com</span></p>
+          <p>📱 WhatsApp: <span id="successSentPhone" class="font-bold text-emerald-950">+91 98765 43210</span></p>
+          <p>✉️ Email (PDF ticket): <span id="successSentEmail" class="font-bold text-emerald-950">vijay.camper@gmail.com</span></p>
         </div>
       </div>
 
@@ -1653,13 +1590,37 @@
           <span class="text-gray-500 font-medium">Total Campers:</span>
           <span id="successCamperCount" class="font-bold text-gray-900">1 Person</span>
         </div>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-500 font-medium">Children under 4:</span>
+          <span id="successKids" class="font-bold text-gray-900">0 (free)</span>
+        </div>
+        <div id="successEventsRow" class="hidden flex justify-between items-start gap-3">
+          <span class="text-gray-500 font-medium shrink-0">Events &amp; activities:</span>
+          <span id="successEvents" class="font-bold text-purple-800 text-right"></span>
+        </div>
         <div id="successAddonsRow" class="flex justify-between items-start">
-          <span class="text-gray-500 font-medium">Add-ons:</span>
+          <span class="text-gray-500 font-medium">Food:</span>
           <span id="successAddonsText" class="font-bold text-gray-900 text-right">None</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-500 font-medium">Paid by:</span>
+          <span id="successPayMethod" class="font-bold text-gray-900">Card / ATM</span>
+        </div>
+        <div class="flex justify-between items-center pt-2 border-t border-gray-200">
+          <span class="text-gray-500 font-medium">Package price <span class="text-gray-400">(excl. GST)</span>:</span>
+          <span id="successSubtotal" class="font-bold text-gray-900">₹0</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-500 font-medium">GST (<span id="successGstPct">18</span>%):</span>
+          <span id="successGst" class="font-bold text-gray-900">₹0</span>
         </div>
         <div class="flex justify-between items-center pt-2 border-t border-gray-200">
           <span class="font-bold text-gray-800">Total Amount Paid:</span>
           <span id="successTotalPaid" class="text-sm font-black text-[#164e3f]">₹2,399</span>
+        </div>
+        <div class="flex items-start gap-1.5 pt-2 border-t border-dashed border-red-200 text-red-700 font-bold">
+          <i data-lucide="alert-triangle" class="w-3.5 h-3.5 shrink-0 mt-0.5"></i>
+          <span>No refund on cancellation – 100% of the amount is deducted.</span>
         </div>
       </div>
 
@@ -1667,7 +1628,7 @@
       <div class="space-y-2">
         <button type="button" id="downloadPassBtn" class="w-full bg-[#164e3f] hover:bg-[#0f382d] text-white font-extrabold py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 text-xs sm:text-sm shadow-md transition active:scale-95">
           <i data-lucide="download" class="w-4 h-4"></i>
-          <span>Download Campsite Entry Pass (PDF)</span>
+          <span>Download Ticket / Receipt (PDF)</span>
         </button>
 
         <div class="grid grid-cols-2 gap-2">
@@ -1722,7 +1683,7 @@
               <div>
                 <span class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">Primary Package</span>
                 <h4 id="cartPkgTitle" class="text-sm font-black text-gray-900 mt-0.5">1 Person Camping Tent</h4>
-                <p class="text-[11px] text-gray-500">₹2,399 per person</p>
+                <p id="cartPkgRate" class="text-[11px] text-gray-500">₹2,499 per person + GST</p>
               </div>
             </div>
             <span id="cartPkgSubtotal" class="text-sm font-black text-[#164e3f]">₹2,399</span>
@@ -1735,48 +1696,28 @@
           </div>
         </div>
 
-        <!-- Section 2: Selected Add-on Accessories List -->
-        <div class="bg-white border border-gray-200 rounded-2xl p-4 space-y-3 shadow-2xs">
-          <div class="flex items-center justify-between pb-2 border-b border-gray-100">
-            <h4 class="text-xs font-black text-gray-900 uppercase tracking-wider flex items-center gap-1.5">
-              <i data-lucide="package-check" class="w-4 h-4 text-[#164e3f]"></i>
-              Add-on Accessories
-            </h4>
-            <span id="cartAddonsCountBadge" class="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">0 Items</span>
-          </div>
-
-          <div id="cartAddonsContainer" class="space-y-3">
-            <!-- Dynamically populated add-on items with quantity adjuster + trash button -->
-          </div>
+        <!-- Section 2: Food Preference (included) -->
+        <div class="bg-white border border-gray-200 rounded-2xl p-4 flex items-center justify-between shadow-2xs">
+          <h4 class="text-xs font-black text-gray-900 uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="utensils" class="w-4 h-4 text-[#164e3f]"></i>
+            Food
+          </h4>
+          <span class="text-xs"><span id="cartFoodDisplay" class="font-extrabold text-[#164e3f]">Not selected</span> <span class="text-gray-500">· included</span></span>
         </div>
-
-        <!-- Section 3: Quick Add Extra Accessories Picker inside Cart -->
-        <div class="bg-emerald-50/50 border border-emerald-200/80 rounded-2xl p-3.5 space-y-2.5">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-black text-gray-900">+ Add Extra Gear</span>
-            <span class="text-[10px] text-emerald-700 font-bold">Tap to add to cart</span>
-          </div>
-
-          <div id="cartQuickAddPicker" class="grid grid-cols-2 gap-2">
-            <!-- 4 Addon Quick Buttons -->
-            <button type="button" data-id="chair" class="cart-picker-btn text-left p-2 rounded-xl bg-white border border-gray-200 hover:border-[#164e3f] transition flex items-center justify-between text-xs group">
-              <span class="truncate font-semibold text-gray-800">Chair</span>
-              <span class="text-[#164e3f] font-extrabold shrink-0">+₹1,200</span>
-            </button>
-            <button type="button" data-id="sleeping_bag" class="cart-picker-btn text-left p-2 rounded-xl bg-white border border-gray-200 hover:border-[#164e3f] transition flex items-center justify-between text-xs group">
-              <span class="truncate font-semibold text-gray-800">Sleeping Bag</span>
-              <span class="text-[#164e3f] font-extrabold shrink-0">+₹1,500</span>
-            </button>
-            <button type="button" data-id="lantern" class="cart-picker-btn text-left p-2 rounded-xl bg-white border border-gray-200 hover:border-[#164e3f] transition flex items-center justify-between text-xs group">
-              <span class="truncate font-semibold text-gray-800">LED Lantern</span>
-              <span class="text-[#164e3f] font-extrabold shrink-0">+₹800</span>
-            </button>
-            <button type="button" data-id="rope" class="cart-picker-btn text-left p-2 rounded-xl bg-white border border-gray-200 hover:border-[#164e3f] transition flex items-center justify-between text-xs group">
-              <span class="truncate font-semibold text-gray-800">Rope Set</span>
-              <span class="text-[#164e3f] font-extrabold shrink-0">+₹600</span>
-            </button>
-          </div>
+        <div class="bg-white border border-gray-200 rounded-2xl p-4 flex items-center justify-between shadow-2xs">
+          <h4 class="text-xs font-black text-gray-900 uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="baby" class="w-4 h-4 text-[#164e3f]"></i>
+            Children under 4
+          </h4>
+          <span class="text-xs"><span id="cartKidsDisplay" class="font-extrabold text-[#164e3f]">0</span> <span class="text-gray-500">· free</span></span>
         </div>
+        <div id="cartEventsBox" class="hidden bg-purple-50 border border-purple-200 rounded-2xl p-4 shadow-2xs">
+          <h4 class="text-xs font-black text-gray-900 uppercase tracking-wider flex items-center gap-1.5 mb-1"><i data-lucide="sparkles" class="w-4 h-4 text-purple-600"></i> Events &amp; activities</h4>
+          <p id="cartEvents" class="text-xs font-bold text-purple-800"></p>
+        </div>
+        <div id="cartAddonsContainer" class="hidden"></div>
+        <span id="cartAddonsCountBadge" class="hidden"></span>
+        <div id="cartQuickAddPicker" class="hidden"></div>
 
       </div>
 
@@ -1788,12 +1729,13 @@
             <span id="cartDrawerPkgTotal" class="font-bold text-gray-900">₹2,399</span>
           </div>
           <div class="flex justify-between text-gray-600">
-            <span>Add-ons Subtotal:</span>
-            <span id="cartDrawerAddonsTotal" class="font-bold text-gray-900">₹0</span>
+            <span>Food (<span id="cartFoodFooter">—</span>):</span>
+            <span class="font-bold text-emerald-700">Included</span>
+            <span id="cartDrawerAddonsTotal" class="hidden">₹0</span>
           </div>
           <div class="flex justify-between text-gray-600">
-            <span>Taxes &amp; Campsite Fees:</span>
-            <span class="font-bold text-emerald-700">FREE (₹0)</span>
+            <span>GST (<span class="gst-pct">18</span>%):</span>
+            <span id="cartDrawerGst" class="font-bold text-gray-900">₹0</span>
           </div>
           <div class="flex justify-between items-center pt-2 border-t border-gray-200 text-sm">
             <span class="font-extrabold text-gray-900">Total Payable Amount:</span>
@@ -1831,7 +1773,7 @@
           <i data-lucide="tent" class="w-7 h-7"></i>
         </div>
         <h3 class="text-2xl font-black text-gray-900 tracking-tight">Camper Login</h3>
-        <p class="text-xs text-gray-500 mt-1">Sign in to save bookings, track equipment &amp; unlock camper discounts</p>
+        <p class="text-xs text-gray-500 mt-1">Sign in to save your bookings &amp; get your invoice</p>
       </div>
 
       <!-- Login Form (Full Name + Phone Number) -->
@@ -2197,7 +2139,92 @@
     }
   </script>
   <script src="inventory.js"></script>
-  <script src="app.js?v=7"></script>
+
+  <!-- ================= BOOKING POLICY (must be read & agreed before booking) ================= -->
+  <div id="policyModal" class="hidden fixed inset-0 z-[70] bg-black/70 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-3xl max-w-xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden [overflow:clip]">
+      <div class="px-5 sm:px-6 py-4 border-b border-gray-200 flex items-center gap-3 bg-[#f7f3e8]">
+        <span class="w-10 h-10 rounded-xl bg-[#164e3f] text-white flex items-center justify-center shrink-0"><i data-lucide="file-check-2" class="w-5 h-5"></i></span>
+        <div>
+          <h3 class="text-base sm:text-lg font-extrabold text-gray-900 leading-tight">Booking policy</h3>
+          <p class="text-xs text-gray-500">Please read till the end and agree to start your booking</p>
+        </div>
+      </div>
+
+      <div id="policyScroll" class="overflow-y-auto px-5 sm:px-6 py-5 space-y-5 text-sm text-gray-700 leading-relaxed">
+        <div class="p-4 rounded-2xl bg-red-50 border-2 border-red-300">
+          <p class="text-xs font-black uppercase tracking-wider text-red-700 flex items-center gap-1.5"><i data-lucide="alert-triangle" class="w-4 h-4"></i> Cancellation policy</p>
+          <p class="mt-1 font-extrabold text-red-800 text-base">No refund on cancellation – 100% of the amount is deducted.</p>
+          <p class="mt-1 text-red-700 text-xs">Once a booking is paid it cannot be refunded, whatever the reason for cancelling. This is also printed on your ticket / receipt.</p>
+        </div>
+
+        <section>
+          <h4 class="font-extrabold text-gray-900">1. Payment &amp; tickets</h4>
+          <ul class="list-disc pl-5 mt-1 space-y-1">
+            <li>Pay online by <b>QR code / UPI</b> or <b>debit / credit card</b>.</li>
+            <li>Prices are per person and shown <b>excluding GST</b>; <b>18% GST</b> is added at checkout.</li>
+            <li>After payment you get an <b>instant ticket / receipt</b> that you can <b>download as a PDF</b>. It is also <b>sent to your Email and WhatsApp</b>.</li>
+            <li>Show the ticket (PDF or WhatsApp) at the campsite entry.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h4 class="font-extrabold text-gray-900">2. ID verification</h4>
+          <ul class="list-disc pl-5 mt-1 space-y-1">
+            <li>Only the <b>team leader's</b> details (name, phone, alternate number, Aadhaar / ID) are taken at booking.</li>
+            <li><b>24 hours before check-in</b>, every other camper gets a WhatsApp message with a link to upload their Aadhaar.</li>
+            <li>A valid Aadhaar / government ID is <b>mandatory for every camper</b> at the campsite.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h4 class="font-extrabold text-gray-900">3. Group size &amp; dates</h4>
+          <ul class="list-disc pl-5 mt-1 space-y-1">
+            <li>Each day has a limit on campers (shown on the calendar as slots left). Full days show as <b>Closed</b>.</li>
+            <li>Weekdays (Mon–Fri) are only for big groups unless GOGOCamping opens the date (e.g. public holidays).</li>
+            <li>GOGOCamping may close a date for safety, weather or maintenance.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h4 class="font-extrabold text-gray-900">4. Food, children &amp; activities</h4>
+          <ul class="list-disc pl-5 mt-1 space-y-1">
+            <li>Veg or Non-Veg meals are <b>included</b> in the package price.</li>
+            <li>Children <b>under 4 years stay free</b> and are not counted in the headcount.</li>
+            <li>Events &amp; activities you pick are added to your booking at no extra charge and depend on weather and safety.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h4 class="font-extrabold text-gray-900">5. At the campsite</h4>
+          <ul class="list-disc pl-5 mt-1 space-y-1">
+            <li>Follow the instructions of GOGOCamping staff at all times.</li>
+            <li>Keep the campsite clean – carry back what you bring.</li>
+            <li>For tailor-made plans (100+ people, 2+ days, 25+ bikers) contact us on WhatsApp before booking.</li>
+          </ul>
+        </section>
+
+        <p id="policyEnd" class="text-xs text-gray-400 text-center pt-2">— End of policy —</p>
+      </div>
+
+      <div class="px-5 sm:px-6 py-4 border-t border-gray-200 space-y-3 bg-white">
+        <p id="policyScrollHint" class="text-[11px] font-bold text-amber-700 flex items-center gap-1"><i data-lucide="arrow-down" class="w-3.5 h-3.5"></i> Scroll to the end of the policy to continue</p>
+        <label id="policyAgreeLabel" class="flex items-start gap-2.5 cursor-not-allowed opacity-50">
+          <input type="checkbox" id="policyAgree" disabled class="mt-0.5 w-4 h-4 accent-[#164e3f]">
+          <span class="text-sm font-semibold text-gray-800">I have read the booking policy and agree to it, including <b class="text-red-700">no refund on cancellation (100% deduction)</b>.</span>
+        </label>
+        <div class="flex gap-2">
+          <a href="../book/" class="px-4 py-3 rounded-xl border border-gray-300 text-sm font-bold text-gray-700 hover:bg-gray-50">Go back</a>
+          <button type="button" id="policySubmit" disabled class="flex-1 bg-[#164e3f] hover:bg-[#0f382d] text-white font-extrabold py-3 rounded-xl disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2">Agree &amp; start booking <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="pricing.js?v=1"></script>
+  <script src="calendar.js?v=2"></script>
+  <script src="../events/events-data.js?v=3"></script>
+  <script src="app.js?v=28"></script>
   <script src="../scroll-lock.js"></script>
 </body>
 </html>

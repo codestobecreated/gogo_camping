@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../tablet-zoom.js?v=3"></script>
+  <title>Field Notes – GOGOCamping | Stories from the Jawadhu Hills</title>
+  <meta name="description" content="Field notes from GOGOCamping – stories, sightings, skies and other things worth writing down in the Jawadhu Hills.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chelsea+Market&family=IBM+Plex+Mono:wght@400;500&family=Caveat:wght@400;500;600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root { --fn-ink: #23402F; --fn-cream: #EDE6D6; --fn-paper: #F6F2E8; --fn-sage: #A8B691; --fn-forest: #253D2F; --fn-rust: #8A5242; --fn-body: #4f554c; }
+    body { font-family: 'DM Sans', sans-serif; color: var(--fn-ink); background: var(--fn-cream); }
+    .fn-display { font-family: 'Chelsea Market', 'DM Sans', sans-serif; font-weight: 400; }
+    .fn-mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; letter-spacing: .02em; }
+    .fn-hand { font-family: 'Caveat', cursive; }
+    .fn-label { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
+    .fn-link { display: inline-flex; align-items: center; gap: 4px; font-weight: 600; font-size: 14px; color: var(--fn-ink); }
+    .fn-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+    .fn-tag { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; background: #FBF8F0; padding: 6px 10px; box-shadow: 0 2px 6px rgba(0,0,0,.12); color: #2a2f28; }
+    .fn-polaroid { background: #FBF8F0; padding: 10px 10px 34px; box-shadow: 0 10px 24px -8px rgba(0,0,0,.35); }
+    .fn-tape { position: absolute; height: 22px; background: rgba(214, 205, 182, .75); box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+    .fn-chip { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: .04em; padding: 8px 14px; border-radius: 999px; background: #EFE9DA; color: #2f3a2f; transition: background .2s, color .2s; }
+    .fn-chip:hover { background: #E4DCC7; }
+    .fn-chip.is-on { background: var(--fn-ink); color: #F6F2E8; padding: 10px 16px; }
+    .fn-note { transition: opacity .25s; }
+    .fn-note.is-hidden { display: none; }
+    .fn-card-img { overflow: hidden; }
+    .fn-card-img img { transition: transform .6s ease; }
+    .fn-note:hover .fn-card-img img { transform: scale(1.04); }
+    .fn-check { width: 20px; height: 20px; border: 1.5px solid #5d6359; border-radius: 3px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; background: #fff8; }
+    .fn-check.is-on { background: #7a7f73; border-color: #6a6f63; color: #fff; }
+  </style>
+</head>
+<body class="antialiased">
+
+  <!-- ================= NAV (Figma: cream bar) ================= -->
+  <header class="max-w-[1440px] mx-auto px-6 lg:px-[72px] h-[124px] flex items-center justify-between gap-6">
+    <a href="../" class="shrink-0"><img src="../assests/fieldnotes/gogo-logo.png" alt="GOGOCamping" class="h-[31px] w-auto"></a>
+    <div class="flex items-center gap-8">
+    <nav class="hidden md:flex items-center gap-8 text-[15px] font-medium text-[#1d2a1f]">
+      <a href="../#about" class="hover:text-[var(--fn-ink)]">Home</a>
+      <a href="../#experience" class="hover:text-[var(--fn-ink)]">Plan your visit</a>
+      <a href="../#gallery" class="hover:text-[var(--fn-ink)]">Gallery</a>
+      <a href="./" class="text-[var(--fn-ink)]" aria-current="page">Field notes</a>
+    </nav>
+    <a href="../book/" class="inline-flex items-center gap-4 h-[54px] px-6 rounded-full bg-[var(--fn-forest)] hover:bg-[#1c3024] text-white text-[13px] sm:text-[14px] font-bold uppercase tracking-wide shrink-0">
+      <span>Reserve your camp</span><i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+    </a>
+    </div>
+  </header>
+
+  <main>
+    <!-- ================= TITLE ================= -->
+    <section class="max-w-[1076px] mx-auto px-6 pt-10 lg:pt-[52px]">
+      <p class="fn-label text-[#3b4a3c]">The GOGO journal / Vol. 01</p>
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mt-6">
+        <h1 class="fn-display text-[64px] sm:text-[96px] lg:text-[118px] leading-[.9] tracking-[.01em] text-[var(--fn-ink)]">FIELD NOTES</h1>
+        <div class="flex flex-col items-start md:items-center md:mr-14 shrink-0">
+          <!-- mountain doodle -->
+          <svg width="138" height="74" viewBox="0 0 138 74" fill="none" stroke="#8C8358" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true">
+            <path d="M2 68 L36 18 L48 34 L60 26 L86 2 L134 68" /><path d="M36 18 L46 30 M86 2 L74 22 L86 18 L96 26" /><path d="M6 70 C40 74 98 74 136 70" />
+          </svg>
+          <p class="fn-hand text-[24px] leading-[26px] text-[var(--fn-rust)] -rotate-3 mt-2 md:ml-6">observations<br>from the hills</p>
+        </div>
+      </div>
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mt-8 pb-5 border-b border-[#2b2f28]">
+        <p class="text-[15px] text-[#26302a]">Stories, sightings, skies and other things worth writing down.</p>
+        <p class="fn-mono text-[11px] uppercase text-[#6c7268]">12.58° N / 78.89° E · Keep wandering</p>
+      </div>
+    </section>
+
+    <!-- ================= FEATURED NOTE ================= -->
+    <section id="jawadhu-hills" class="max-w-[1076px] mx-auto px-6 pt-14 pb-20 scroll-mt-6">
+      <div class="flex items-end justify-between gap-4">
+        <p class="fn-label text-[#3b4a3c]">A note worth starting with</p>
+        <p class="fn-hand text-[24px] text-[var(--fn-rust)]">fresh air, fresh page.</p>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-[590px_1fr] gap-10 lg:gap-11 mt-4 lg:items-stretch">
+        <!-- on desktop the photo is as tall as the text beside it -->
+        <figure class="flex flex-col relative">
+          <div class="relative lg:flex-1 lg:min-h-[380px]">
+            <img src="../assests/fieldnotes/hills-dawn.jpg" alt="Misty hills from camp before sunrise" class="w-full h-[360px] sm:h-[480px] lg:absolute lg:inset-0 lg:h-full object-cover">
+            <span class="fn-tag absolute top-6 left-6 -rotate-2">JAWADHU / 05:42 AM</span>
+            <div class="fn-polaroid absolute -bottom-6 right-3 sm:right-4 w-[160px] sm:w-[182px] rotate-[4deg]">
+              <span class="fn-tape w-[100px] -top-2 left-8 rotate-1"></span>
+              <img src="../assests/fieldnotes/fern-polaroid.jpg" alt="A fern catching the morning light" class="w-full h-[120px] sm:h-[132px] object-cover">
+              <span class="fn-hand absolute left-3 bottom-1.5 text-[18px] text-[#3f453c]">still waking up</span>
+            </div>
+          </div>
+          <figcaption class="flex justify-between gap-4 mt-5 lg:absolute lg:top-full lg:inset-x-0 fn-mono text-[11px] uppercase text-[#6c7268]">
+            <span>Fig. 01 — The view from camp, before the first chai</span>
+            <span class="hidden sm:inline">From the GOGO camera roll</span>
+          </figcaption>
+        </figure>
+        <div class="lg:py-6">
+          <p class="fn-label text-[#3b4a3c]">Jawadhu &nbsp;/&nbsp; Field note 001</p>
+          <h2 class="fn-display text-[36px] sm:text-[44px] leading-[1.05] mt-5">The hills before the world wakes.</h2>
+          <p class="text-[15px] leading-[22px] text-[var(--fn-body)] mt-6 max-w-[390px]">No alarm. Just a bird we couldn't name, the smell of damp earth, and a valley slowly filling with light. A small account of doing absolutely nothing at dawn.</p>
+          <p class="fn-mono text-[11px] uppercase text-[#6c7268] mt-7">18 Sep 2026 · 05:42 AM · 5 min read</p>
+          <a href="#jawadhu-hills" class="fn-link mt-5">Come along for the morning <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></a>
+          <div class="flex items-center gap-3 mt-9">
+            <svg width="70" height="26" viewBox="0 0 70 26" fill="none" stroke="#8A5242" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M66 18 C52 2 22 2 6 16" /><path d="M6 16 L12 6 M6 16 L16 18" /></svg>
+            <span class="fn-hand text-[25px] text-[var(--fn-rust)] -rotate-2">best read slowly</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= LEAF THROUGH THE NOTES ================= -->
+    <section class="bg-[var(--fn-paper)] pt-16 pb-14">
+      <div class="max-w-[1076px] mx-auto px-6">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 pb-6 border-b border-[#cfc9ba]">
+          <h2 class="fn-display text-[30px] sm:text-[34px] leading-none">Leaf through the notes</h2>
+          <p class="fn-label text-[#6c7268]">A few things we've noticed lately ↓</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-x-6 gap-y-3 py-4 border-b border-[#cfc9ba]">
+          <div id="fnFilters" class="flex flex-wrap items-center gap-x-6 gap-y-2">
+            <button type="button" class="fn-chip is-on" data-cat="all">All notes</button>
+            <button type="button" class="fn-chip" data-cat="jawadhu">Jawadhu</button>
+            <button type="button" class="fn-chip" data-cat="stars">Under the stars</button>
+            <button type="button" class="fn-chip" data-cat="out">Out there</button>
+            <button type="button" class="fn-chip" data-cat="camp">Camp notes</button>
+            <button type="button" class="fn-chip" data-cat="know">Good to know</button>
+          </div>
+          <span id="fnCount" class="fn-label text-[#6c7268] sm:ml-auto">07 notes</span>
+        </div>
+
+        <!-- row 1 -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-7 pt-11 pb-12 border-b border-[#cfc9ba]">
+          <article class="fn-note" data-cat="stars">
+            <div class="fn-card-img relative">
+              <img src="../assests/fieldnotes/night-tent.jpg" alt="A lit tent under the Milky Way" class="w-full h-[268px] object-cover">
+              <span class="fn-hand absolute top-6 right-7 text-[25px] leading-[30px] text-white -rotate-6">lights off.<br>eyes up.</span>
+            </div>
+            <p class="fn-label text-[#3b4a3c] mt-5">Under the stars · 12 Sep 2026</p>
+            <h3 class="fn-display text-[25px] leading-tight mt-3">A sky with no off switch.</h3>
+            <p class="text-[14.5px] leading-[22px] text-[var(--fn-body)] mt-3">What happens when the phones go away and the telescope comes out. A beginner's night under the Jawadhu sky.</p>
+            <div class="flex items-center justify-between mt-5">
+              <a href="#" class="fn-link">Read the note <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></a>
+              <span class="fn-mono text-[11px] text-[#6c7268]">09:18 PM / 6 MIN</span>
+            </div>
+          </article>
+
+          <article class="fn-note" data-cat="out">
+            <div class="fn-card-img relative rotate-[-1.2deg] mt-4">
+              <span class="fn-tape w-[110px] -top-2 left-24 z-10 -rotate-1"></span>
+              <img src="../assests/fieldnotes/bulbul.jpg" alt="A red-whiskered bulbul on a branch" class="w-full h-[258px] object-cover">
+            </div>
+            <div class="flex items-center justify-between mt-5">
+              <span class="fn-hand text-[23px] text-[var(--fn-rust)]">look closer →</span>
+              <svg width="70" height="34" viewBox="0 0 70 34" fill="none" stroke="#8A5242" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><path d="M2 18 C8 6 14 6 18 16 C22 6 30 4 34 12" /><path d="M34 32 C38 22 44 22 48 28 C52 20 60 18 66 24" /></svg>
+            </div>
+            <p class="fn-label text-[#3b4a3c] mt-4">Out there · 08 Sep 2026</p>
+            <h3 class="fn-display text-[25px] leading-tight mt-3">The neighbours have wings.</h3>
+            <p class="text-[14.5px] leading-[22px] text-[var(--fn-body)] mt-3">A bulbul, a drongo, and a reminder to take the slow way to breakfast.</p>
+            <a href="#" class="fn-link mt-5">Meet the morning chorus <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></a>
+          </article>
+
+          <article class="fn-note" data-cat="know">
+            <div class="bg-[#E9E2D0] px-6 pt-7 pb-6 rotate-[1.5deg] shadow-[0_10px_24px_-14px_rgba(0,0,0,.35)] md:mt-6">
+              <div class="flex justify-between fn-label text-[#3b4a3c]"><span>Good to know</span><span class="text-[#6c7268]">P. 06</span></div>
+              <h3 class="fn-display text-[24px] leading-[1.1] mt-4">A little less luggage. A little more outside.</h3>
+              <ul id="fnChecklist" class="mt-5 text-[14px] text-[#2f352d]">
+                <li class="flex items-center gap-3 py-3 border-b border-[#cbc4b0] cursor-pointer select-none"><span class="fn-check is-on">✓</span>A layer for after sunset</li>
+                <li class="flex items-center gap-3 py-3 border-b border-[#cbc4b0] cursor-pointer select-none"><span class="fn-check is-on">✓</span>Shoes you can get muddy</li>
+                <li class="flex items-center gap-3 py-3 border-b border-[#cbc4b0] cursor-pointer select-none"><span class="fn-check"></span>Your bottle, filled and ready</li>
+                <li class="flex items-center gap-3 py-3 border-b border-[#cbc4b0] cursor-pointer select-none"><span class="fn-check"></span>A torch (not just your phone)</li>
+              </ul>
+              <p class="fn-hand text-[22px] text-[#7b7a5d] mt-4">the actual useful list</p>
+              <a href="../#fieldguide" class="fn-link mt-2">The full camp checklist <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></a>
+            </div>
+            <p class="fn-mono text-[11px] uppercase text-[#6c7268] mt-6">03 Sep 2026 / 4 min read</p>
+          </article>
+        </div>
+
+        <!-- row 2 -->
+        <div class="grid grid-cols-1 md:grid-cols-[255px_1fr_263px] gap-10 md:gap-7 pt-11">
+          <article class="fn-note md:pt-5" data-cat="camp">
+            <div class="fn-card-img"><img src="../assests/fieldnotes/kettle-cups.jpg" alt="Two steel cups of tea on a rock at camp" class="w-full h-[210px] object-cover"></div>
+            <p class="fn-label text-[#3b4a3c] mt-6">Camp notes · 29 Aug 2026</p>
+            <h3 class="fn-display text-[25px] leading-tight mt-3">First, we put the kettle on.</h3>
+            <p class="text-[14.5px] leading-[22px] text-[var(--fn-body)] mt-3">Some camp rituals are less about the tea and more about the people around it.</p>
+            <a href="#" class="fn-link mt-5">Pull up a rock <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></a>
+          </article>
+
+          <article id="kullar-kugai" class="fn-note scroll-mt-6" data-cat="jawadhu">
+            <div class="fn-card-img relative">
+              <img src="../assests/fieldnotes/forest-path.jpg" alt="Two walkers on a red-earth forest trail" class="w-full h-[318px] object-cover">
+              <span class="fn-tag absolute left-5 bottom-5 rotate-[-2deg]">NO HURRY. NO SHORTCUTS.</span>
+            </div>
+            <p class="fn-label text-[#3b4a3c] mt-5">Jawadhu · 24 Aug 2026</p>
+            <h3 class="fn-display text-[26px] leading-tight mt-3">Take the path that takes its time.</h3>
+            <p class="text-[14.5px] leading-[22px] text-[var(--fn-body)] mt-3 max-w-[440px]">Red earth underfoot, a rustle in the canopy, and nowhere urgent to be. Walking the hills with someone who knows them.</p>
+            <div class="flex items-center justify-between mt-5">
+              <a href="#" class="fn-link">Walk with us <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></a>
+              <span class="fn-mono text-[11px] text-[#6c7268]">07:10 AM / 7 MIN</span>
+            </div>
+          </article>
+
+          <article class="fn-note md:border-l md:border-[#cfc9ba] md:pl-6" data-cat="know">
+            <svg width="48" height="54" viewBox="0 0 48 54" fill="none" stroke="#6c6f58" stroke-width="1.5" class="mt-12" aria-hidden="true"><ellipse cx="13" cy="16" rx="7" ry="13" transform="rotate(-10 13 16)" /><ellipse cx="34" cy="36" rx="7" ry="11" transform="rotate(8 34 36)" /></svg>
+            <p class="fn-label text-[#3b4a3c] mt-6">Good to know</p>
+            <h3 class="fn-display text-[25px] leading-tight mt-3">Before the road turns uphill.</h3>
+            <p class="text-[14.5px] leading-[22px] text-[var(--fn-body)] mt-3">A few practical things for your first trip: getting here, patchy signal, changing weather, and arriving before dark.</p>
+            <p class="fn-mono text-[11px] uppercase text-[#6c7268] mt-5">20 Aug 2026 · 5 min</p>
+            <a href="../#fieldguide" class="fn-link mt-4">Read before you leave <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></a>
+            <p class="fn-hand text-[24px] leading-[28px] text-[var(--fn-rust)] -rotate-3 mt-8">save this one<br>for the journey.</p>
+          </article>
+        </div>
+
+        <p id="fnEmpty" class="hidden fn-hand text-[24px] text-[var(--fn-rust)] pt-10">Nothing here yet – try another notebook tab.</p>
+
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-5 pt-14">
+          <p class="fn-hand text-[26px] sm:text-[28px] text-[var(--fn-rust)]">More pages soon. There's always something to notice.</p>
+          <a href="#" class="inline-flex items-center justify-between gap-10 h-[48px] px-6 rounded-full border border-[var(--fn-ink)] text-[14px] font-medium hover:bg-[var(--fn-ink)] hover:text-white transition self-start sm:self-auto">Older field notes <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= FROM THE POCKET NOTEBOOK ================= -->
+    <section class="bg-[var(--fn-sage)] pt-16 pb-16">
+      <div class="max-w-[1082px] mx-auto px-6">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-3 pb-7 border-b border-[#3d4f3a]">
+          <div>
+            <p class="fn-label text-[#2f3d2d]">Loose leaves / small observations</p>
+            <h2 class="fn-display text-[34px] sm:text-[42px] leading-none mt-3">From the pocket notebook</h2>
+          </div>
+          <div class="flex flex-col items-start md:items-end gap-3">
+            <p class="fn-hand text-[26px] text-[#2f3d2d] -rotate-2">Not everything needs a whole story.</p>
+            <a href="write.html" class="inline-flex items-center gap-2 h-[44px] px-5 rounded-full bg-[var(--fn-forest)] hover:bg-[#1c3024] text-[#F6F2E8] text-[13px] font-semibold"><i data-lucide="pen-line" class="w-4 h-4"></i> Write your own note</a>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 pt-8">
+          <div class="md:pr-9 pb-8 md:pb-0">
+            <div class="flex items-center justify-between">
+              <span class="fn-mono text-[11px] text-[#2f3d2d] border-[1.5px] border-[#3d4f3a] rounded-[50%] px-4 py-3 -rotate-2">18.09.26</span>
+              <span class="fn-label text-[#2f3d2d]">06:15 / At camp</span>
+            </div>
+            <p class="fn-hand text-[28px] leading-[32px] text-[#1f2d22] mt-6">Cool air. Wet grass.<br>Chai weather, obviously.</p>
+            <p class="text-[14.5px] leading-[22px] text-[#26332a] mt-4">A thin mist in the valley. The sun took its time. So did we.</p>
+          </div>
+          <div class="md:px-7 md:border-l md:border-[#3d4f3a] py-8 md:py-0 border-t md:border-t-0 border-[#3d4f3a]">
+            <div class="flex items-center gap-6">
+              <svg width="64" height="66" viewBox="0 0 64 66" fill="none" stroke="#1f2d22" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="54" height="18" transform="rotate(-14 4 10)" /><path d="M42 50 L30 64 L56 64 Z" /><path d="M42 40 L42 50" /></svg>
+              <span class="fn-hand text-[24px] text-[#1f2d22] rotate-3">a little perspective</span>
+            </div>
+            <p class="fn-label text-[#2f3d2d] mt-5">12 Sep / 21:30 / Looking up</p>
+            <p class="text-[14.5px] leading-[22px] text-[#26332a] mt-4">Saturn through the telescope. The rings are real. The collective gasp was too.</p>
+          </div>
+          <div class="md:pl-7 md:border-l md:border-[#3d4f3a] pt-8 md:pt-0 border-t md:border-t-0 border-[#3d4f3a]">
+            <div class="flex items-start justify-between">
+              <span class="fn-label text-[#2f3d2d] mt-4">08 Sep / Beside the trail</span>
+              <svg width="80" height="46" viewBox="0 0 80 46" fill="none" stroke="#1f2d22" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2 22 C8 6 16 6 20 18 C24 6 32 2 38 10" /><path d="M42 44 C46 32 54 30 58 38 C62 28 70 26 78 32" /></svg>
+            </div>
+            <p class="fn-hand text-[28px] leading-[32px] text-[#1f2d22] mt-4">Heard, not seen.<br>Still counts.</p>
+            <p class="text-[14.5px] leading-[22px] text-[#26332a] mt-4">Three different calls in one minute. A useful reminder: stop walking, start listening.</p>
+          </div>
+        </div>
+
+        <!-- Notes written by campers on write.html -->
+        <div id="guestNotesWrap" class="hidden mt-12 pt-8 border-t border-[#3d4f3a]">
+          <div class="flex items-end justify-between gap-3">
+            <p class="fn-label text-[#2f3d2d]">From our campers' notebooks</p>
+            <a href="write.html" class="fn-hand text-[22px] text-[#1f2d22] underline underline-offset-4">add yours →</a>
+          </div>
+          <div id="guestNotes" class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= NEWSLETTER + FOOTER ================= -->
+    <section class="bg-[var(--fn-forest)] text-[#DCE3D2] pt-16">
+      <div class="max-w-[1076px] mx-auto px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 pb-14">
+          <div>
+            <p class="fn-label text-[#aab5a0]">A note now and then</p>
+            <h2 class="fn-display text-[36px] sm:text-[44px] leading-[1.05] text-[#B9C69E] mt-3">A little of the hills,<br>in your inbox.</h2>
+            <p class="text-[15px] leading-[22px] text-[#c4cdb9] mt-5 max-w-[430px]">New field notes, things we've spotted, and the occasional reason to head outside. Only when there's something worth sharing.</p>
+          </div>
+          <div class="lg:pt-10">
+            <form id="fnNewsletter" class="flex items-center gap-2 h-[58px] pl-5 pr-1.5 rounded-full border border-[#8f9c86]">
+              <input id="fnEmail" type="email" required placeholder="Your email address" class="flex-1 min-w-0 bg-transparent text-[15px] text-white placeholder-[#a9b3a0] focus:outline-none">
+              <button type="submit" class="h-[46px] px-5 rounded-full bg-[#F6F2E8] text-[#1f2d22] text-[13px] font-semibold inline-flex items-center gap-1.5 shrink-0">Send me a note <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></button>
+            </form>
+            <div class="flex items-start justify-between gap-4 mt-4">
+              <p id="fnNewsMsg" class="text-[12px] text-[#aab5a0]">No noise. Unsubscribe whenever.</p>
+              <p class="fn-hand text-[23px] text-[#e6ead9] -rotate-3">just the good stuff.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 py-12 border-t border-[#45594a]">
+          <div class="flex items-center gap-6">
+            <span class="text-[42px] leading-none font-bold tracking-tight text-[#F6F2E8]">GOGO</span>
+            <span>
+              <span class="block fn-label text-[#dce3d2]">Camping / Jawadhu Hills</span>
+              <span class="block text-[13px] text-[#aab5a0] mt-1">Tamil Nadu, India · A little closer to outside.</span>
+            </span>
+          </div>
+          <div class="flex flex-wrap gap-7 text-[14px] text-[#e6ead9]">
+            <a href="../#experience" class="hover:underline inline-flex items-center gap-1">Plan your visit <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></a>
+            <a href="#" class="hover:underline inline-flex items-center gap-1">Instagram <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></a>
+            <a href="../#fieldguide" class="hover:underline inline-flex items-center gap-1">Get in touch <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></a>
+          </div>
+        </div>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-10">
+          <p class="fn-label text-[#aab5a0]">© 2026 GOGO Camping · Leave the hills better than you found them.</p>
+          <div class="flex items-center gap-4">
+            <svg width="54" height="30" viewBox="0 0 54 30" fill="none" stroke="#c4cdb9" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path d="M2 28 L16 8 L22 16 L30 4 L52 28" /><path d="M2 28 L52 28" /></svg>
+            <span class="fn-hand text-[24px] text-[#e6ead9]">see you out there.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+  (function () {
+    // Notebook tabs: filter the notes (the featured note counts as "Jawadhu")
+    var chips = document.querySelectorAll('#fnFilters .fn-chip');
+    var notes = document.querySelectorAll('.fn-note');
+    function apply(cat) {
+      var shown = cat === 'all' ? notes.length + 1 : (cat === 'jawadhu' ? 1 : 0);
+      notes.forEach(function (n) { var on = cat === 'all' || n.dataset.cat === cat; n.classList.toggle('is-hidden', !on); if (on && cat !== 'all') shown++; });
+      document.getElementById('fnCount').textContent = String(shown).padStart(2, '0') + ' note' + (shown === 1 ? '' : 's');
+      document.getElementById('fnEmpty').classList.toggle('hidden', !!document.querySelector('.fn-note:not(.is-hidden)'));
+      chips.forEach(function (c) { c.classList.toggle('is-on', c.dataset.cat === cat); });
+    }
+    chips.forEach(function (c) { c.addEventListener('click', function () { apply(c.dataset.cat); }); });
+
+    // The packing checklist can be ticked
+    document.querySelectorAll('#fnChecklist li').forEach(function (li) {
+      li.addEventListener('click', function () { var box = li.querySelector('.fn-check'); var on = !box.classList.contains('is-on'); box.classList.toggle('is-on', on); box.textContent = on ? '✓' : ''; });
+    });
+
+    // Newsletter: no backend yet – keep the address in this browser and say thanks
+    document.getElementById('fnNewsletter').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var email = document.getElementById('fnEmail').value.trim();
+      try { var list = JSON.parse(localStorage.getItem('gogo_newsletter') || '[]'); if (list.indexOf(email) < 0) list.push(email); localStorage.setItem('gogo_newsletter', JSON.stringify(list)); } catch (err) {}
+      document.getElementById('fnEmail').value = '';
+      document.getElementById('fnNewsMsg').textContent = 'Thank you! The next field note will find you.';
+    });
+
+    // Campers' notes (saved by write.html)
+    (function () {
+      var notes = [];
+      try { notes = JSON.parse(localStorage.getItem('gogo_pocket_notes') || '[]'); } catch (e) {}
+      if (!notes.length) return;
+      var esc = function (s) { return String(s || '').replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+      document.getElementById('guestNotesWrap').classList.remove('hidden');
+      document.getElementById('guestNotes').innerHTML = notes.slice().reverse().map(function (n, i) {
+        var d = new Date(n.createdAt);
+        return '<article class="bg-[#F6F2E8] p-5 shadow-[0_10px_24px_-14px_rgba(0,0,0,.35)] ' + (i % 2 ? 'rotate-[1deg]' : '-rotate-[1deg]') + '">' +
+          (n.photo ? '<img src="' + n.photo + '" alt="" class="w-full h-[170px] object-cover mb-4">' : '') +
+          '<div class="flex justify-between fn-label text-[#3b4a3c]"><span>' + esc(n.place || 'At camp') + '</span><span>' + d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }) + '</span></div>' +
+          '<p class="fn-hand text-[26px] leading-[30px] text-[#1f2d22] mt-3">' + esc(n.headline) + '</p>' +
+          (n.story ? '<p class="text-[14px] leading-[22px] text-[#3f453c] mt-2 whitespace-pre-line">' + esc(n.story) + '</p>' : '') +
+          '<p class="fn-hand text-[20px] text-[var(--fn-rust)] mt-3">— ' + esc(n.name || 'a camper') + '</p></article>';
+      }).join('');
+    })();
+
+    window.lucide && lucide.createIcons();
+  })();
+  </script>
+</body>
+</html>

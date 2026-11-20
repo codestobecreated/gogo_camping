@@ -56,6 +56,31 @@ An interactive camping equipment & tent booking webpage created for **GOGOCampin
   - The GOGOCamping logo returns to the home page
 - `rental/cms/` – CMS admin dashboard
 
+## 🆕 What's new in v2.1.5
+
+**Booking (`/rental/`)**
+- Booking policy popup before booking (scroll, tick agree, submit) – no refund on cancellation (100% deduction)
+- Group-based tier pricing per person (1–25, 26–50, 51–100, 101+) shown + GST; 18% GST added at checkout
+- Custom group size typed by the guest (4+ people); add-ons replaced by Veg / Non-Veg food (included)
+- Children under 4 free; booking calendar with daily capacity, weekday rule and open / closed days
+- Team leader details + Aadhaar / ID (number or upload); team leader camping or not; other campers' name, age, WhatsApp
+- Aadhaar upload page for other campers (`/rental/id-upload.html`)
+- Payment by UPI QR / UPI app / Card; downloadable PDF ticket with GST and the no-refund note
+
+**New pages**
+- `/book/` – choose Regular Camping or Events
+- `/events/` – events & activities (booking coming soon)
+- `/blogs/` – Field Notes page (from the Figma design) and `/blogs/write.html` for campers' own notes
+- `/gopal/` – Calendar Control for the calendar admin (`/rental/cms/calendar.html`)
+
+**CMS**
+- Pricing & GST panel, Events manager, Calendar Control, food / kids / ID status on bookings
+
+**Home page**
+- Blogs section (Jawadhu Hills, Kullar Kugai), testimonial slider, "Discover astro-camping" opens the Astro event
+
+> Note: there is no backend yet – prices, calendar, events, bookings and uploads are stored in the browser (localStorage).
+
 ## 🆕 What's new in v2.1.0
 
 - **Home page redesign** from the Figma "GOGO Redesign" file, using its original photos (`assests/figma/`); navbar unchanged

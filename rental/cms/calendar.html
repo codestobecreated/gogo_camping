@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../../tablet-zoom.js?v=3"></script>
+  <title>Calendar Control - GOGOCamping Admin</title>
+  <meta name="robots" content="noindex">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
+</head>
+<body class="bg-slate-50 text-gray-800 antialiased min-h-screen">
+
+  <header class="bg-[#164e3f] text-white border-b border-emerald-800/60 sticky top-0 z-40 shadow-md">
+    <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 h-[56px] flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="w-10 h-10 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-emerald-300 shrink-0">
+          <i data-lucide="calendar-range" class="w-5 h-5"></i>
+        </div>
+        <div class="min-w-0">
+          <div class="flex items-center gap-2">
+            <span class="text-xl font-black tracking-tight">GOGOCamping</span>
+            <span class="px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[10px] font-extrabold uppercase tracking-wider">Calendar Control</span>
+          </div>
+          <p class="text-[11px] text-emerald-200/80 font-medium truncate">Open or close dates · daily capacity · weekday rules</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 shrink-0">
+        <div id="adminChip" class="hidden sm:flex items-center gap-2 bg-white/10 border border-white/15 rounded-xl pl-1.5 pr-3 py-1">
+          <span id="adminAvatar" class="w-7 h-7 rounded-lg bg-amber-400 text-[#164e3f] font-black flex items-center justify-center text-sm">G</span>
+          <span class="leading-tight">
+            <span id="adminName" class="block text-xs font-extrabold">Gopal</span>
+            <span id="adminRole" class="block text-[10px] text-emerald-200">Calendar Admin</span>
+          </span>
+        </div>
+        <a href="index.html" class="bg-emerald-950/60 hover:bg-emerald-900 text-emerald-200 font-extrabold text-xs py-2.5 px-3 rounded-xl border border-emerald-700/50 flex items-center gap-1.5">
+          <i data-lucide="layout-dashboard" class="w-4 h-4"></i><span class="hidden md:inline">Bookings CMS</span>
+        </a>
+        <a href="../" class="bg-emerald-950/60 hover:bg-emerald-900 text-emerald-200 font-extrabold text-xs py-2.5 px-3 rounded-xl border border-emerald-700/50 flex items-center gap-1.5">
+          <i data-lucide="external-link" class="w-4 h-4"></i><span class="hidden md:inline">Booking site</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <!-- Greeting + KPIs -->
+    <section class="space-y-4">
+      <div>
+        <h1 class="text-2xl font-extrabold text-gray-900">Hi <span id="greetName">Gopal</span> 👋</h1>
+        <p class="text-sm text-gray-500">Click any date to open or close it. Customers see these changes on the booking calendar right away.</p>
+      </div>
+      <div id="kpis" class="grid grid-cols-2 lg:grid-cols-4 gap-3"></div>
+    </section>
+
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 items-start">
+
+      <!-- Calendar -->
+      <section class="xl:col-span-2 bg-white rounded-2xl border border-gray-200 shadow-2xs p-5">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <div class="flex items-center gap-2">
+            <button type="button" id="prevMonth" class="w-9 h-9 rounded-xl border border-gray-200 flex items-center justify-center hover:bg-gray-50" aria-label="Previous month"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+            <h2 id="monthLabel" class="text-lg font-extrabold text-gray-900 w-44 text-center">Month</h2>
+            <button type="button" id="nextMonth" class="w-9 h-9 rounded-xl border border-gray-200 flex items-center justify-center hover:bg-gray-50" aria-label="Next month"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+            <button type="button" id="todayBtn" class="ml-1 px-3 h-9 rounded-xl border border-gray-200 text-xs font-bold hover:bg-gray-50">Today</button>
+          </div>
+          <div class="flex flex-wrap gap-x-3 gap-y-1 text-[11px] font-bold text-gray-600">
+            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-500"></span>Open</span>
+            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-amber-400"></span>Weekday – big groups only</span>
+            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-sky-500"></span>Opened by admin</span>
+            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-red-500"></span>Closed</span>
+          </div>
+        </div>
+        <div class="grid grid-cols-7 gap-1.5 text-center text-[11px] font-extrabold uppercase text-gray-400 mb-1.5">
+          <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+        </div>
+        <div id="adminGrid" class="grid grid-cols-7 gap-1.5"></div>
+      </section>
+
+      <!-- Right column: selected day + rules -->
+      <div class="space-y-6">
+        <section id="dayPanel" class="bg-white rounded-2xl border border-gray-200 shadow-2xs p-5 space-y-4">
+          <p class="text-sm text-gray-500">Select a date on the calendar.</p>
+        </section>
+
+        <section class="bg-white rounded-2xl border border-gray-200 shadow-2xs p-5 space-y-4">
+          <div>
+            <h3 class="text-base font-extrabold text-gray-900 flex items-center gap-2"><i data-lucide="sliders-horizontal" class="w-5 h-5 text-[#164e3f]"></i> Slot &amp; weekday rules</h3>
+            <p class="text-xs text-gray-500">Applies to every date unless you open or close it by hand.</p>
+          </div>
+          <label class="block">
+            <span class="block text-xs font-extrabold text-gray-800 mb-1">Max campers per day</span>
+            <input type="number" id="capInput" min="1" max="1000" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-[#164e3f] text-sm font-black text-[#164e3f]">
+          </label>
+          <label class="block">
+            <span class="block text-xs font-extrabold text-gray-800 mb-1">Weekdays (Mon–Fri)</span>
+            <select id="weekdayMode" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-[#164e3f] text-sm font-bold">
+              <option value="min">Only big groups (minimum group size)</option>
+              <option value="open">Open for everyone</option>
+              <option value="blocked">Closed</option>
+            </select>
+          </label>
+          <label id="minGroupWrap" class="block">
+            <span class="block text-xs font-extrabold text-gray-800 mb-1">Minimum group size on weekdays</span>
+            <input type="number" id="minGroupInput" min="1" max="1000" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-[#164e3f] text-sm font-black text-[#164e3f]">
+          </label>
+          <button type="button" id="saveRulesBtn" class="w-full bg-[#164e3f] hover:bg-[#0f382d] text-white text-sm font-extrabold py-2.5 rounded-xl">Save rules</button>
+          <p id="rulesUpdated" class="text-[11px] text-gray-400"></p>
+        </section>
+
+        <section class="bg-white rounded-2xl border border-gray-200 shadow-2xs p-5 space-y-3">
+          <h3 class="text-base font-extrabold text-gray-900 flex items-center gap-2"><i data-lucide="calendar-check" class="w-5 h-5 text-[#164e3f]"></i> Special dates</h3>
+          <div id="overrideList" class="space-y-2"></div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <div id="toast" class="hidden fixed bottom-5 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-sm font-bold px-4 py-2.5 rounded-xl shadow-lg z-50"></div>
+
+  <script src="../calendar.js?v=2"></script>
+  <script>
+  (function () {
+    var C = window.GogoCalendar;
+    var $ = function (id) { return document.getElementById(id); };
+
+    // ---- Role: who is using this page ----
+    var params = new URLSearchParams(location.search);
+    var asId = (params.get("as") || localStorage.getItem("gogo_admin_user") || "gopal").toLowerCase();
+    var admin = C.ADMINS[asId] || C.ADMINS.gopal;
+    try { localStorage.setItem("gogo_admin_user", admin.id); } catch (e) {}
+    $("adminName").textContent = admin.name;
+    $("adminRole").textContent = admin.role;
+    $("adminAvatar").textContent = admin.name.charAt(0);
+    $("greetName").textContent = admin.name;
+    $("adminChip").classList.remove("hidden");
+    $("adminChip").classList.add("flex");
+
+    var month = (function () { var d = new Date(); return new Date(d.getFullYear(), d.getMonth(), 1); })();
+    var selected = C.todayISO();
+
+    function toast(msg) {
+      var t = $("toast"); t.textContent = msg; t.classList.remove("hidden");
+      clearTimeout(toast._t); toast._t = setTimeout(function () { t.classList.add("hidden"); }, 2200);
+    }
+    function fmt(iso, opts) { return C.parse(iso).toLocaleDateString("en-IN", opts || { weekday: "short", day: "numeric", month: "short", year: "numeric" }); }
+    function allBookings() { try { return JSON.parse(localStorage.getItem("gogo_bookings_db") || "[]"); } catch (e) { return []; } }
+    function inr(n) { return "₹" + (n || 0).toLocaleString("en-IN"); }
+
+    // Admin view of a day (independent of a group size)
+    function adminStatus(iso, cfg, list) {
+      var st = C.dayStatus(iso, 1, cfg, list);
+      var weekday = C.isWeekday(iso);
+      var out = { st: st, tone: "emerald", text: "Open" };
+      if (st.state === "past") { out.tone = "gray"; out.text = "Past"; }
+      else if (st.override === "blocked") { out.tone = "red"; out.text = "Closed by admin"; }
+      else if (st.state === "full") { out.tone = "red"; out.text = "Closed · full"; }
+      else if (weekday && st.override !== "open" && cfg.weekdayMode === "blocked") { out.tone = "red"; out.text = "Closed · weekday"; }
+      else if (st.override === "open") { out.tone = "sky"; out.text = "Opened by admin"; }
+      else if (weekday && cfg.weekdayMode === "min") { out.tone = "amber"; out.text = cfg.weekdayMinGroup + "+ groups only"; }
+      return out;
+    }
+    var TONES = {
+      emerald: "bg-emerald-50 border-emerald-200 text-emerald-900",
+      amber: "bg-amber-50 border-amber-200 text-amber-900",
+      sky: "bg-sky-50 border-sky-200 text-sky-900",
+      red: "bg-red-50 border-red-200 text-red-800",
+      gray: "bg-gray-50 border-gray-100 text-gray-400"
+    };
+    var BAR = { emerald: "bg-emerald-500", amber: "bg-amber-400", sky: "bg-sky-500", red: "bg-red-500", gray: "bg-gray-300" };
+
+    function renderKpis(cfg, list) {
+      var today = C.todayISO();
+      var t = adminStatus(today, cfg, list);
+      var next30 = 0, closed30 = 0;
+      for (var i = 0; i < 30; i++) {
+        var d = new Date(); d.setDate(d.getDate() + i);
+        var iso = C.iso(d);
+        next30 += C.bookedOn(iso, list);
+        if (adminStatus(iso, cfg, list).tone === "red") closed30++;
+      }
+      var tile = function (label, value, sub, tone) {
+        return '<div class="bg-white rounded-2xl border border-gray-200 shadow-2xs p-4">' +
+          '<div class="text-[11px] font-extrabold uppercase tracking-wide text-gray-500">' + label + '</div>' +
+          '<div class="text-2xl font-black mt-1 ' + (tone || "text-gray-900") + '">' + value + '</div>' +
+          '<div class="text-xs text-gray-500 font-semibold mt-0.5">' + sub + '</div></div>';
+      };
+      $("kpis").innerHTML =
+        tile("Today · " + fmt(today, { day: "numeric", month: "short" }), t.st.booked + " / " + cfg.dailyCapacity, t.text, t.tone === "red" ? "text-red-600" : "text-[#164e3f]") +
+        tile("Next 30 days", next30 + " campers", "booked (not cancelled)") +
+        tile("Closed days", closed30, "in the next 30 days", closed30 ? "text-red-600" : "text-gray-900") +
+        tile("Weekday rule", cfg.weekdayMode === "min" ? cfg.weekdayMinGroup + "+ only" : cfg.weekdayMode === "open" ? "Open" : "Closed", "Mon–Fri · " + cfg.dailyCapacity + " campers/day max");
+    }
+
+    function renderGrid(cfg, list) {
+      $("monthLabel").textContent = month.toLocaleDateString("en-IN", { month: "long", year: "numeric" });
+      var days = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate();
+      var lead = (new Date(month.getFullYear(), month.getMonth(), 1).getDay() + 6) % 7;
+      var html = "";
+      for (var i = 0; i < lead; i++) html += "<span></span>";
+      for (var d = 1; d <= days; d++) {
+        var iso = C.iso(new Date(month.getFullYear(), month.getMonth(), d));
+        var a = adminStatus(iso, cfg, list);
+        var pct = Math.min(100, Math.round(a.st.booked / cfg.dailyCapacity * 100));
+        var isSel = iso === selected;
+        html += '<button type="button" data-date="' + iso + '" class="admin-day text-left rounded-xl border p-2 min-h-[78px] transition hover:shadow-sm ' + TONES[a.tone] + (isSel ? " ring-2 ring-[#164e3f]" : "") + (iso === C.todayISO() ? " outline outline-2 outline-offset-1 outline-gray-900/20" : "") + '">' +
+          '<div class="flex items-center justify-between"><span class="text-sm font-black">' + d + '</span>' +
+          (a.st.override ? '<i data-lucide="' + (a.st.override === "blocked" ? "lock" : "unlock") + '" class="w-3.5 h-3.5"></i>' : "") + '</div>' +
+          '<div class="text-[10px] font-extrabold mt-1 leading-tight truncate">' + a.text + '</div>' +
+          (a.tone === "gray" ? "" : '<div class="mt-1.5 h-1.5 rounded-full bg-white/80 overflow-hidden"><div class="h-full ' + BAR[a.tone] + '" style="width:' + pct + '%"></div></div>' +
+          '<div class="text-[10px] font-bold mt-0.5 opacity-80">' + a.st.booked + '/' + cfg.dailyCapacity + '</div>') +
+          '</button>';
+      }
+      $("adminGrid").innerHTML = html;
+    }
+
+    function renderDay(cfg, list) {
+      var iso = selected;
+      var a = adminStatus(iso, cfg, list);
+      var bks = C.bookingsOn(iso, list);
+      var cancelled = list.filter(function (b) { return b.tripDate === iso && b.status === "Cancelled"; }).length;
+      var past = a.st.state === "past";
+      var ov = a.st.override;
+      var btn = function (action, label, cls) { return '<button type="button" data-action="' + action + '" class="flex-1 px-3 py-2.5 rounded-xl text-xs font-extrabold ' + cls + '">' + label + '</button>'; };
+      var actions = past ? '<p class="text-xs text-gray-400">Past dates cannot be changed.</p>' :
+        '<div class="flex gap-2">' +
+          (ov === "blocked" ? "" : btn("blocked", "Close this date", "bg-red-600 hover:bg-red-700 text-white")) +
+          (ov === "open" ? "" : btn("open", C.isWeekday(iso) ? "Open for everyone (holiday)" : "Open this date", "bg-sky-600 hover:bg-sky-700 text-white")) +
+          (ov ? btn("reset", "Back to normal rule", "border border-gray-300 text-gray-700 hover:bg-gray-50") : "") +
+        '</div>';
+      $("dayPanel").innerHTML =
+        '<div class="flex items-start justify-between gap-3">' +
+          '<div><div class="text-xs font-bold text-gray-500">' + (C.isWeekday(iso) ? "Weekday" : "Weekend") + '</div>' +
+          '<h3 class="text-lg font-extrabold text-gray-900">' + fmt(iso) + '</h3></div>' +
+          '<span class="px-2.5 py-1 rounded-full text-[11px] font-extrabold border ' + TONES[a.tone] + '">' + a.text + '</span>' +
+        '</div>' +
+        '<div><div class="flex justify-between text-xs font-bold text-gray-600 mb-1"><span>Booked</span><span>' + a.st.booked + ' / ' + cfg.dailyCapacity + ' campers · ' + a.st.left + ' left</span></div>' +
+        '<div class="h-2.5 rounded-full bg-gray-100 overflow-hidden"><div class="h-full ' + BAR[a.tone] + '" style="width:' + Math.min(100, Math.round(a.st.booked / cfg.dailyCapacity * 100)) + '%"></div></div></div>' +
+        actions +
+        '<div class="pt-3 border-t border-gray-100">' +
+          '<div class="text-xs font-extrabold uppercase tracking-wide text-gray-500 mb-2">Bookings on this day (' + bks.length + ')' + (cancelled ? ' <span class="normal-case font-semibold text-gray-400">· ' + cancelled + ' cancelled not counted</span>' : "") + '</div>' +
+          (bks.length ? bks.map(function (b) {
+            return '<div class="flex items-center justify-between gap-2 py-2 border-b border-gray-50 text-xs">' +
+              '<div class="min-w-0"><div class="font-extrabold text-gray-900 truncate">' + b.leadName + ' <span class="text-gray-400 font-semibold">' + b.id + '</span></div>' +
+              '<div class="text-gray-500">' + (b.camperCount || 1) + ' campers' + (b.food ? ' · ' + b.food : "") + (b.kidsUnder4 ? ' · ' + b.kidsUnder4 + ' kids <4' : "") + (b.phone ? ' · +91 ' + b.phone : "") + '</div></div>' +
+              '<div class="text-right shrink-0"><div class="font-black text-[#164e3f]">' + inr(b.grandTotal) + '</div><div class="text-[10px] font-bold text-gray-500">' + b.status + '</div></div></div>';
+          }).join("") : '<p class="text-xs text-gray-400">No bookings yet.</p>') +
+        '</div>';
+    }
+
+    function renderRules(cfg) {
+      if (document.activeElement && ["capInput", "minGroupInput", "weekdayMode"].indexOf(document.activeElement.id) >= 0) return;
+      $("capInput").value = cfg.dailyCapacity;
+      $("weekdayMode").value = cfg.weekdayMode;
+      $("minGroupInput").value = cfg.weekdayMinGroup;
+      $("minGroupWrap").classList.toggle("hidden", cfg.weekdayMode !== "min");
+      $("rulesUpdated").textContent = cfg.updatedAt ? "Last changed " + new Date(cfg.updatedAt).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" }) + (cfg.updatedBy ? " by " + cfg.updatedBy : "") : "Default rules";
+    }
+
+    function renderOverrides(cfg) {
+      var today = C.todayISO();
+      var dates = Object.keys(cfg.overrides).filter(function (d) { return d >= today; }).sort();
+      $("overrideList").innerHTML = dates.length ? dates.map(function (d) {
+        var blocked = cfg.overrides[d] === "blocked";
+        return '<div class="flex items-center justify-between gap-2 p-2.5 rounded-xl border ' + (blocked ? "border-red-200 bg-red-50" : "border-sky-200 bg-sky-50") + '">' +
+          '<button type="button" data-jump="' + d + '" class="text-left text-xs"><span class="block font-extrabold text-gray-900">' + fmt(d) + '</span><span class="font-bold ' + (blocked ? "text-red-700" : "text-sky-700") + '">' + (blocked ? "Closed" : "Opened for everyone") + '</span></button>' +
+          '<button type="button" data-clear="' + d + '" class="text-[11px] font-bold text-gray-600 underline">Remove</button></div>';
+      }).join("") : '<p class="text-xs text-gray-400">No special dates. Close a date (maintenance, weather) or open a weekday public holiday from the calendar.</p>';
+    }
+
+    function render() {
+      var cfg = C.getSettings();
+      var list = allBookings();
+      renderKpis(cfg, list);
+      renderGrid(cfg, list);
+      renderDay(cfg, list);
+      renderRules(cfg);
+      renderOverrides(cfg);
+      window.lucide && lucide.createIcons();
+    }
+
+    $("adminGrid").addEventListener("click", function (e) {
+      var b = e.target.closest(".admin-day"); if (!b) return;
+      selected = b.dataset.date; render();
+    });
+    $("dayPanel").addEventListener("click", function (e) {
+      var b = e.target.closest("[data-action]"); if (!b) return;
+      var act = b.dataset.action;
+      C.setOverride(selected, act === "reset" ? null : act, admin.name);
+      toast(act === "blocked" ? "Closed " + fmt(selected) : act === "open" ? "Opened " + fmt(selected) : "Back to normal rule");
+      render();
+    });
+    $("overrideList").addEventListener("click", function (e) {
+      var j = e.target.closest("[data-jump]");
+      if (j) { selected = j.dataset.jump; var d = C.parse(selected); month = new Date(d.getFullYear(), d.getMonth(), 1); render(); return; }
+      var c = e.target.closest("[data-clear]");
+      if (c) { C.setOverride(c.dataset.clear, null, admin.name); toast("Removed"); render(); }
+    });
+    $("prevMonth").addEventListener("click", function () { month = new Date(month.getFullYear(), month.getMonth() - 1, 1); render(); });
+    $("nextMonth").addEventListener("click", function () { month = new Date(month.getFullYear(), month.getMonth() + 1, 1); render(); });
+    $("todayBtn").addEventListener("click", function () { var d = new Date(); month = new Date(d.getFullYear(), d.getMonth(), 1); selected = C.todayISO(); render(); });
+    $("weekdayMode").addEventListener("change", function () { $("minGroupWrap").classList.toggle("hidden", $("weekdayMode").value !== "min"); });
+    $("saveRulesBtn").addEventListener("click", function () {
+      var cap = parseInt($("capInput").value, 10), min = parseInt($("minGroupInput").value, 10);
+      if (!(cap > 0)) { toast("Enter the max campers per day"); return; }
+      if ($("weekdayMode").value === "min" && !(min > 0)) { toast("Enter the minimum group size"); return; }
+      C.saveSettings({ dailyCapacity: cap, weekdayMode: $("weekdayMode").value, weekdayMinGroup: min > 0 ? min : C.getSettings().weekdayMinGroup }, admin.name);
+      document.activeElement && document.activeElement.blur();
+      toast("Rules saved – booking calendar updated");
+      render();
+    });
+    C.onChange(render);
+    render();
+  })();
+  </script>
+</body>
+</html>

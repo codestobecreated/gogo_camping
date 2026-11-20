@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../tablet-zoom.js?v=3"></script>
+  <title>Events & Activities - GOGOCamping</title>
+  <meta name="description" content="Pick the events and activities you'd like to join at GOGOCamping – astronomy nights, biker weekends and more.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..800&family=Fraunces:opsz,wght@9..144,500..800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>body { font-family: 'DM Sans', sans-serif; } .font-serif { font-family: 'Fraunces', Georgia, serif; }</style>
+</head>
+<body class="bg-[#F0EADD] text-[#1d211c] min-h-screen flex flex-col">
+
+  <header class="bg-[#1B3D2A] text-[#F8F4EA]">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      <a href="../" class="text-2xl font-black tracking-tight">GOGO<span class="font-medium">Camping</span></a>
+      <nav class="flex items-center gap-4 text-sm font-semibold">
+        <a href="../" class="hidden sm:inline hover:text-white/80">Home</a>
+        <a href="../rental/" class="hidden sm:inline hover:text-white/80">Camping</a>
+        <a href="./" class="text-amber-300">Events</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-8 pb-32 space-y-8">
+    <div>
+      <p class="font-semibold text-[#A8462D] text-sm uppercase tracking-wider">Events &amp; activities · booking coming soon</p>
+      <h1 class="font-serif text-4xl sm:text-5xl font-bold mt-1">What would you like to do?</h1>
+      <p class="text-[#55594f] mt-2 max-w-2xl">Here is what is planned at GOGO. Online booking for events &amp; activities is <b>coming soon</b> – for now you can book a <a href="../rental/" class="underline font-semibold">regular camping stay</a>.</p>
+    </div>
+
+    <!-- Activities: pick many -->
+    <section class="space-y-3">
+      <div class="flex items-end justify-between gap-3">
+        <div>
+          <h2 class="font-serif text-2xl sm:text-3xl font-bold">Activities</h2>
+          <p class="text-sm text-[#55594f]">Any day of your stay · pick as many as you like</p>
+        </div>
+        <span class="text-xs font-bold uppercase tracking-wider bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full shrink-0">Booking coming soon</span><button type="button" id="actAllBtn" class="hidden">Select all</button>
+      </div>
+      <div id="activityGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3"></div>
+    </section>
+
+    <!-- Special events: fixed dates -->
+    <section class="space-y-3">
+      <div>
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold">Special events</h2>
+        <p class="text-sm text-[#55594f]">Fixed dates – astronomy nights, biker weekends and more</p>
+      </div>
+      <div id="eventGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+    </section>
+  </main>
+
+  <!-- Sticky Next bar (hidden while event booking is coming soon) -->
+  <div class="hidden fixed bottom-0 inset-x-0 z-30 bg-white/95 backdrop-blur border-t border-black/10 shadow-[0_-10px_30px_-15px_rgba(0,0,0,.3)]">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
+      <div class="min-w-0">
+        <span id="pickCount" class="block text-sm font-bold">Nothing selected yet</span>
+        <span id="pickNames" class="block text-xs text-[#55594f] truncate">Tap activities or events to select them</span>
+      </div>
+      <div class="flex items-center gap-2 shrink-0">
+        <button type="button" id="nextBtn" class="bg-[#1B3D2A] hover:bg-[#214a33] text-white font-bold px-6 py-3 rounded-xl flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed">Next <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Coming soon popup (event booking is not open yet) -->
+  <div id="comingSoon" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl">
+      <span class="w-14 h-14 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center mx-auto"><i data-lucide="hourglass" class="w-7 h-7"></i></span>
+      <p class="mt-3 text-xs font-bold uppercase tracking-wider text-[#A8462D]">Coming soon</p>
+      <h3 class="font-serif text-2xl font-bold mt-1" id="comingSoonTitle">Event booking is coming soon</h3>
+      <p class="text-sm text-[#55594f] mt-2">Online booking for events &amp; activities opens soon. Meanwhile you can book a regular camping stay.</p>
+      <div class="mt-5 flex flex-col gap-2">
+        <a href="../rental/" class="bg-[#1B3D2A] hover:bg-[#214a33] text-white font-bold py-3 rounded-xl">Book regular camping</a>
+        <button type="button" id="comingSoonClose" class="py-3 rounded-xl border border-gray-300 font-bold text-gray-700 hover:bg-gray-50">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="events-data.js?v=3"></script>
+  <script>
+  (function () {
+    var E = window.GogoEvents;
+    var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+    // an event link like ?pick=<slug> pre-selects it
+    E.setPicked([]); E.setPickedActivities([]);
+    var pre = null;
+    if (pre) { var ev0 = E.bySlug(pre); if (ev0 && !E.getPicked().some(function (e) { return e.id === ev0.id; })) E.togglePicked(ev0.id); }
+
+    function renderActivities() {
+      var picked = E.getPickedActivities().map(function (a) { return a.id; });
+      var acts = E.activities();
+      document.getElementById("activityGrid").innerHTML = acts.map(function (a) {
+        var on = picked.indexOf(a.id) >= 0;
+        return '<button type="button" class="act-tile relative text-left p-4 rounded-2xl border-2 transition ' + (on ? "bg-[#1B3D2A] border-[#1B3D2A] text-white shadow-lg" : "bg-white border-transparent hover:border-[#1B3D2A]/30 shadow-sm") + '" data-id="' + a.id + '" aria-pressed="' + on + '">' +
+          '<span class="w-11 h-11 rounded-xl flex items-center justify-center ' + (on ? "bg-white/15 text-amber-300" : "bg-[#F0EADD] text-[#A8462D]") + '"><i data-lucide="' + esc(a.icon || "star") + '" class="w-6 h-6"></i></span>' +
+          '<span class="block font-bold mt-3">' + esc(a.name) + '</span>' +
+          '<span class="block text-xs mt-0.5 ' + (on ? "text-white/75" : "text-[#55594f]") + '">' + esc(a.desc || "") + '</span>' +
+          '<span class="absolute top-3 right-3 w-6 h-6 rounded-full border-2 flex items-center justify-center text-xs font-black ' + (on ? "bg-amber-400 border-amber-400 text-[#1B3D2A]" : "border-gray-300 text-transparent") + '">✓</span>' +
+        '</button>';
+      }).join("");
+    }
+
+    function render() {
+      renderActivities();
+      var list = E.published();
+      var picked = E.getPicked().map(function (e) { return e.id; });
+      document.getElementById("eventGrid").innerHTML = list.length ? list.map(function (ev) {
+        var on = picked.indexOf(ev.id) >= 0;
+        var left = E.seatsLeft(ev);
+        return '<div class="ev-card group bg-white rounded-3xl overflow-hidden border-2 ' + (on ? "border-[#1B3D2A] ring-4 ring-[#1B3D2A]/15" : "border-transparent") + ' shadow-sm hover:shadow-lg transition flex flex-col cursor-pointer" data-id="' + ev.id + '" role="button" aria-pressed="' + on + '">' +
+          '<div class="relative h-52 overflow-hidden"><img src="' + E.img(ev, "../") + '" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="">' +
+            '<span class="absolute top-3 left-3 text-[11px] font-bold uppercase tracking-wider bg-white/90 text-[#1B3D2A] px-2.5 py-1 rounded-full">' + esc(ev.category) + ' event</span>' +
+            '<span class="absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center border-2 ' + (on ? "bg-[#1B3D2A] border-[#1B3D2A] text-white" : "bg-white/90 border-white text-transparent") + '"><i data-lucide="check" class="w-5 h-5"></i></span>' +
+            (left ? "" : '<span class="absolute bottom-3 left-3 text-[11px] font-bold bg-red-600 text-white px-2.5 py-1 rounded-full">Full</span>') + '</div>' +
+          '<div class="p-5 flex-1 flex flex-col">' +
+            '<p class="text-sm font-semibold text-[#A8462D] flex items-center gap-1.5"><i data-lucide="calendar" class="w-4 h-4"></i>' + E.dateRange(ev) + '</p>' +
+            '<h2 class="font-serif text-2xl font-bold mt-1 leading-tight">' + esc(ev.name) + '</h2>' +
+            '<p class="text-sm text-[#55594f] mt-1.5 flex-1">' + esc(ev.tagline || ev.description) + '</p>' +
+            '<div class="mt-4 flex items-center justify-between gap-3">' +
+              '<a href="' + E.link(ev, "../") + '" class="ev-details text-sm font-bold text-[#1B3D2A] underline underline-offset-4">Details</a>' +
+              '<span class="px-4 py-2 rounded-xl text-sm font-bold ' + (on ? "bg-[#1B3D2A] text-white" : "border border-[#1B3D2A]/30 text-[#1B3D2A]") + '">' + "Coming soon" + '</span>' +
+            '</div>' +
+          '</div></div>';
+      }).join("") : '<div class="md:col-span-2 bg-white rounded-3xl p-10 text-center"><i data-lucide="calendar-x" class="w-10 h-10 mx-auto text-[#A8462D]"></i><h2 class="font-serif text-2xl font-bold mt-2">No events right now</h2><p class="text-[#55594f] mt-1">Meanwhile, <a href="../rental/" class="underline font-semibold">book a regular camping stay</a>.</p></div>';
+
+      var sel = E.getPicked(), acts = E.getPickedActivities();
+      var parts = [];
+      if (acts.length) parts.push(acts.length + " activit" + (acts.length > 1 ? "ies" : "y"));
+      if (sel.length) parts.push(sel.length + " event" + (sel.length > 1 ? "s" : ""));
+      document.getElementById("pickCount").textContent = parts.length ? parts.join(" + ") + " selected" : "Nothing selected yet";
+      document.getElementById("pickNames").textContent = parts.length ? acts.map(function (a) { return a.name; }).concat(sel.map(function (e) { return e.name; })).join(", ") : "Tap activities or events to select them";
+      document.getElementById("nextBtn").disabled = !parts.length;
+      window.lucide && lucide.createIcons();
+    }
+
+
+    // Event / activity booking is not open yet – clicking shows "Coming soon"
+    function comingSoon(name) {
+      document.getElementById("comingSoonTitle").textContent = (name ? name + " – " : "") + "coming soon";
+      document.getElementById("comingSoon").classList.remove("hidden");
+      window.lucide && lucide.createIcons();
+    }
+    document.getElementById("comingSoonClose").addEventListener("click", function () { document.getElementById("comingSoon").classList.add("hidden"); });
+    document.getElementById("comingSoon").addEventListener("click", function (e) { if (e.target.id === "comingSoon") e.target.classList.add("hidden"); });
+    document.getElementById("eventGrid").addEventListener("click", function (e) {
+      if (e.target.closest(".ev-details")) return; // "Details" still opens the event page
+      var card = e.target.closest(".ev-card"); if (!card) return;
+      comingSoon(card.querySelector("h2").textContent);
+    });
+    document.getElementById("activityGrid").addEventListener("click", function (e) {
+      var t = e.target.closest(".act-tile"); if (t) comingSoon(t.querySelector(".font-bold").textContent);
+    });
+    document.getElementById("actAllBtn").addEventListener("click", function () {
+      comingSoon("");
+    });
+    document.getElementById("nextBtn").addEventListener("click", function () {
+      comingSoon("");
+    });
+    E.onChange(render);
+    render();
+  })();
+  </script>
+</body>
+</html>

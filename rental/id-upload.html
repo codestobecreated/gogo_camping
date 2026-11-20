@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Aadhaar - GOGOCamping</title>
+  <meta name="description" content="Upload your Aadhaar card photo for campsite entry at GOGOCamping.">
+  <meta name="robots" content="noindex">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
+</head>
+<body class="bg-[#f4f5f8] min-h-screen text-gray-900">
+
+  <header class="bg-[#f7f3e8] border-b border-[#164e3f]/10">
+    <div class="max-w-xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="../" class="text-2xl font-black tracking-tight text-[#164e3f]">GOGOCamping</a>
+      <span class="text-[10px] font-extrabold uppercase tracking-wider text-[#164e3f] bg-white border border-[#164e3f]/20 px-2.5 py-1 rounded-full">ID verification</span>
+    </div>
+  </header>
+
+  <main class="max-w-xl mx-auto px-4 py-6 space-y-4">
+
+    <!-- Invalid link -->
+    <section id="badLink" class="hidden bg-white rounded-2xl border border-gray-200 p-6 text-center space-y-2">
+      <i data-lucide="link-2-off" class="w-10 h-10 text-red-500 mx-auto"></i>
+      <h1 class="text-lg font-extrabold">This link is not valid</h1>
+      <p class="text-sm text-gray-600">Please open the link exactly as we sent it on WhatsApp, or contact GOGOCamping.</p>
+    </section>
+
+    <!-- Upload form -->
+    <section id="uploadCard" class="hidden bg-white rounded-2xl border border-gray-200 shadow-2xs overflow-hidden">
+      <div class="p-5 bg-gradient-to-br from-[#164e3f] to-[#0d7a57] text-white">
+        <p class="text-xs text-emerald-100 font-bold uppercase tracking-wider">Mandatory for campsite entry</p>
+        <h1 class="text-xl font-extrabold mt-1">Hi <span id="camperName">Camper</span>, upload your Aadhaar</h1>
+        <p class="text-sm text-emerald-50/90 mt-1">Booking <b id="bookingId">–</b><span id="tripLine"></span></p>
+      </div>
+
+      <div class="p-5 space-y-4">
+        <label for="frontInput" id="frontDrop" class="block rounded-2xl border-2 border-dashed border-gray-300 hover:border-[#164e3f] bg-gray-50/60 p-4 cursor-pointer transition">
+          <div id="frontEmpty" class="flex items-center gap-3">
+            <span class="w-11 h-11 rounded-xl bg-white border border-gray-200 text-[#164e3f] flex items-center justify-center shrink-0"><i data-lucide="camera" class="w-5 h-5"></i></span>
+            <span class="flex-1 min-w-0">
+              <span class="block text-sm font-extrabold">Aadhaar card – front side *</span>
+              <span class="block text-xs text-gray-500">Take a photo or choose an image (JPG / PNG)</span>
+            </span>
+          </div>
+          <img id="frontPreview" class="hidden w-full max-h-64 object-contain rounded-xl bg-white" alt="Aadhaar front preview">
+          <input type="file" id="frontInput" accept="image/*" capture="environment" class="sr-only">
+        </label>
+
+        <label for="backInput" class="block rounded-2xl border-2 border-dashed border-gray-300 hover:border-[#164e3f] bg-gray-50/60 p-4 cursor-pointer transition">
+          <div id="backEmpty" class="flex items-center gap-3">
+            <span class="w-11 h-11 rounded-xl bg-white border border-gray-200 text-[#164e3f] flex items-center justify-center shrink-0"><i data-lucide="image-plus" class="w-5 h-5"></i></span>
+            <span class="flex-1 min-w-0">
+              <span class="block text-sm font-extrabold">Back side <span class="text-gray-400 font-semibold">(optional)</span></span>
+              <span class="block text-xs text-gray-500">Address side of the card</span>
+            </span>
+          </div>
+          <img id="backPreview" class="hidden w-full max-h-64 object-contain rounded-xl bg-white" alt="Aadhaar back preview">
+          <input type="file" id="backInput" accept="image/*" capture="environment" class="sr-only">
+        </label>
+
+        <p id="formError" class="hidden text-sm font-bold text-red-600"></p>
+
+        <button id="submitBtn" type="button" class="w-full bg-[#164e3f] hover:bg-[#0f382d] text-white font-extrabold py-3.5 rounded-xl flex items-center justify-center gap-2 transition">
+          <i data-lucide="upload-cloud" class="w-5 h-5"></i> Upload Aadhaar
+        </button>
+        <p class="text-[11px] text-gray-500 text-center">Used only to verify your entry at the campsite.</p>
+      </div>
+    </section>
+
+    <!-- Done -->
+    <section id="doneCard" class="hidden bg-white rounded-2xl border border-emerald-200 p-6 text-center space-y-3">
+      <span class="w-14 h-14 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto"><i data-lucide="check" class="w-8 h-8"></i></span>
+      <h2 class="text-lg font-extrabold">Aadhaar uploaded – thank you!</h2>
+      <p class="text-sm text-gray-600">You're all set for check-in. See you at GOGOCamping 🏕️</p>
+      <button id="replaceBtn" type="button" class="text-sm font-bold text-[#164e3f] underline">Upload a different photo</button>
+    </section>
+  </main>
+
+  <script>
+  (function () {
+    var UPLOADS_KEY = "gogo_id_uploads";
+    var params = new URLSearchParams(location.search);
+    var bookingId = params.get("b");
+    var camperNo = parseInt(params.get("c"), 10);
+    var $ = function (id) { return document.getElementById(id); };
+    var show = function (id) { ["badLink", "uploadCard", "doneCard"].forEach(function (x) { $(x).classList.toggle("hidden", x !== id); }); };
+
+    function read(key, fallback) { try { return JSON.parse(localStorage.getItem(key) || "null") || fallback; } catch (e) { return fallback; } }
+
+    if (!bookingId || !camperNo) { show("badLink"); window.lucide && lucide.createIcons(); return; }
+
+    var booking = (read("gogo_bookings_db", [])).find(function (x) { return x.id === bookingId; }) || null;
+    var camper = booking && Array.isArray(booking.campers) ? booking.campers.find(function (x) { return x.no === camperNo; }) : null;
+    $("camperName").textContent = (camper && camper.name) || params.get("n") || ("Camper " + camperNo);
+    $("bookingId").textContent = bookingId;
+    var trip = (booking && booking.tripDate) || params.get("d");
+    if (trip) $("tripLine").textContent = " · check-in " + new Date(trip + "T12:00:00").toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+
+    var key = bookingId + "|" + camperNo;
+    show(read(UPLOADS_KEY, {})[key] ? "doneCard" : "uploadCard");
+
+    // Shrink the photo so it is quick to upload (max 1400px, JPEG)
+    function compress(file) {
+      return new Promise(function (resolve, reject) {
+        var img = new Image();
+        img.onload = function () {
+          var scale = Math.min(1, 1400 / Math.max(img.width, img.height));
+          var cv = document.createElement("canvas");
+          cv.width = Math.round(img.width * scale); cv.height = Math.round(img.height * scale);
+          cv.getContext("2d").drawImage(img, 0, 0, cv.width, cv.height);
+          URL.revokeObjectURL(img.src);
+          resolve(cv.toDataURL("image/jpeg", 0.8));
+        };
+        img.onerror = function () { reject(new Error("Not an image")); };
+        img.src = URL.createObjectURL(file);
+      });
+    }
+
+    var picked = { front: null, back: null };
+    function bind(side) {
+      $(side + "Input").addEventListener("change", function (e) {
+        var f = e.target.files && e.target.files[0];
+        if (!f) return;
+        if (!/^image\//.test(f.type)) { error("Please choose a photo (JPG or PNG)."); return; }
+        compress(f).then(function (dataUrl) {
+          picked[side] = { dataUrl: dataUrl, fileName: f.name };
+          $(side + "Preview").src = dataUrl;
+          $(side + "Preview").classList.remove("hidden");
+          $(side + "Empty").classList.add("hidden");
+          error("");
+        }).catch(function () { error("Could not read that image – please try another photo."); });
+      });
+    }
+    bind("front"); bind("back");
+
+    function error(msg) { $("formError").textContent = msg; $("formError").classList.toggle("hidden", !msg); }
+
+    $("submitBtn").addEventListener("click", function () {
+      if (!picked.front) { error("Please add a photo of the front side of your Aadhaar card."); return; }
+      var uploads = read(UPLOADS_KEY, {});
+      uploads[key] = {
+        bookingId: bookingId, camperNo: camperNo, name: $("camperName").textContent,
+        fileName: picked.front.fileName, dataUrl: picked.front.dataUrl,
+        backDataUrl: picked.back ? picked.back.dataUrl : null,
+        uploadedAt: new Date().toISOString()
+      };
+      try {
+        localStorage.setItem(UPLOADS_KEY, JSON.stringify(uploads));
+      } catch (e) { error("Upload failed – the photo is too large. Please try a smaller photo."); return; }
+      // mark the camper as uploaded on the booking (same browser)
+      var all = read("gogo_bookings_db", []);
+      var rec = all.find(function (x) { return x.id === bookingId; });
+      if (rec && Array.isArray(rec.campers)) {
+        var cp = rec.campers.find(function (x) { return x.no === camperNo; });
+        if (cp) { cp.idStatus = "Uploaded"; cp.uploadedAt = uploads[key].uploadedAt; localStorage.setItem("gogo_bookings_db", JSON.stringify(all)); }
+      }
+      show("doneCard");
+    });
+    $("replaceBtn").addEventListener("click", function () { show("uploadCard"); });
+
+    window.lucide && lucide.createIcons();
+  })();
+  </script>
+</body>
+</html>

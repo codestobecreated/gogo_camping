@@ -69,6 +69,22 @@
 
       <!-- Quick Action Header Controls -->
       <div class="flex items-center gap-3">
+        <!-- Events manager -->
+        <a
+          href="events.html"
+          class="bg-emerald-950/60 hover:bg-emerald-900 text-emerald-200 font-extrabold text-xs py-2.5 px-3.5 rounded-xl border border-emerald-700/50 flex items-center gap-1.5 transition"
+        >
+          <i data-lucide="party-popper" class="w-4 h-4"></i>
+          <span class="hidden sm:inline">Events</span>
+        </a>
+        <!-- Calendar Control (Gopal) -->
+        <a 
+          href="calendar.html" 
+          class="bg-amber-400 hover:bg-amber-300 text-[#164e3f] font-extrabold text-xs py-2.5 px-3.5 rounded-xl flex items-center gap-1.5 transition"
+        >
+          <i data-lucide="calendar-range" class="w-4 h-4"></i>
+          <span class="hidden sm:inline">Calendar Control</span>
+        </a>
         <!-- Back to Customer Website Link -->
         <a 
           href="../" 
@@ -204,7 +220,7 @@
               <th class="py-3 px-4">Order ID</th>
               <th class="py-3 px-4">Lead Camper &amp; Login Status</th>
               <th class="py-3 px-4">Tent Package</th>
-              <th class="py-3 px-4">Add-on Accessories</th>
+              <th class="py-3 px-4">Food &amp; Kids</th>
               <th class="py-3 px-4">Total Paid</th>
               <th class="py-3 px-4">Payment &amp; Date</th>
               <th class="py-3 px-4">Status</th>
@@ -238,6 +254,32 @@
       </div>
 
     </div>
+
+    <!-- ================= PRICING & GST (the booking page reads this live) ================= -->
+    <section id="pricingPanel" class="bg-white p-5 rounded-2xl border border-gray-200 shadow-2xs space-y-4">
+      <div class="pb-2 border-b border-gray-100 flex flex-wrap justify-between items-center gap-2">
+        <div>
+          <h3 class="text-base font-extrabold text-gray-900 flex items-center gap-2">
+            <i data-lucide="indian-rupee" class="w-5 h-5 text-[#164e3f]"></i>
+            Pricing &amp; GST
+          </h3>
+          <p class="text-xs text-gray-500">Group-based price per person (excluding GST). Saving updates the booking page automatically.</p>
+        </div>
+        <span id="pricingUpdatedBadge" class="text-[10px] font-black uppercase text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">Default prices</span>
+      </div>
+
+      <div id="pricingTierInputs" class="grid grid-cols-2 lg:grid-cols-5 gap-3">
+        <!-- Filled by cms.js -->
+      </div>
+
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <p id="pricingPreview" class="text-xs text-gray-600"></p>
+        <div class="flex items-center gap-2">
+          <button type="button" id="resetPricingBtn" class="px-3.5 py-2 rounded-xl border border-gray-300 text-xs font-bold text-gray-700 hover:bg-gray-50">Reset to default</button>
+          <button type="button" id="savePricingBtn" class="px-4 py-2 rounded-xl bg-[#164e3f] hover:bg-[#0f382d] text-white text-xs font-extrabold">Save pricing</button>
+        </div>
+      </div>
+    </section>
 
     <!-- ================= SECTION 2: VISUAL CHARTS & ANALYTICS GRID ================= -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -277,30 +319,30 @@
 
     </div>
 
-    <!-- ================= SECTION 3: ADD-ON GEAR ANALYTICS & PAYMENT DISTRIBUTION ================= -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- ================= SECTION 3: FOOD PREFERENCE & PAYMENT DISTRIBUTION ================= -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       
-      <!-- Chart 3: Add-on Gear Rented (Bar Chart) -->
+      <!-- Chart 3: Food preference (Veg / Non-Veg) + guest insights -->
       <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-2xs space-y-4">
         <div class="pb-2 border-b border-gray-100">
           <h3 class="text-base font-extrabold text-gray-900 flex items-center gap-2">
-            <i data-lucide="package" class="w-5 h-5 text-[#164e3f]"></i>
-            Add-on Gear Units Sold
+            <i data-lucide="utensils" class="w-5 h-5 text-[#164e3f]"></i>
+            Food Preference
           </h3>
-          <p class="text-xs text-gray-500">Popularity of extra accessories</p>
+          <p class="text-xs text-gray-500">Veg / Non-Veg choice by campers (food included in package)</p>
         </div>
         <div class="h-56 w-full">
           <canvas id="chartAddons"></canvas>
         </div>
 
-        <!-- Add-on insights (filled by renderInsights in cms.js) -->
+        <!-- Guest insights (filled by renderInsights in cms.js) -->
         <div class="pt-4 border-t border-gray-100 space-y-4">
           <h4 class="text-xs font-black uppercase tracking-wider text-gray-500 flex items-center gap-1.5">
-            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-[#164e3f]"></i> Add-on insights
+            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-[#164e3f]"></i> Guest insights
           </h4>
           <div id="addonInsightTiles" class="grid grid-cols-2 gap-2.5"></div>
           <div>
-            <p class="text-[11px] font-bold text-gray-500 mb-2">Revenue by item</p>
+            <p class="text-[11px] font-bold text-gray-500 mb-2">Campers by food choice</p>
             <div id="addonRevenueBars" class="space-y-2.5"></div>
           </div>
         </div>
@@ -332,23 +374,6 @@
         </div>
       </div>
 
-      <!-- Add-on Inventory Live Stock Cards Grid -->
-      <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-2xs space-y-3">
-        <div class="pb-2 border-b border-gray-100 flex justify-between items-center">
-          <div>
-            <h3 class="text-base font-extrabold text-gray-900 flex items-center gap-2">
-              <i data-lucide="boxes" class="w-5 h-5 text-[#164e3f]"></i>
-              Gear Inventory Status
-            </h3>
-            <p class="text-xs text-gray-500">Set stock for each item &middot; live availability</p>
-          </div>
-          <span id="inventoryStatusBadge" class="text-[10px] font-black uppercase text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">IN STOCK</span>
-        </div>
-
-        <div id="addonInventoryGrid" class="space-y-2.5">
-          <!-- Populated by JavaScript -->
-        </div>
-      </div>
 
     </div>
 
@@ -363,7 +388,7 @@
       <div class="flex items-center gap-4 text-gray-600">
         <a href="../" class="hover:text-[#164e3f] font-bold">Booking Site</a>
         <span>•</span>
-        <a href="../#addons" class="hover:text-[#164e3f] font-bold">Add-on Accessories</a>
+        <a href="#pricingPanel" class="hover:text-[#164e3f] font-bold">Pricing &amp; GST</a>
         <span>•</span>
         <span class="text-emerald-700 font-extrabold">v2.4 Live System</span>
       </div>
@@ -422,7 +447,7 @@
             <option value="2 Person Camping Tent" data-persons="2">2 Person Camping Tent (₹4,798)</option>
             <option value="3 Person Camping Tent" data-persons="3">3 Person Camping Tent (₹7,197)</option>
             <option value="4 Person Camping Tent" data-persons="4">4 Person Camping Tent (₹9,596)</option>
-            <option value="custom">Custom / Group &ndash; 5 or more campers (₹2,399 / person)</option>
+            <option value="custom">Custom / Group &ndash; 5 or more campers (group price / person)</option>
           </select>
         </div>
 
@@ -439,6 +464,20 @@
               <option value="QR Code Pay">QR Code Pay</option>
               <option value="Net Banking">Net Banking</option>
             </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-bold text-gray-700 mb-1">Food *</label>
+            <select id="newCamperFood" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-[#164e3f]">
+              <option value="Veg">Veg</option>
+              <option value="Non-Veg">Non-Veg</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-gray-700 mb-1">Children under 4 <span class="font-semibold text-gray-400">(free)</span></label>
+            <input type="number" id="newCamperKids" min="0" max="10" value="0" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-[#164e3f]">
           </div>
         </div>
 
@@ -464,7 +503,8 @@
 
   <!-- CMS Engine JavaScript -->
   <script src="../inventory.js"></script>
-  <script src="cms.js?v=12"></script>
+  <script src="../pricing.js?v=1"></script>
+  <script src="cms.js?v=22"></script>
   <script src="../../scroll-lock.js"></script>
 </body>
 </html>

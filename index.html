@@ -139,7 +139,7 @@
       box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
     }
     #siteHeader.is-scrolled #siteNav { padding-top: 0.9rem; padding-bottom: 0.9rem; }
-    #siteHeader.is-scrolled a[href="rental/"] { background-color: #A8462D; }
+    #siteHeader.is-scrolled a[href="book/"] { background-color: #A8462D; }
   </style>
   <style>
     /* ===== Figma "GOGO Redesign" home page ===== */
@@ -157,7 +157,7 @@
     .gg-glass-card::before { display: none; }
     .gg-glass-card::after { background: rgba(244,239,226,.06); -webkit-backdrop-filter: blur(28px) saturate(1.05); backdrop-filter: blur(28px) saturate(1.05); box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.4), inset 0 0 50px rgba(110,95,60,.10); filter: url(#tornEdge) drop-shadow(0 8px 18px rgba(0,0,0,.12)); }
     /* Fog where the cream meets the green, centred on the split line (set by placeGlassSplit) */
-    .gg-glass-fog { position: absolute; left: 0; right: 0; top: calc(var(--gg-split-card, 600px) - 115px); height: 230px; pointer-events: none; z-index: 20;
+    .gg-glass-fog { position: absolute; left: 0; right: 0; top: calc(var(--gg-split-card, 600px) - 115px); height: 230px; pointer-events: none; z-index: 1; /* behind the card content, so the photos stay clear */
       background: linear-gradient(to bottom, rgba(240,234,220,0) 0%, rgba(240,234,220,.42) 45%, rgba(205,212,182,.22) 62%, rgba(120,140,95,0) 100%); filter: blur(8px); }
 
     .gg-pill { display: inline-flex; align-items: center; gap: 12px; height: 44px; padding: 0 44px 0 20px; border: 1px solid #CFC8B6; border-radius: 999px; background: #F4EFE2; font-size: 15px; font-weight: 700; text-transform: uppercase; color: #1d211c; }
@@ -188,6 +188,18 @@
     .gg-season b i { display: block; width: 22px; height: 3px; border-radius: 2px; }
     .gg-season span { display: block; font-size: 12px; color: #B8BCB2; margin-top: 8px; }
     @media (max-width: 767px) { .gg-season { padding: 10px 16px; } }
+    /* ===== Blogs section ===== */
+    .gg-blogs { position: relative; overflow: hidden; }
+    .gg-blog-card { transition: transform .35s ease; }
+    .gg-blog-tilt-l { transform: rotate(-1.2deg); }
+    .gg-blog-tilt-r { transform: rotate(1deg); }
+    .gg-blog-card:hover { transform: rotate(0deg) translateY(-6px); }
+    .gg-blog-card:hover img { transform: scale(1.06); }
+    .gg-tape { position: absolute; top: -14px; left: 50%; width: 92px; height: 26px; z-index: 2;
+      transform: translateX(-50%) rotate(-3deg); background: rgba(228, 218, 58, .55);
+      box-shadow: 0 1px 2px rgba(0,0,0,.12); }
+    @media (max-width: 767px) { .gg-blog-tilt-l, .gg-blog-tilt-r { transform: none; } }
+
   </style>
 </head>
 <body class="paper-texture text-gogo-charcoal antialiased">
@@ -207,10 +219,11 @@
           <a href="#experience" class="hover:text-white transition-colors">Plan your visit</a>
           <a href="#gallery" class="hover:text-white transition-colors">Gallery</a>
           <a href="#fieldguide" class="hover:text-white transition-colors">Field notes</a>
+          <a href="blogs/" class="hover:text-white transition-colors">Blogs</a>
         </div>
 
         <!-- Reserve CTA Button -->
-        <a href="rental/" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gogo-btnGreen hover:bg-gogo-btnGreenHover text-gogo-btnCream text-xs font-bold uppercase tracking-wider shadow-lg border border-white/10 hover:scale-105 active:scale-95 transition-all">
+        <a href="book/" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gogo-btnGreen hover:bg-gogo-btnGreenHover text-gogo-btnCream text-xs font-bold uppercase tracking-wider shadow-lg border border-white/10 hover:scale-105 active:scale-95 transition-all">
           <span>RESERVE YOUR CAMP</span>
           <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
         </a>
@@ -390,10 +403,10 @@
           <p>GOGO&rsquo;s story with astronomy started almost by accident.<br />The Vainu Bappu Observatory sits just around 2 km from the campsite. The hills&rsquo; distance from city lights make the night sky one of the biggest reasons to stay after dark.</p>
           <p class="mt-[22px]">So when the sun goes down, don&rsquo;t automatically go to bed.<br />Find a spot &amp; look up.</p>
         </div>
-        <button type="button" onclick="openAstroModal()" class="inline-flex items-center gap-5 h-[54px] px-6 mt-7 rounded-full bg-[#CFBE9C] hover:bg-[#c2b08b] text-[#151815] text-[14px] font-bold uppercase tracking-wide transition cursor-pointer">
+        <a id="astroEventLink" href="events/" class="inline-flex items-center gap-5 h-[54px] px-6 mt-7 rounded-full bg-[#CFBE9C] hover:bg-[#c2b08b] text-[#151815] text-[14px] font-bold uppercase tracking-wide transition cursor-pointer">
           <span>Discover astro-camping</span>
           <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
-        </button>
+        </a>
       </div>
     </div>
   </section>
@@ -459,7 +472,7 @@
             </span>
             <i data-lucide="chevron-down" class="w-4 h-4 text-[#2a2e29]"></i>
           </label>
-          <a href="rental/" class="rounded-[10px] bg-[#1B3D2A] hover:bg-[#214a33] text-[#F8F4EA] flex flex-col items-center justify-center gap-1 min-h-[82px] transition cursor-pointer">
+          <a href="book/" class="rounded-[10px] bg-[#1B3D2A] hover:bg-[#214a33] text-[#F8F4EA] flex flex-col items-center justify-center gap-1 min-h-[82px] transition cursor-pointer">
             <span class="flex items-center gap-2 text-[15px] font-bold"><i data-lucide="search" class="w-4 h-4"></i>Check availability</span>
             <span class="text-[10px] text-white/70">Instant confirmation</span>
           </a>
@@ -500,6 +513,66 @@
         <p>And GOGO is still here, doing much the same thing: getting people a little closer to nature.</p>
       </div>
       <p class="font-caveat text-[25px] text-[#7F7B1D] mt-12">some good things start as a weekend plan.</p>
+    </div>
+  </section>
+
+  <!-- ================= BLOGS: stories from the hills (GIF background, content on the right) ================= -->
+  <section id="blogs" class="gg-blogs relative scroll-mt-12" style="background:linear-gradient(rgba(58,80,40,.6),rgba(58,80,40,.6)), url('./assests/figma/paper-green.jpg') center top / cover, #5F7A40;">
+    <!-- torn cream edge coming down from the section above -->
+    <div class="gg-torn-bottom" style="--torn-color:#F0EADD; top:-12px; bottom:auto;"></div>
+
+    <div class="relative max-w-[1042px] mx-auto px-6 lg:px-0 pt-[96px] pb-[104px] text-[#F8F4EA]">
+      <!-- heading row, same style as "It's not just a campsite" -->
+      <div class="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-6 lg:gap-8">
+        <div>
+          <p class="flex items-center gap-2.5 text-[11px] font-bold uppercase text-[#E8E3D6]">
+            <span class="w-[7px] h-[7px] rounded-full bg-[#E4DA3A]"></span>From the GOGO journal
+          </p>
+          <h2 class="font-serif text-[34px] sm:text-[40px] leading-[46px] tracking-[-0.015em] mt-3">Stories from the hills.</h2>
+          <p class="text-[14px] leading-[22px] text-white/95 mt-5 max-w-[560px]">Places worth the drive, trails worth the walk and a few things we have learnt about Jawadhu since 2012. Read up before you ride up.</p>
+          <a href="blogs/" class="inline-flex items-center gap-5 h-[54px] px-6 mt-7 rounded-full bg-[#1E3B2B] hover:bg-[#173022] text-[#F8F4EA] text-[14px] font-bold uppercase tracking-wide transition">
+            <span>Read all blogs</span>
+            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+          </a>
+        </div>
+        <div class="font-caveat text-[25px] leading-[31px] text-[#E4DA3A] lg:pt-10 lg:pr-6">
+          <p>trails &rarr; walk them</p>
+          <p>stories &rarr; read them</p>
+        </div>
+      </div>
+
+      <!-- torn-paper story cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 mt-14">
+        <a href="blogs/#jawadhu-hills" class="gg-blog-card gg-blog-tilt-l gg-torn-card group block" style="--card-bg:#F4EFE2">
+          <div class="relative z-10 p-4 sm:p-5 text-[#121512]">
+            <div class="relative">
+              <span class="gg-tape" aria-hidden="true"></span>
+              <div class="h-[180px] overflow-hidden rounded-[4px]">
+                <img src="./assests/figma/hero-bg.jpg" alt="Forested ridges of the Jawadhu Hills" class="w-full h-full object-cover transition duration-700">
+              </div>
+            </div>
+            <p class="font-caveat text-[21px] text-[#7F7B1D] mt-4 leading-none">destination</p>
+            <h3 class="font-serif text-[26px] leading-tight mt-1">Jawadhu Hills</h3>
+            <p class="text-[14px] leading-[22px] text-[#3f443d] mt-1.5 line-clamp-2">A quiet stretch of the Eastern Ghats – forest roads, cool air, small villages and some of the darkest skies near Chennai and Bangalore, with the Kavalur observatory on the ridge.</p>
+            <span class="inline-flex items-center gap-1.5 text-[13px] font-bold uppercase tracking-wide text-[#1E3B2B] mt-3 group-hover:gap-2.5 transition-all">Read the story <i data-lucide="arrow-up-right" class="w-4 h-4"></i></span>
+          </div>
+        </a>
+
+        <a href="blogs/#kullar-kugai" class="gg-blog-card gg-blog-tilt-r gg-torn-card group block" style="--card-bg:#F4EFE2">
+          <div class="relative z-10 p-4 sm:p-5 text-[#121512]">
+            <div class="relative">
+              <span class="gg-tape" aria-hidden="true"></span>
+              <div class="h-[180px] overflow-hidden rounded-[4px]">
+                <img src="./assests/figma/gal-field.jpg" alt="Trail through the Jawadhu Hills" class="w-full h-full object-cover transition duration-700">
+              </div>
+            </div>
+            <p class="font-caveat text-[21px] text-[#7F7B1D] mt-4 leading-none">trek</p>
+            <h3 class="font-serif text-[26px] leading-tight mt-1">Kullar Kugai</h3>
+            <p class="text-[14px] leading-[22px] text-[#3f443d] mt-1.5 line-clamp-2">A rock cave tucked into the Jawadhu forest – a short trek through the trees to one of the hills' quiet hidden corners. Go with a local guide and leave it as you found it.</p>
+            <span class="inline-flex items-center gap-1.5 text-[13px] font-bold uppercase tracking-wide text-[#1E3B2B] mt-3 group-hover:gap-2.5 transition-all">Read the story <i data-lucide="arrow-up-right" class="w-4 h-4"></i></span>
+          </div>
+        </a>
+      </div>
     </div>
   </section>
 
@@ -569,17 +642,47 @@
         <p class="flex items-center gap-2.5 text-[11px] font-bold uppercase text-[#1d211c]">
           <span class="w-[7px] h-[7px] rounded-full bg-[#C25B3A]"></span>Words carried home
         </p>
-        <blockquote class="font-serif text-[32px] sm:text-[40px] leading-[46px] tracking-[-0.015em] text-[#121512] mt-8">
-          &ldquo;Nothing competed for our attention. By the second evening, we could tell which sound meant wind and which meant rain.&rdquo;
-        </blockquote>
-        <div class="flex items-center gap-[18px] mt-6">
-          <img src="./assests/figma/avatar-ananya.jpg" alt="Ananya R." class="w-14 h-14 rounded-full object-cover" />
-          <div>
-            <p class="text-[14px] font-bold text-[#151815]">Ananya R. &middot; Bengaluru</p>
-            <p class="text-[12px] text-[#6b6d64] mt-0.5">GOGO KT, three nights &middot; February 2026</p>
+        <!-- testimonial slider (auto-rotates; arrows + dots) -->
+        <div id="ggTesti" class="relative mt-8" aria-roledescription="carousel">
+          <div class="flex items-center gap-1 text-[#C25B3A]" aria-label="Rated 5 out of 5">
+            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+            <span class="ml-2 text-[11px] font-bold uppercase text-[#6b6d64]">4.9 · 300+ campers</span>
+          </div>
+          <div class="relative min-h-[300px] sm:min-h-[250px] mt-4">
+            <figure class="gg-testi absolute inset-0 transition-opacity duration-700 opacity-100">
+              <blockquote class="font-serif text-[28px] sm:text-[36px] leading-[1.2] tracking-[-0.015em] text-[#121512]">&ldquo;Nothing competed for our attention. By the second evening, we could tell which sound meant wind and which meant rain.&rdquo;</blockquote>
+              <figcaption class="flex items-center gap-[18px] mt-6">
+                <img src="./assests/figma/avatar-ananya.jpg" alt="" class="w-14 h-14 rounded-full object-cover" />
+                <span><span class="block text-[14px] font-bold text-[#151815]">Ananya R. &middot; Bengaluru</span><span class="block text-[12px] text-[#6b6d64] mt-0.5">Three nights &middot; February 2026</span></span>
+              </figcaption>
+            </figure>
+            <figure class="gg-testi absolute inset-0 transition-opacity duration-700 opacity-0 pointer-events-none">
+              <blockquote class="font-serif text-[28px] sm:text-[36px] leading-[1.2] tracking-[-0.015em] text-[#121512]">&ldquo;Saturn through the telescope, at 11 pm, in the middle of a forest. My kids haven't stopped talking about the rings.&rdquo;</blockquote>
+              <figcaption class="flex items-center gap-[18px] mt-6">
+                <span class="w-14 h-14 rounded-full bg-[#1E3B2B] text-[#F8F4EA] font-serif text-[22px] flex items-center justify-center">K</span>
+                <span><span class="block text-[14px] font-bold text-[#151815]">Karthik &amp; family &middot; Chennai</span><span class="block text-[12px] text-[#6b6d64] mt-0.5">Astro night &middot; December 2025</span></span>
+              </figcaption>
+            </figure>
+            <figure class="gg-testi absolute inset-0 transition-opacity duration-700 opacity-0 pointer-events-none">
+              <blockquote class="font-serif text-[28px] sm:text-[36px] leading-[1.2] tracking-[-0.015em] text-[#121512]">&ldquo;Twenty-two bikes, one campfire and a ghat road at sunrise. Easily the best ride our club has done this year.&rdquo;</blockquote>
+              <figcaption class="flex items-center gap-[18px] mt-6">
+                <span class="w-14 h-14 rounded-full bg-[#C25B3A] text-[#F8F4EA] font-serif text-[22px] flex items-center justify-center">R</span>
+                <span><span class="block text-[14px] font-bold text-[#151815]">Rahul &middot; Bengaluru Riders</span><span class="block text-[12px] text-[#6b6d64] mt-0.5">Bikers' weekend &middot; January 2026</span></span>
+              </figcaption>
+            </figure>
+            <figure class="gg-testi absolute inset-0 transition-opacity duration-700 opacity-0 pointer-events-none">
+              <blockquote class="font-serif text-[28px] sm:text-[36px] leading-[1.2] tracking-[-0.015em] text-[#121512]">&ldquo;We came for a quiet weekend and got exactly that – clean tents, warm food and people who actually care about the hills.&rdquo;</blockquote>
+              <figcaption class="flex items-center gap-[18px] mt-6">
+                <span class="w-14 h-14 rounded-full bg-[#7F7B1D] text-[#F8F4EA] font-serif text-[22px] flex items-center justify-center">S</span>
+                <span><span class="block text-[14px] font-bold text-[#151815]">Sneha &amp; Arun &middot; Vellore</span><span class="block text-[12px] text-[#6b6d64] mt-0.5">Two nights &middot; March 2026</span></span>
+              </figcaption>
+            </figure>
+          </div>
+          <div class="flex items-center gap-4 mt-6">
+            <div id="ggTestiDots" class="flex items-center gap-2"></div>
           </div>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-[66px]">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-[48px]">
           <div class="border-t border-[#a9a18e] pt-6">
             <p class="text-[14px] leading-[22px] text-[#2a2d27]">&ldquo;The Kavalur trail felt companioned, never packaged. Mani knew when to explain and when to let the hill be.&rdquo;</p>
             <p class="text-[9.5px] font-bold uppercase text-[#C25B3A] mt-2.5">Meera &amp; Dev &middot; Chennai</p>
@@ -921,6 +1024,42 @@
     window.addEventListener('resize', placeGlassSplit);
     window.addEventListener('gg-zoom-change', placeGlassSplit);
     placeGlassSplit();
+  </script>
+  <script src="rental/pricing.js?v=1"></script>
+  <script src="events/events-data.js?v=2"></script>
+  <script>
+    // "Discover astro-camping" link to the Astro event
+    (function () {
+      var E = window.GogoEvents; if (!E) return;
+      var gst = window.GogoPricing ? window.GogoPricing.get().gstPct : 18;
+      var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+      // "Discover astro-camping" opens the Astro event inside Events (falls back to the events list)
+      function linkAstro() {
+        var a = document.getElementById("astroEventLink"); if (!a) return;
+        var ev = E.published().find(function (x) { return x.category === "Astro"; });
+        a.href = ev ? E.link(ev, "") : "events/";
+      }
+      E.onChange(linkAstro);
+      linkAstro();
+    })();
+  </script>
+  <script>
+    // Testimonial slider: auto-rotates every 6s, pauses on hover
+    (function () {
+      var wrap = document.getElementById('ggTesti'); if (!wrap) return;
+      var slides = wrap.querySelectorAll('.gg-testi'), dots = document.getElementById('ggTestiDots'), i = 0, timer;
+      dots.innerHTML = Array.prototype.map.call(slides, function (_, k) { return '<button type="button" class="h-2 rounded-full transition-all" aria-label="Review ' + (k + 1) + '" data-k="' + k + '"></button>'; }).join('');
+      function show(k) {
+        i = (k + slides.length) % slides.length;
+        slides.forEach(function (s, n) { s.classList.toggle('opacity-100', n === i); s.classList.toggle('opacity-0', n !== i); s.classList.toggle('pointer-events-none', n !== i); });
+        dots.querySelectorAll('button').forEach(function (d, n) { d.className = 'h-2 rounded-full transition-all ' + (n === i ? 'w-6 bg-[#C25B3A]' : 'w-2 bg-[#a9a18e]'); });
+      }
+      function play() { clearInterval(timer); timer = setInterval(function () { show(i + 1); }, 6000); }
+      dots.addEventListener('click', function (e) { var d = e.target.closest('[data-k]'); if (d) { show(+d.dataset.k); play(); } });
+      wrap.addEventListener('mouseenter', function () { clearInterval(timer); });
+      wrap.addEventListener('mouseleave', play);
+      show(0); play();
+    })();
   </script>
   <script src="scroll-lock.js"></script>
 </body>

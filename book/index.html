@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../tablet-zoom.js?v=3"></script>
+  <title>Book - GOGOCamping | Regular Camping or Events</title>
+  <meta name="description" content="Choose a regular camping stay on any open date, or join one of our special events.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..800&family=Fraunces:opsz,wght@9..144,500..800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>body { font-family: 'DM Sans', sans-serif; } .font-serif { font-family: 'Fraunces', Georgia, serif; }</style>
+</head>
+<body class="bg-[#F0EADD] text-[#1d211c] min-h-screen flex flex-col">
+  <header class="bg-[#1B3D2A] text-[#F8F4EA]">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <a href="../" class="text-2xl font-black tracking-tight">GOGO<span class="font-medium">Camping</span></a>
+      <a href="../" class="text-sm font-semibold flex items-center gap-1 hover:text-white/80"><i data-lucide="arrow-left" class="w-4 h-4"></i> Home</a>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-10 sm:py-14">
+    <p class="text-center font-semibold text-[#A8462D] text-sm uppercase tracking-wider">Start your booking</p>
+    <h1 class="font-serif text-4xl sm:text-5xl font-bold text-center mt-1">How would you like to camp?</h1>
+    <p class="text-center text-[#55594f] mt-2">Two ways to book – pick one to continue.</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
+      <!-- Regular Camping -->
+      <a href="../rental/" class="group bg-white rounded-3xl overflow-hidden border border-black/5 shadow-sm hover:shadow-xl transition flex flex-col">
+        <div class="relative h-56 overflow-hidden">
+          <img src="../assests/figma/gal-tent-sunset.jpg" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Tents at sunset">
+          <span class="absolute top-3 left-3 text-[11px] font-bold uppercase tracking-wider bg-white/90 text-[#1B3D2A] px-2.5 py-1 rounded-full">Any open date</span>
+        </div>
+        <div class="p-6 flex-1 flex flex-col">
+          <h2 class="font-serif text-3xl font-bold flex items-center gap-2"><i data-lucide="tent" class="w-7 h-7 text-[#1B3D2A]"></i> Regular Camping</h2>
+          <p class="text-[#55594f] mt-2 flex-1">Standard camping stay – choose your group size, date and Veg / Non-Veg food. Meals included.</p>
+          <ul class="mt-4 space-y-1.5 text-sm text-[#3f443d]">
+            <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-[#1B3D2A] mt-0.5"></i>From <b id="campRate">₹2,499</b> / person + GST</li>
+            <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-[#1B3D2A] mt-0.5"></i>Group discounts for 26+ people</li>
+          </ul>
+          <span class="mt-5 w-full bg-[#1B3D2A] group-hover:bg-[#214a33] text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2">Book a camping stay <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
+        </div>
+      </a>
+
+      <!-- Events -->
+      <a href="../events/" class="group bg-[#121815] text-[#F8F4EA] rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition flex flex-col">
+        <div class="relative h-56 overflow-hidden">
+          <img id="eventsImg" src="../assests/figma/gal-telescope.jpg" class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition duration-500" alt="Event">
+          <span id="eventsCount" class="absolute top-3 left-3 text-[11px] font-bold uppercase tracking-wider bg-amber-400 text-[#121815] px-2.5 py-1 rounded-full">Fixed dates</span>
+        </div>
+        <div class="p-6 flex-1 flex flex-col">
+          <h2 class="font-serif text-3xl font-bold flex items-center gap-2"><i data-lucide="sparkles" class="w-7 h-7 text-amber-300"></i> Events</h2>
+          <p class="text-white/75 mt-2 flex-1">Astronomy nights, biker weekends, campfire, dance &amp; more. Online booking for events is coming soon.</p>
+          <div id="nextEvent" class="mt-4 text-sm"></div>
+          <span class="mt-5 w-full bg-amber-400 group-hover:bg-amber-300 text-[#121815] font-bold py-3 rounded-xl flex items-center justify-center gap-2">View events <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
+        </div>
+      </a>
+    </div>
+  </main>
+
+  <script src="../rental/pricing.js?v=1"></script>
+  <script src="../events/events-data.js?v=2"></script>
+  <script>
+    (function () {
+      if (window.GogoPricing) document.getElementById("campRate").textContent = "₹" + window.GogoPricing.get().tiers[0].rate.toLocaleString("en-IN");
+      var list = window.GogoEvents ? window.GogoEvents.published() : [];
+      document.getElementById("eventsCount").textContent = list.length ? list.length + " upcoming event" + (list.length > 1 ? "s" : "") : "Fixed dates";
+      if (list.length) {
+        var ev = list[0];
+        document.getElementById("eventsImg").src = window.GogoEvents.img(ev, "../");
+        var box = document.getElementById("nextEvent");
+        box.innerHTML = '<span class="block text-[11px] uppercase tracking-wider text-amber-300 font-bold">Next up</span><span class="block font-bold"></span><span class="block text-white/70"></span>';
+        box.children[1].textContent = ev.name;
+        box.children[2].textContent = window.GogoEvents.dateRange(ev);
+      }
+      window.lucide && lucide.createIcons();
+    })();
+  </script>
+</body>
+</html>
