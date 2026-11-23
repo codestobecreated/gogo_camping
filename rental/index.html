@@ -462,6 +462,25 @@
 
           </div>
         </section>
+
+        <!-- Promo banner (desktop: fills the space under categories) -->
+        <a href="../events/event.html?e=astro-night-geminids" id="astroBanner" class="hidden lg:block mt-2 relative rounded-2xl overflow-hidden group min-h-[200px] shadow-xs">
+          <img src="../assests/figma/sky.jpg" alt="Milky Way over the Jawadhu Hills" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700">
+          <span class="absolute inset-0 bg-gradient-to-r from-[#0b1a14]/90 via-[#0b1a14]/60 to-transparent"></span>
+          <span class="relative flex flex-col justify-between h-full min-h-[200px] p-5 text-white">
+            <span>
+              <span class="inline-flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-wider bg-amber-400 text-[#0b1a14] px-2.5 py-1 rounded-full"><i data-lucide="telescope" class="w-3.5 h-3.5"></i> Astro camping</span>
+              <span class="block text-[22px] font-extrabold leading-tight mt-2.5 max-w-[460px]">Some of the darkest skies near Chennai &amp; Bangalore</span>
+              <span class="block text-[13px] text-white/80 mt-1.5 max-w-[460px]">Every stay comes with a night under the stars – telescope, campfire and a guide who knows the constellations.</span>
+            </span>
+            <span class="flex flex-wrap items-center gap-2 mt-4">
+              <span class="text-[11px] font-bold bg-white/15 border border-white/25 px-2.5 py-1 rounded-full">🔭 Telescope session</span>
+              <span class="text-[11px] font-bold bg-white/15 border border-white/25 px-2.5 py-1 rounded-full">🔥 Campfire</span>
+              <span class="text-[11px] font-bold bg-white/15 border border-white/25 px-2.5 py-1 rounded-full">🍽 Meals included</span>
+              <span class="ml-auto inline-flex items-center gap-1.5 text-sm font-bold bg-white text-[#164e3f] px-4 py-2 rounded-xl group-hover:gap-2.5 transition-all">Explore astro night <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
+            </span>
+          </span>
+        </a>
       </div>
 
       <!-- ================= RIGHT COLUMN: PRODUCT INFO & ADD-ONS ================= -->
@@ -2224,6 +2243,25 @@
   <script src="pricing.js?v=1"></script>
   <script src="calendar.js?v=2"></script>
   <script src="../events/events-data.js?v=3"></script>
+  <script>
+    // Desktop: stretch the astro banner so the left column ends exactly where the right column ends
+    (function () {
+      var ban = document.getElementById('astroBanner');
+      if (!ban) return;
+      var left = ban.parentElement, right = left.nextElementSibling;
+      while (right && right.nodeType !== 1) right = right.nextElementSibling;
+      function fit() {
+        ban.style.height = '';
+        if (!right || getComputedStyle(ban).display === 'none') return;
+        var diff = right.getBoundingClientRect().bottom - left.getBoundingClientRect().bottom;
+        if (diff > 0) ban.style.height = (ban.getBoundingClientRect().height + diff) + 'px';
+      }
+      window.addEventListener('load', fit);
+      window.addEventListener('resize', fit);
+      if (window.ResizeObserver && right) new ResizeObserver(fit).observe(right);
+      fit();
+    })();
+  </script>
   <script src="app.js?v=28"></script>
   <script src="../scroll-lock.js"></script>
 </body>

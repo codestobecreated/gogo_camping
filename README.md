@@ -56,6 +56,10 @@ An interactive camping equipment & tent booking webpage created for **GOGOCampin
   - The GOGOCamping logo returns to the home page
 - `rental/cms/` – CMS admin dashboard
 
+## 🆕 What's new in v2.1.7
+
+- `/rental/` – astro-camping banner fills the empty space under "Explore Outdoor Categories" on desktop (links to the Astro event, auto-matches the right column height)
+
 ## 🆕 What's new in v2.1.6
 
 - `/gallery/` – new Gallery page: 29 GOGO photos, category filters and a full-screen viewer; home "See the full gallery" button
