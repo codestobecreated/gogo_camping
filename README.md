@@ -56,6 +56,13 @@ An interactive camping equipment & tent booking webpage created for **GOGOCampin
   - The GOGOCamping logo returns to the home page
 - `rental/cms/` – CMS admin dashboard
 
+## 🆕 What's new in v2.1.6
+
+- `/gallery/` – new Gallery page: 29 GOGO photos, category filters and a full-screen viewer; home "See the full gallery" button
+- `/blogs/jawadhu-hills.html` and `/blogs/kullar-kugai.html` – single blog pages (home cards and a new "Places worth the drive" section link to them); Jawadhu page features the New Indian Express article
+- Navbar on blog pages now has Field notes + Blogs; Gallery links open the new page
+- Home: "Upcoming at GOGO" events banner and testimonial arrows removed
+
 ## 🆕 What's new in v2.1.5
 
 **Booking (`/rental/`)**

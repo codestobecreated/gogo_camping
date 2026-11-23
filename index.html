@@ -189,7 +189,7 @@
     .gg-season span { display: block; font-size: 12px; color: #B8BCB2; margin-top: 8px; }
     @media (max-width: 767px) { .gg-season { padding: 10px 16px; } }
     /* ===== Blogs section ===== */
-    .gg-blogs { position: relative; overflow: hidden; }
+    .gg-blogs { position: relative; overflow-x: clip; overflow-y: visible; }
     .gg-blog-card { transition: transform .35s ease; }
     .gg-blog-tilt-l { transform: rotate(-1.2deg); }
     .gg-blog-tilt-r { transform: rotate(1deg); }
@@ -217,7 +217,7 @@
         <div class="hidden md:flex items-center gap-8 text-xs sm:text-sm font-medium text-stone-200">
           <a href="#about" class="hover:text-white transition-colors">Home</a>
           <a href="#experience" class="hover:text-white transition-colors">Plan your visit</a>
-          <a href="#gallery" class="hover:text-white transition-colors">Gallery</a>
+          <a href="gallery/" class="hover:text-white transition-colors">Gallery</a>
           <a href="#fieldguide" class="hover:text-white transition-colors">Field notes</a>
           <a href="blogs/" class="hover:text-white transition-colors">Blogs</a>
         </div>
@@ -501,6 +501,9 @@
         <img src="./assests/figma/gal-bikers.jpg" alt="Bikers riding to Jawadhu" style="left:1322px;top:310px;width:212px;height:153px" />
       </div>
     </div>
+    <div class="text-center pt-6">
+      <a href="gallery/" class="inline-flex items-center gap-4 h-[50px] px-6 rounded-full bg-[#1E3B2B] hover:bg-[#173022] text-[#F8F4EA] text-[13px] font-bold uppercase tracking-wide transition">See the full gallery <i data-lucide="arrow-up-right" class="w-4 h-4"></i></a>
+    </div>
   </section>
 
   <!-- ================= 8. IT STARTED WITH A NEED TO GET AWAY ================= -->
@@ -517,11 +520,11 @@
   </section>
 
   <!-- ================= BLOGS: stories from the hills (GIF background, content on the right) ================= -->
-  <section id="blogs" class="gg-blogs relative scroll-mt-12" style="background:linear-gradient(rgba(58,80,40,.6),rgba(58,80,40,.6)), url('./assests/figma/paper-green.jpg') center top / cover, #5F7A40;">
+  <section id="blogs" class="gg-blogs relative z-[3] scroll-mt-12" style="background:linear-gradient(rgba(58,80,40,.6),rgba(58,80,40,.6)), url('./assests/figma/paper-green.jpg') center top / cover, #5F7A40;">
     <!-- torn cream edge coming down from the section above -->
-    <div class="gg-torn-bottom" style="--torn-color:#F0EADD; top:-12px; bottom:auto;"></div>
+    <div class="gg-torn-bottom" style="--torn-color:#F0EADD; top:-12px; bottom:auto; z-index:0;"></div>
 
-    <div class="relative max-w-[1042px] mx-auto px-6 lg:px-0 pt-[96px] pb-[104px] text-[#F8F4EA]">
+    <div class="relative z-[2] max-w-[1042px] mx-auto px-6 lg:px-0 pt-[96px] pb-[104px] text-[#F8F4EA]">
       <!-- heading row, same style as "It's not just a campsite" -->
       <div class="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-6 lg:gap-8">
         <div>
@@ -543,7 +546,7 @@
 
       <!-- torn-paper story cards -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 mt-14">
-        <a href="blogs/#jawadhu-hills" class="gg-blog-card gg-blog-tilt-l gg-torn-card group block" style="--card-bg:#F4EFE2">
+        <a href="blogs/jawadhu-hills.html" class="gg-blog-card gg-blog-tilt-l gg-torn-card group block" style="--card-bg:#F4EFE2">
           <div class="relative z-10 p-4 sm:p-5 text-[#121512]">
             <div class="relative">
               <span class="gg-tape" aria-hidden="true"></span>
@@ -558,7 +561,7 @@
           </div>
         </a>
 
-        <a href="blogs/#kullar-kugai" class="gg-blog-card gg-blog-tilt-r gg-torn-card group block" style="--card-bg:#F4EFE2">
+        <a href="blogs/kullar-kugai.html" class="gg-blog-card gg-blog-tilt-r gg-torn-card group block" style="--card-bg:#F4EFE2">
           <div class="relative z-10 p-4 sm:p-5 text-[#121512]">
             <div class="relative">
               <span class="gg-tape" aria-hidden="true"></span>

@@ -30,7 +30,7 @@
     .fn-note.is-hidden { display: none; }
     .fn-card-img { overflow: hidden; }
     .fn-card-img img { transition: transform .6s ease; }
-    .fn-note:hover .fn-card-img img { transform: scale(1.04); }
+    .fn-note:hover .fn-card-img img, .fn-place:hover .fn-card-img img { transform: scale(1.04); }
     .fn-check { width: 20px; height: 20px; border: 1.5px solid #5d6359; border-radius: 3px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; background: #fff8; }
     .fn-check.is-on { background: #7a7f73; border-color: #6a6f63; color: #fff; }
   </style>
@@ -44,8 +44,9 @@
     <nav class="hidden md:flex items-center gap-8 text-[15px] font-medium text-[#1d2a1f]">
       <a href="../#about" class="hover:text-[var(--fn-ink)]">Home</a>
       <a href="../#experience" class="hover:text-[var(--fn-ink)]">Plan your visit</a>
-      <a href="../#gallery" class="hover:text-[var(--fn-ink)]">Gallery</a>
-      <a href="./" class="text-[var(--fn-ink)]" aria-current="page">Field notes</a>
+      <a href="../gallery/" class="hover:text-[var(--fn-ink)]">Gallery</a>
+      <a href="../#fieldguide" class="hover:text-[var(--fn-ink)]">Field notes</a>
+      <a href="./" class="text-[var(--fn-ink)] font-semibold underline underline-offset-[6px] decoration-2" aria-current="page">Blogs</a>
     </nav>
     <a href="../book/" class="inline-flex items-center gap-4 h-[54px] px-6 rounded-full bg-[var(--fn-forest)] hover:bg-[#1c3024] text-white text-[13px] sm:text-[14px] font-bold uppercase tracking-wide shrink-0">
       <span>Reserve your camp</span><i data-lucide="arrow-up-right" class="w-4 h-4"></i>
@@ -107,6 +108,36 @@
             <span class="fn-hand text-[25px] text-[var(--fn-rust)] -rotate-2">best read slowly</span>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- ================= PLACES WORTH THE DRIVE (single blog pages) ================= -->
+    <section id="places" class="max-w-[1076px] mx-auto px-6 pb-20 scroll-mt-6">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 pb-6 border-b border-[#cfc9ba]">
+        <h2 class="fn-display text-[30px] sm:text-[34px] leading-none">Places worth the drive</h2>
+        <p class="fn-hand text-[24px] text-[var(--fn-rust)]">read before you ride up.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-9">
+          <a href="jawadhu-hills.html" class="fn-place group block bg-[#FBF8F0] p-4 shadow-[0_10px_24px_-14px_rgba(0,0,0,.35)]">
+            <div class="fn-card-img"><img src="../assests/figma/hero-bg.jpg" alt="Forested ridges of the Jawadhu Hills" class="w-full h-[240px] object-cover"></div>
+            <p class="fn-label text-[#3b4a3c] mt-5">Destination · Jawadhu</p>
+            <h3 class="fn-display text-[27px] leading-tight mt-2">Jawadhu Hills, a treat for the eyes.</h3>
+            <p class="text-[14.5px] leading-[22px] text-[var(--fn-body)] mt-2">Forest roads, dark skies – and after the monsoon, around 87 types of butterflies on their way across the Eastern Ghats.</p>
+            <div class="flex items-center justify-between mt-4">
+              <span class="fn-link">Read the story <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></span>
+              <span class="fn-mono text-[11px] uppercase text-[#6c7268]">6 min read</span>
+            </div>
+          </a>
+          <a href="kullar-kugai.html" class="fn-place group block bg-[#FBF8F0] p-4 shadow-[0_10px_24px_-14px_rgba(0,0,0,.35)]">
+            <div class="fn-card-img"><img src="../assests/fieldnotes/forest-path.jpg" alt="A red-earth forest trail in the Jawadhu Hills" class="w-full h-[240px] object-cover"></div>
+            <p class="fn-label text-[#3b4a3c] mt-5">Trek · Jawadhu</p>
+            <h3 class="fn-display text-[27px] leading-tight mt-2">Kullar Kugai: the little caves on the hill.</h3>
+            <p class="text-[14.5px] leading-[22px] text-[var(--fn-body)] mt-2">A long trek near Polur to a lonely hilltop, a handful of two-foot-high caves and an old story about who lived there.</p>
+            <div class="flex items-center justify-between mt-4">
+              <span class="fn-link">Read the story <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></span>
+              <span class="fn-mono text-[11px] uppercase text-[#6c7268]">5 min read</span>
+            </div>
+          </a>
       </div>
     </section>
 

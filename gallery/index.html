@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../tablet-zoom.js?v=3"></script>
+  <title>Gallery – GOGOCamping | Photos from the Jawadhu Hills</title>
+  <meta name="description" content="Photos from GOGOCamping in the Jawadhu Hills – night skies, camp life, lakes, hills and the neighbours with wings.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chelsea+Market&family=IBM+Plex+Mono:wght@400;500&family=Caveat:wght@400;500;600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root { --fn-ink: #23402F; --fn-cream: #EDE6D6; --fn-paper: #F6F2E8; --fn-sage: #A8B691; --fn-forest: #253D2F; --fn-rust: #8A5242; --fn-body: #4f554c; }
+    body { font-family: 'DM Sans', sans-serif; color: var(--fn-ink); background: var(--fn-cream); }
+    .fn-display { font-family: 'Chelsea Market', 'DM Sans', sans-serif; font-weight: 400; }
+    .fn-mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; letter-spacing: .02em; }
+    .fn-hand { font-family: 'Caveat', cursive; }
+    .fn-label { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
+    .fn-link { display: inline-flex; align-items: center; gap: 4px; font-weight: 600; font-size: 14px; color: var(--fn-ink); }
+    .fn-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+    .fn-tag { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; background: #FBF8F0; padding: 6px 10px; box-shadow: 0 2px 6px rgba(0,0,0,.12); color: #2a2f28; }
+    .fn-polaroid { background: #FBF8F0; padding: 10px 10px 34px; box-shadow: 0 10px 24px -8px rgba(0,0,0,.35); }
+    .fn-tape { position: absolute; height: 22px; background: rgba(214, 205, 182, .75); box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+    .fn-chip { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: .04em; padding: 8px 14px; border-radius: 999px; background: #EFE9DA; color: #2f3a2f; transition: background .2s, color .2s; }
+    .fn-chip:hover { background: #E4DCC7; }
+    .fn-chip.is-on { background: var(--fn-ink); color: #F6F2E8; padding: 10px 16px; }
+    .fn-note { transition: opacity .25s; }
+    .fn-note.is-hidden { display: none; }
+    .fn-card-img { overflow: hidden; }
+    .fn-card-img img { transition: transform .6s ease; }
+    .fn-note:hover .fn-card-img img, .fn-place:hover .fn-card-img img { transform: scale(1.04); }
+    .fn-check { width: 20px; height: 20px; border: 1.5px solid #5d6359; border-radius: 3px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; background: #fff8; }
+    .fn-check.is-on { background: #7a7f73; border-color: #6a6f63; color: #fff; }
+    .gl-grid { columns: 1; column-gap: 18px; }
+    @media (min-width: 640px) { .gl-grid { columns: 2; } }
+    @media (min-width: 1024px) { .gl-grid { columns: 3; } }
+    .gl-item { break-inside: avoid; margin-bottom: 18px; display: block; width: 100%; position: relative; overflow: hidden; background: #ddd5c3; cursor: zoom-in; }
+    .gl-item img { width: 100%; height: auto; display: block; transition: transform .6s ease; }
+    .gl-item:hover img { transform: scale(1.04); }
+    .gl-item .gl-cap { position: absolute; inset: auto 0 0 0; padding: 28px 14px 12px; color: #fff; font-size: 13px; background: linear-gradient(transparent, rgba(0,0,0,.65)); opacity: 0; transition: opacity .3s; text-align: left; }
+    .gl-item:hover .gl-cap, .gl-item:focus-visible .gl-cap { opacity: 1; }
+    .gl-item.is-hidden { display: none; }
+    @media (hover: none) { .gl-item .gl-cap { opacity: 1; } }
+  </style>
+</head>
+<body class="antialiased">
+
+  <header class="max-w-[1440px] mx-auto px-6 lg:px-[72px] h-[124px] flex items-center justify-between gap-6">
+    <a href="../" class="shrink-0"><img src="../assests/fieldnotes/gogo-logo.png" alt="GOGOCamping" class="h-[31px] w-auto"></a>
+    <div class="flex items-center gap-8">
+    <nav class="hidden md:flex items-center gap-8 text-[15px] font-medium text-[#1d2a1f]">
+      <a href="../#about" class="hover:text-[var(--fn-ink)]">Home</a>
+      <a href="../#experience" class="hover:text-[var(--fn-ink)]">Plan your visit</a>
+      <a href="./" class="text-[var(--fn-ink)] font-semibold underline underline-offset-[6px] decoration-2" aria-current="page">Gallery</a>
+      <a href="../#fieldguide" class="hover:text-[var(--fn-ink)]">Field notes</a>
+      <a href="../blogs/" class="hover:text-[var(--fn-ink)]">Blogs</a>
+    </nav>
+    <a href="../book/" class="inline-flex items-center gap-4 h-[54px] px-6 rounded-full bg-[var(--fn-forest)] hover:bg-[#1c3024] text-white text-[13px] sm:text-[14px] font-bold uppercase tracking-wide shrink-0">
+      <span>Reserve your camp</span><i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+    </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="max-w-[1180px] mx-auto px-6 pt-10 lg:pt-[52px]">
+      <p class="fn-label text-[#3b4a3c]">The GOGO camera roll</p>
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mt-6">
+        <h1 class="fn-display text-[64px] sm:text-[96px] lg:text-[118px] leading-[.9] tracking-[.01em] text-[var(--fn-ink)]">GALLERY</h1>
+        <p class="fn-hand text-[26px] leading-[30px] text-[var(--fn-rust)] -rotate-3 md:mr-10">no filters.<br>just the hills.</p>
+      </div>
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mt-8 pb-5 border-b border-[#2b2f28]">
+        <p class="text-[15px] text-[#26302a]">Night skies, camp life, quiet water and the neighbours with wings – all from GOGO in the Jawadhu Hills.</p>
+        <p id="glCount" class="fn-mono text-[11px] uppercase text-[#6c7268]">29 photos</p>
+      </div>
+      <div id="glFilters" class="flex flex-wrap items-center gap-x-4 gap-y-3 py-5">
+            <button type="button" class="fn-chip is-on" data-cat="all">All photos</button>
+            <button type="button" class="fn-chip" data-cat="sky">Under the stars</button>
+            <button type="button" class="fn-chip" data-cat="camp">Camp life</button>
+            <button type="button" class="fn-chip" data-cat="water">On the water</button>
+            <button type="button" class="fn-chip" data-cat="hills">The hills</button>
+            <button type="button" class="fn-chip" data-cat="wild">Neighbours</button>
+      </div>
+    </section>
+
+    <section class="max-w-[1180px] mx-auto px-6 pb-20">
+      <div id="glGrid" class="gl-grid">
+        <button type="button" class="gl-item" data-cat="sky" data-i="0" aria-label="Open photo: Daytime telescope session with a big group"><img src="../assests/gallery/telescope-group-sm.jpg" width="480" height="640" alt="Daytime telescope session with a big group" loading="lazy"><span class="gl-cap">Daytime telescope session with a big group</span></button>
+        <button type="button" class="gl-item" data-cat="sky" data-i="1" aria-label="Open photo: Night sky over the hills"><img src="../assests/gallery/milky-way-sm.jpg" width="640" height="462" alt="Night sky over the hills" loading="lazy"><span class="gl-cap">Night sky over the hills</span></button>
+        <button type="button" class="gl-item" data-cat="sky" data-i="2" aria-label="Open photo: Vainu Bappu Observatory, Kavalur"><img src="../assests/gallery/observatory-dome-sm.jpg" width="640" height="640" alt="Vainu Bappu Observatory, Kavalur" loading="lazy"><span class="gl-cap">Vainu Bappu Observatory, Kavalur</span></button>
+        <button type="button" class="gl-item" data-cat="sky" data-i="3" aria-label="Open photo: The observatory at first light"><img src="../assests/gallery/observatory-sunrise-sm.jpg" width="640" height="394" alt="The observatory at first light" loading="lazy"><span class="gl-cap">The observatory at first light</span></button>
+        <button type="button" class="gl-item" data-cat="sky" data-i="4" aria-label="Open photo: Lining up for the telescope"><img src="../assests/gallery/telescope-night-sm.jpg" width="480" height="640" alt="Lining up for the telescope" loading="lazy"><span class="gl-cap">Lining up for the telescope</span></button>
+        <button type="button" class="gl-item" data-cat="camp" data-i="5" aria-label="Open photo: Tents pitched across the campsite"><img src="../assests/gallery/campsite-tents-sm.jpg" width="640" height="480" alt="Tents pitched across the campsite" loading="lazy"><span class="gl-cap">Tents pitched across the campsite</span></button>
+        <button type="button" class="gl-item" data-cat="camp" data-i="6" aria-label="Open photo: A tent at dusk"><img src="../assests/gallery/tent-dusk-sm.jpg" width="480" height="640" alt="A tent at dusk" loading="lazy"><span class="gl-cap">A tent at dusk</span></button>
+        <button type="button" class="gl-item" data-cat="camp" data-i="7" aria-label="Open photo: Sunset from camp"><img src="../assests/gallery/tent-sunset-sm.jpg" width="480" height="640" alt="Sunset from camp" loading="lazy"><span class="gl-cap">Sunset from camp</span></button>
+        <button type="button" class="gl-item" data-cat="camp" data-i="8" aria-label="Open photo: Campfire stories"><img src="../assests/gallery/campfire-sm.jpg" width="512" height="640" alt="Campfire stories" loading="lazy"><span class="gl-cap">Campfire stories</span></button>
+        <button type="button" class="gl-item" data-cat="camp" data-i="9" aria-label="Open photo: Dinner under the trees"><img src="../assests/gallery/dinner-table-sm.jpg" width="640" height="640" alt="Dinner under the trees" loading="lazy"><span class="gl-cap">Dinner under the trees</span></button>
+        <button type="button" class="gl-item" data-cat="camp" data-i="10" aria-label="Open photo: First, the kettle"><img src="../assests/gallery/chai-sm.jpg" width="640" height="516" alt="First, the kettle" loading="lazy"><span class="gl-cap">First, the kettle</span></button>
+        <button type="button" class="gl-item" data-cat="water" data-i="11" aria-label="Open photo: Evening on the lake"><img src="../assests/gallery/lake-sunset-sm.jpg" width="640" height="480" alt="Evening on the lake" loading="lazy"><span class="gl-cap">Evening on the lake</span></button>
+        <button type="button" class="gl-item" data-cat="water" data-i="12" aria-label="Open photo: Kayaking on still water"><img src="../assests/gallery/kayak-sm.jpg" width="480" height="640" alt="Kayaking on still water" loading="lazy"><span class="gl-cap">Kayaking on still water</span></button>
+        <button type="button" class="gl-item" data-cat="water" data-i="13" aria-label="Open photo: Out on the boat"><img src="../assests/gallery/boating-sm.jpg" width="497" height="640" alt="Out on the boat" loading="lazy"><span class="gl-cap">Out on the boat</span></button>
+        <button type="button" class="gl-item" data-cat="water" data-i="14" aria-label="Open photo: Lily pads and clouds"><img src="../assests/gallery/lilies-sm.jpg" width="480" height="640" alt="Lily pads and clouds" loading="lazy"><span class="gl-cap">Lily pads and clouds</span></button>
+        <button type="button" class="gl-item" data-cat="water" data-i="15" aria-label="Open photo: Sun going down over the water"><img src="../assests/gallery/water-sunset-sm.jpg" width="480" height="640" alt="Sun going down over the water" loading="lazy"><span class="gl-cap">Sun going down over the water</span></button>
+        <button type="button" class="gl-item" data-cat="hills" data-i="16" aria-label="Open photo: Blue hills of the Eastern Ghats"><img src="../assests/gallery/blue-hills-sm.jpg" width="640" height="512" alt="Blue hills of the Eastern Ghats" loading="lazy"><span class="gl-cap">Blue hills of the Eastern Ghats</span></button>
+        <button type="button" class="gl-item" data-cat="hills" data-i="17" aria-label="Open photo: Forest and big skies"><img src="../assests/gallery/forest-clouds-sm.jpg" width="480" height="640" alt="Forest and big skies" loading="lazy"><span class="gl-cap">Forest and big skies</span></button>
+        <button type="button" class="gl-item" data-cat="hills" data-i="18" aria-label="Open photo: Canopy as far as you can see"><img src="../assests/gallery/forest-canopy-sm.jpg" width="480" height="640" alt="Canopy as far as you can see" loading="lazy"><span class="gl-cap">Canopy as far as you can see</span></button>
+        <button type="button" class="gl-item" data-cat="hills" data-i="19" aria-label="Open photo: A hazy ridge at dawn"><img src="../assests/gallery/hazy-ridge-sm.jpg" width="480" height="640" alt="A hazy ridge at dawn" loading="lazy"><span class="gl-cap">A hazy ridge at dawn</span></button>
+        <button type="button" class="gl-item" data-cat="hills" data-i="20" aria-label="Open photo: When the sky turns red"><img src="../assests/gallery/red-sky-sm.jpg" width="640" height="480" alt="When the sky turns red" loading="lazy"><span class="gl-cap">When the sky turns red</span></button>
+        <button type="button" class="gl-item" data-cat="hills" data-i="21" aria-label="Open photo: The view before the first chai"><img src="../assests/gallery/hills-dawn-sm.jpg" width="640" height="357" alt="The view before the first chai" loading="lazy"><span class="gl-cap">The view before the first chai</span></button>
+        <button type="button" class="gl-item" data-cat="hills" data-i="22" aria-label="Open photo: Red-earth forest trail"><img src="../assests/gallery/forest-path-sm.jpg" width="640" height="357" alt="Red-earth forest trail" loading="lazy"><span class="gl-cap">Red-earth forest trail</span></button>
+        <button type="button" class="gl-item" data-cat="wild" data-i="23" aria-label="Open photo: Bird photography by the fields"><img src="../assests/gallery/birding-sm.jpg" width="480" height="640" alt="Bird photography by the fields" loading="lazy"><span class="gl-cap">Bird photography by the fields</span></button>
+        <button type="button" class="gl-item" data-cat="wild" data-i="24" aria-label="Open photo: A red-whiskered bulbul"><img src="../assests/gallery/bulbul-sm.jpg" width="640" height="516" alt="A red-whiskered bulbul" loading="lazy"><span class="gl-cap">A red-whiskered bulbul</span></button>
+        <button type="button" class="gl-item" data-cat="wild" data-i="25" aria-label="Open photo: The farmhouse geese"><img src="../assests/gallery/geese-sm.jpg" width="427" height="640" alt="The farmhouse geese" loading="lazy"><span class="gl-cap">The farmhouse geese</span></button>
+        <button type="button" class="gl-item" data-cat="wild" data-i="26" aria-label="Open photo: Camp dogs on patrol"><img src="../assests/gallery/camp-dogs-sm.jpg" width="480" height="640" alt="Camp dogs on patrol" loading="lazy"><span class="gl-cap">Camp dogs on patrol</span></button>
+        <button type="button" class="gl-item" data-cat="wild" data-i="27" aria-label="Open photo: A young calf"><img src="../assests/gallery/calf-sm.jpg" width="480" height="640" alt="A young calf" loading="lazy"><span class="gl-cap">A young calf</span></button>
+        <button type="button" class="gl-item" data-cat="camp" data-i="28" aria-label="Open photo: Bikers riding up to Jawadhu"><img src="../assests/gallery/bikers-sm.jpg" width="512" height="384" alt="Bikers riding up to Jawadhu" loading="lazy"><span class="gl-cap">Bikers riding up to Jawadhu</span></button>
+      </div>
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-5 pt-10">
+        <p class="fn-hand text-[26px] text-[var(--fn-rust)]">Your photo could be next – come camp with us.</p>
+        <a href="../book/" class="inline-flex items-center gap-4 h-[52px] px-6 rounded-full bg-[var(--fn-forest)] hover:bg-[#1c3024] text-white text-[13px] font-bold uppercase tracking-wide self-start sm:self-auto">Reserve your camp <i data-lucide="arrow-up-right" class="w-4 h-4"></i></a>
+      </div>
+    </section>
+
+    <!-- ================= NEWSLETTER + FOOTER ================= -->
+    <section class="bg-[var(--fn-forest)] text-[#DCE3D2] pt-16">
+      <div class="max-w-[1076px] mx-auto px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 pb-14">
+          <div>
+            <p class="fn-label text-[#aab5a0]">A note now and then</p>
+            <h2 class="fn-display text-[36px] sm:text-[44px] leading-[1.05] text-[#B9C69E] mt-3">A little of the hills,<br>in your inbox.</h2>
+            <p class="text-[15px] leading-[22px] text-[#c4cdb9] mt-5 max-w-[430px]">New field notes, things we've spotted, and the occasional reason to head outside. Only when there's something worth sharing.</p>
+          </div>
+          <div class="lg:pt-10">
+            <form id="fnNewsletter" class="flex items-center gap-2 h-[58px] pl-5 pr-1.5 rounded-full border border-[#8f9c86]">
+              <input id="fnEmail" type="email" required placeholder="Your email address" class="flex-1 min-w-0 bg-transparent text-[15px] text-white placeholder-[#a9b3a0] focus:outline-none">
+              <button type="submit" class="h-[46px] px-5 rounded-full bg-[#F6F2E8] text-[#1f2d22] text-[13px] font-semibold inline-flex items-center gap-1.5 shrink-0">Send me a note <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></button>
+            </form>
+            <div class="flex items-start justify-between gap-4 mt-4">
+              <p id="fnNewsMsg" class="text-[12px] text-[#aab5a0]">No noise. Unsubscribe whenever.</p>
+              <p class="fn-hand text-[23px] text-[#e6ead9] -rotate-3">just the good stuff.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 py-12 border-t border-[#45594a]">
+          <div class="flex items-center gap-6">
+            <span class="text-[42px] leading-none font-bold tracking-tight text-[#F6F2E8]">GOGO</span>
+            <span>
+              <span class="block fn-label text-[#dce3d2]">Camping / Jawadhu Hills</span>
+              <span class="block text-[13px] text-[#aab5a0] mt-1">Tamil Nadu, India · A little closer to outside.</span>
+            </span>
+          </div>
+          <div class="flex flex-wrap gap-7 text-[14px] text-[#e6ead9]">
+            <a href="../#experience" class="hover:underline inline-flex items-center gap-1">Plan your visit <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></a>
+            <a href="#" class="hover:underline inline-flex items-center gap-1">Instagram <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></a>
+            <a href="../#fieldguide" class="hover:underline inline-flex items-center gap-1">Get in touch <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></a>
+          </div>
+        </div>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-10">
+          <p class="fn-label text-[#aab5a0]">© 2026 GOGO Camping · Leave the hills better than you found them.</p>
+          <div class="flex items-center gap-4">
+            <svg width="54" height="30" viewBox="0 0 54 30" fill="none" stroke="#c4cdb9" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path d="M2 28 L16 8 L22 16 L30 4 L52 28" /><path d="M2 28 L52 28" /></svg>
+            <span class="fn-hand text-[24px] text-[#e6ead9]">see you out there.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Lightbox -->
+  <div id="glBox" class="hidden fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Photo viewer">
+    <button type="button" id="glClose" class="absolute top-4 right-4 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center" aria-label="Close"><i data-lucide="x" class="w-5 h-5"></i></button>
+    <button type="button" id="glPrev" class="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center" aria-label="Previous photo"><i data-lucide="chevron-left" class="w-6 h-6"></i></button>
+    <button type="button" id="glNext" class="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center" aria-label="Next photo"><i data-lucide="chevron-right" class="w-6 h-6"></i></button>
+    <figure class="max-w-[92vw] max-h-[88vh] flex flex-col items-center">
+      <img id="glImg" class="max-w-[92vw] max-h-[80vh] object-contain" alt="">
+      <figcaption class="mt-3 text-center"><span id="glCap" class="fn-hand text-[24px] text-[#F6F2E8]"></span> <span id="glNum" class="fn-mono text-[11px] text-white/60 ml-2"></span></figcaption>
+    </figure>
+  </div>
+
+  <script>
+  (function () {
+    var tiles = [].slice.call(document.querySelectorAll('.gl-item'));
+    var chips = document.querySelectorAll('#glFilters .fn-chip');
+    function visible() { return tiles.filter(function (t) { return !t.classList.contains('is-hidden'); }); }
+    chips.forEach(function (c) {
+      c.addEventListener('click', function () {
+        var cat = c.dataset.cat;
+        tiles.forEach(function (t) { t.classList.toggle('is-hidden', cat !== 'all' && t.dataset.cat !== cat); });
+        chips.forEach(function (x) { x.classList.toggle('is-on', x === c); });
+        var n = visible().length;
+        document.getElementById('glCount').textContent = n + ' photo' + (n === 1 ? '' : 's');
+      });
+    });
+
+    // Lightbox: click a photo, arrows / keys to move, Esc to close
+    var box = document.getElementById('glBox'), img = document.getElementById('glImg'), list = [], at = 0;
+    function show(k) {
+      at = (k + list.length) % list.length;
+      var t = list[at], small = t.querySelector('img').getAttribute('src');
+      img.src = small.replace('-sm.jpg', '.jpg');
+      img.alt = t.querySelector('img').alt;
+      document.getElementById('glCap').textContent = t.querySelector('img').alt;
+      document.getElementById('glNum').textContent = (at + 1) + ' / ' + list.length;
+    }
+    function open(t) { list = visible(); box.classList.remove('hidden'); show(list.indexOf(t)); }
+    function close() { box.classList.add('hidden'); img.removeAttribute('src'); }
+    tiles.forEach(function (t) { t.addEventListener('click', function () { open(t); }); });
+    document.getElementById('glClose').onclick = close;
+    document.getElementById('glPrev').onclick = function () { show(at - 1); };
+    document.getElementById('glNext').onclick = function () { show(at + 1); };
+    box.addEventListener('click', function (e) { if (e.target === box) close(); });
+    document.addEventListener('keydown', function (e) {
+      if (box.classList.contains('hidden')) return;
+      if (e.key === 'Escape') close(); else if (e.key === 'ArrowLeft') show(at - 1); else if (e.key === 'ArrowRight') show(at + 1);
+    });
+    var sx = null;
+    box.addEventListener('touchstart', function (e) { sx = e.touches[0].clientX; }, { passive: true });
+    box.addEventListener('touchend', function (e) { if (sx === null) return; var dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 40) show(at + (dx < 0 ? 1 : -1)); sx = null; });
+
+    // Newsletter (no backend yet)
+    var f = document.getElementById('fnNewsletter');
+    if (f) f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var email = document.getElementById('fnEmail').value.trim();
+      try { var l = JSON.parse(localStorage.getItem('gogo_newsletter') || '[]'); if (l.indexOf(email) < 0) l.push(email); localStorage.setItem('gogo_newsletter', JSON.stringify(l)); } catch (err) {}
+      document.getElementById('fnEmail').value = '';
+      document.getElementById('fnNewsMsg').textContent = 'Thank you! The next field note will find you.';
+    });
+    window.lucide && lucide.createIcons();
+  })();
+  </script>
+  <script src="../scroll-lock.js"></script>
+</body>
+</html>
